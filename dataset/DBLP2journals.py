@@ -26,6 +26,8 @@ def force ():
     out.write( "\"\"" + "\n" )
     idx = idx+1
 
+  out.close()
+
 if __name__ == '__main__': force ()
 
 
