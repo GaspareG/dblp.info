@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 ## wget -N http://dblp.uni-trier.de/xml/dblp.xml.gz
 ## then run this script
 import codecs, collections, json, gzip, os, sys, xml.sax
 
-xml_filename = 'dblp.xml.gz'
-json_gz_filename = 'dblp.json.gz'
-tmp_filename = 'tmp_dblp.json.gz'
+xml_filename = 'data/dblp.xml.gz'
+json_gz_filename = 'data/dblp.json.gz'
+tmp_filename = 'data/tmp_dblp.json.gz'
 report_frequency = 10000
 
 class DBLPHandler (xml.sax.ContentHandler):
@@ -14,6 +14,7 @@ class DBLPHandler (xml.sax.ContentHandler):
     self.out = out
     self.paper = None
     self.authors = []
+    self.title = ''
     self.year = None
     self.text = ''
     self.papercount = 0
@@ -23,9 +24,13 @@ class DBLPHandler (xml.sax.ContentHandler):
       self.paper = str (attrs['key'])
       self.authors = []
       self.year = None
-    elif name in ['author', 'year']:
+    elif name in ['author', 'year', 'title']:
       self.text = ''
+    else:
+      print name
   def endElement (self, name):
+    if name == 'title':
+      self.title = self.text
     if name == 'author':
       self.authors.append (self.text)
     if name == 'year':
@@ -38,7 +43,7 @@ class DBLPHandler (xml.sax.ContentHandler):
       self.out.write (',\n')
     self.papercount += 1
     self.edgecount += len (self.authors)
-    json.dump ([self.paper, self.authors, self.year], self.out)
+    json.dump ([self.paper, self.title, self.authors, self.year], self.out)
     if self.papercount % report_frequency == 0:
       print '... processed %d papers, %d edges so far ...' % (self.papercount, self.edgecount)
       sys.stdout.flush ()
