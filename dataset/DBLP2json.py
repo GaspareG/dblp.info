@@ -26,8 +26,6 @@ class DBLPHandler (xml.sax.ContentHandler):
       self.year = None
     elif name in ['author', 'year', 'title']:
       self.text = ''
-    else:
-      print name
   def endElement (self, name):
     if name == 'title':
       self.title = self.text
