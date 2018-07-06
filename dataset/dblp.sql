@@ -21,7 +21,10 @@ SET time_zone = "+00:00";
 --
 -- Database: `dblp`
 --
+DROP DATABASE `dblp`;
+
 CREATE DATABASE IF NOT EXISTS `dblp` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+
 USE `dblp`;
 
 -- --------------------------------------------------------
@@ -238,3 +241,12 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- SELECT "authors" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`authors` UNION
+-- SELECT "coauthorship" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`coauthorship` UNION
+-- SELECT "conferences" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`conferences` UNION
+-- SELECT "journals" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`journals` UNION
+-- SELECT "papers" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`papers` UNION
+-- SELECT "present" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`present` UNION
+-- SELECT "publish" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`publish` UNION
+-- SELECT "wrote" AS table_name, COUNT(*) AS exact_row_count FROM `dblp`.`wrote`;
