@@ -1,1 +1,5 @@
 dataset/data/*
+dblp.json.gz
+dblp.xml.gz
+dataset/scraper/venv/*
+*.pyc

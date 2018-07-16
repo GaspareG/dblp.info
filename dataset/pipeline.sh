@@ -28,9 +28,6 @@ python2 present.py
 echo "(journal, paper)"
 python2 publish.py
 
-echo "(journal, paper)"
-python2 publish.py
-
 echo "(author, author, paper)"
 python2 coauthorship.py
 
