@@ -1,3 +1,4 @@
+id,tag,title,year
 0,journals/vc/SchmittPS04,"Constructive sculpting of heterogeneous volumetric objects using trivariate B-splines.",2004
 1,journals/vc/KimFY10,"Real-time data driven deformation with affine bones.",2010
 2,journals/vc/FengZWW17,"A geometric control of fire motion editing.",2017
@@ -72,7 +73,7 @@
 71,journals/vc/BiniB14,"A nonlinear level set model for image deblurring and denoising.",2014
 72,journals/vc/Acar09,"Simulation of interface dynamics: a diffuse-interface model.",2009
 73,journals/vc/AncutiHMB08,"Video enhancement using reference photographs.",2008
-74,journals/vc/Kunii05,"The genesis of "The Visual Computer".",2005
+74,journals/vc/Kunii05,"The genesis of 'The Visual Computer'.",2005
 75,journals/vc/WangCLZG17,"Object tracking by color distribution fields with adaptive hierarchical structure.",2017
 76,journals/vc/ZhaoWCJ11,"Parallel and efficient Boolean on polygonal solids.",2011
 77,journals/vc/SimionescuB04,"Visualization of hypersurfaces and multivariable (objective) functions by partial global optimization.",2004
@@ -330,7 +331,7 @@
 329,journals/vc/IsaacsC88,"Mixed methods for complex kinematic constraints in dynamic figure animation.",1988
 330,journals/vc/WestermannKE99,"Real-time exploration of regular volume data by adaptive reconstruction of isosurfaces.",1999
 331,journals/vc/LiuS06,"Function-defined shape metamorphoses in visual cyberworlds.",2006
-332,journals/vc/Thalmann86,"A "lifegame" approach to surface modeling and rendering.",1986
+332,journals/vc/Thalmann86,"A 'lifegame' approach to surface modeling and rendering.",1986
 333,journals/vc/HanakJS10,"Detail-driven digital hologram generation.",2010
 334,journals/vc/BreenHG92,"A physically-based particle model of woven cloth.",1992
 335,journals/vc/GanovelliCMS01,"Enabling cuts on multiresolution representation.",2001
@@ -760,7 +761,7 @@
 759,journals/vc/WuSL12,"Interactive two-scale color-to-gray.",2012
 760,journals/vc/BouenardGW12,"Hybrid inverse motion control for virtual characters interacting with sound synthesis - Application to percussion motion.",2012
 761,journals/vc/VasiouSMBY18,"A detailed study of ray tracing performance: render time and energy cost.",2018
-762,journals/vc/TakakuraNTIYHK86,"Production of artistic images with "ART PROCESSOR".",1986
+762,journals/vc/TakakuraNTIYHK86,"Production of artistic images with 'ART PROCESSOR'.",1986
 763,journals/vc/OhKMW05,"Generating unified model for dressed virtual humans.",2005
 764,journals/vc/DeyL08,"Delaunay meshing of isosurfaces.",2008
 765,journals/vc/MuraWP18,"Robust normal estimation in unstructured 3D point clouds by selective normal space exploration.",2018
@@ -1734,7 +1735,7 @@
 1733,journals/vc/Santamaria-IbirikaCSDSHB14,"Procedural approach to volumetric terrain generation.",2014
 1734,journals/vc/ChalasUJFJSK17,"Generating various composite human faces from real 3D facial images.",2017
 1735,journals/vc/Shellshear14,"1D sweep-and-prune self-collision detection for deforming cables.",2014
-1736,journals/vc/LandesbergerAABKWK13,"Opening up the "black box" of medical image segmentation with statistical shape models.",2013
+1736,journals/vc/LandesbergerAABKWK13,"Opening up the 'black box' of medical image segmentation with statistical shape models.",2013
 1737,journals/vc/ZhangXZH16,"A novel optimization framework for salient object detection.",2016
 1738,journals/vc/WuHC14,"Action recognition by hidden temporal models.",2014
 1739,journals/vc/ZhaoZYSHPW16,"Fisher discrimination-based l2, 1-norm sparse representation for face recognition.",2016
@@ -5576,7 +5577,7 @@
 5575,journals/cgf/Gnatz83,"An Algebraic Approach to the Standardization and the Certification of Graphics Software.",1983
 5576,journals/cgf/WidmerWTGG16,"Decoupled Space and Time Sampling of Motion and Defocus Blur for Unified Rendering of Transparent and Opaque Objects.",2016
 5577,journals/cgf/SchneiderHF13,"Bijective Composite Mean Value Mappings.",2013
-5578,journals/cgf/Bono85,"Report of the Timberline Meeting of ISO TC97/SC21/WG2 "Computer Graphics".",1985
+5578,journals/cgf/Bono85,"Report of the Timberline Meeting of ISO TC97/SC21/WG2 'Computer Graphics'.",1985
 5579,journals/cgf/OtireliGG09,"Feature Preserving Point Set Surfaces based on Non-Linear Kernel Regression.",2009
 5580,journals/cgf/DesbenoitGA04,"Simulating and Modeling Lichen Growth.",2004
 5581,journals/cgf/HerholzEVLK16,"Product Importance Sampling for Light Transport Path Guiding.",2016
@@ -6163,7 +6164,7 @@
 6162,journals/tvcg/YangL16,"MaterialCloning: Acquiring Elasticity Parameters from Images for Medical Applications.",2016
 6163,journals/tvcg/ChaoLAL12,"Human Motion Retrieval from Hand-Drawn Sketch.",2012
 6164,journals/tvcg/LivingstonDA12,"Evaluation of Multivariate Visualization on a Multivariate Task.",2012
-6165,journals/tvcg/KyprianidisCWI13,"State of the "Art": A Taxonomy of Artistic Stylization Techniques for Images and Video.",2013
+6165,journals/tvcg/KyprianidisCWI13,"State of the 'Art': A Taxonomy of Artistic Stylization Techniques for Images and Video.",2013
 6166,journals/tvcg/BremerEHP04,"A Topological Hierarchy for Functions on Triangulated Surfaces.",2004
 6167,journals/tvcg/YuanON05,"Registration Based on Projective Reconstruction Technique for Augmented Reality Systems.",2005
 6168,journals/tvcg/LeimkuhlerKRMS18,"Perceptual Real-Time 2D-to-3D Conversion Using Cue Fusion.",2018
@@ -6490,7 +6491,7 @@
 6489,journals/tvcg/JianuDL09,"Exploring 3D DTI Fiber Tracts with Linked 2D Representations.",2009
 6490,journals/tvcg/SudarskyG99,"Dynamic Scene Occlusion Culling.",1999
 6491,journals/tvcg/HofmannV13,"Common Angle Plots as Perception-True Visualizations of Categorical Associations.",2013
-6492,journals/tvcg/GaffaryGMAAL17,"AR Feels "Softer" than VR: Haptic Perception of Stiffness in Augmented versus Virtual Reality.",2017
+6492,journals/tvcg/GaffaryGMAAL17,"AR Feels 'Softer' than VR: Haptic Perception of Stiffness in Augmented versus Virtual Reality.",2017
 6493,journals/tvcg/GovindarajuLM06,"Fast and Reliable Collision Culling Using Graphics Hardware.",2006
 6494,journals/tvcg/SvakhineEA09,"Illustration-Inspired Depth Enhanced Volumetric Medical Visualization.",2009
 6495,journals/tvcg/BachthalerW08,"Animation of Orthogonal Texture Patterns for Vector Field Visualization.",2008
@@ -6568,7 +6569,7 @@
 6567,journals/tvcg/RieckML12,"Multivariate Data Analysis Using Persistence-Based Filtering and Topological Signatures.",2012
 6568,journals/tvcg/Tachi10,"Origamizing Polyhedral Surfaces.",2010
 6569,journals/tvcg/HadlakSS11,"In Situ Exploration of Large Dynamic Networks.",2011
-6570,journals/tvcg/JaureguiAOMML14,"Toward "Pseudo-Haptic Avatars": Modifying the Visual Animation of Self-Avatar Can Simulate the Perception of Weight Lifting.",2014
+6570,journals/tvcg/JaureguiAOMML14,"Toward 'Pseudo-Haptic Avatars': Modifying the Visual Animation of Self-Avatar Can Simulate the Perception of Weight Lifting.",2014
 6571,journals/tvcg/LivnatSJ96,"A Near Optimal Isosurface Extraction Algorithm Using the Span Space.",1996
 6572,journals/tvcg/JavedE13,"Stack Zooming for Multifocus Interaction in Skewed-Aspect Visual Spaces.",2013
 6573,journals/tvcg/JoshiSVSSP08,"Novel interaction techniques forneurosurgical planning and stereotactic navigation.",2008
@@ -6875,7 +6876,7 @@
 6874,journals/tvcg/AuZCXT12,"Mesh Segmentation with Concavity-Aware Fields.",2012
 6875,journals/tvcg/WaserFRSBG10,"World Lines.",2010
 6876,journals/tvcg/ComportMPC06,"Real-Time Markerless Tracking for Augmented Reality: The Virtual Visual Servoing Framework.",2006
-6877,journals/tvcg/MachadoOF10,"Corrections to "A Physiologically-Based Model for Simulation of Color Vision Deficiency".",2010
+6877,journals/tvcg/MachadoOF10,"Corrections to 'A Physiologically-Based Model for Simulation of Color Vision Deficiency'.",2010
 6878,journals/tvcg/ZengMGGK10,"Supine and Prone Colon Registration Using Quasi-Conformal Mapping.",2010
 6879,journals/tvcg/HajizadehTL13,"Supporting Awareness through Collaborative Brushing and Linking of Tabular Data.",2013
 6880,journals/tvcg/GoodwinMDBTW17,"What do Constraint Programming Users Want to See? Exploring the Role of Visualisation in Profiling of Models and Search.",2017
@@ -6912,7 +6913,7 @@
 6911,journals/tvcg/UngerSKD12,"A Visual Analysis Concept for the Validation of Geoscientific Simulation Models.",2012
 6912,journals/tvcg/GebhardtPLHK13,"Extended Pie Menus for Immersive Virtual Environments.",2013
 6913,journals/tvcg/SongLKLKS17,"GazeDx: Interactive Visual Analytics Framework for Comparative Gaze Analysis with Volumetric Medical Images.",2017
-6914,journals/tvcg/GrammelTS11,"Erratum to "How Information Visualization Novices Construct Visualizations".",2011
+6914,journals/tvcg/GrammelTS11,"Erratum to 'How Information Visualization Novices Construct Visualizations'.",2011
 6915,journals/tvcg/YngveT02,"Robust Creation of Implicit Surfaces from Polygonal Meshes.",2002
 6916,journals/tvcg/VasilakisPF15,"k+-buffer: An Efficient, Memory-Friendly and Dynamic k-buffer Framework.",2015
 6917,journals/tvcg/WoodringS06,"Multi-variate, Time Varying, and Comparative Visualization with Contextual Cues.",2006
@@ -7204,7 +7205,7 @@
 7203,journals/tvcg/SchollmeyerSBSF17,"Efficient Hybrid Image Warping for High Frame-Rate Stereoscopic Rendering.",2017
 7204,journals/tvcg/HamMMSW11,"Message from the Paper Chairs and Guest Editors.",2011
 7205,journals/tvcg/SeoH00,"Calibration-Free Augmented Reality in Perspective.",2000
-7206,journals/tvcg/GuoXWLD18,"Errata to "Robust Non-Rigid Motion Tracking and Surface Reconstruction Using L0  Regularization".",2018
+7206,journals/tvcg/GuoXWLD18,"Errata to 'Robust Non-Rigid Motion Tracking and Surface Reconstruction Using L0  Regularization'.",2018
 7207,journals/tvcg/SunMNR16,"BiSet: Semantic Edge Bundling with Biclusters for Sensemaking.",2016
 7208,journals/tvcg/WongFMCHT12,"A Space-Filling Visualization Technique for Multivariate Small-World Graphs.",2012
 7209,journals/tvcg/BiddiscombeSOGP12,"Parallel Computational Steering for HPC Applications Using HDF5 Files in Distributed Shared Memory.",2012
@@ -7266,7 +7267,7 @@
 7265,journals/tvcg/GosinkGABJ11,"An Application of Multivariate Statistical Analysis for Query-Driven Visualization.",2011
 7266,journals/tvcg/MoYM16,"Tracing Analytic Ray Curves for Light and Sound Propagation in Non-Linear Media.",2016
 7267,journals/tvcg/YehLLHLK12,"Social-Event-Driven Camera Control for Multicharacter Animations.",2012
-7268,journals/tvcg/HamP09,""Search, Show Context, Expand on Demand": Supporting Large Graph Exploration with Degree-of-Interest.",2009
+7268,journals/tvcg/HamP09,"'Search, Show Context, Expand on Demand': Supporting Large Graph Exploration with Degree-of-Interest.",2009
 7269,journals/tvcg/StroilaEH08,"Clip Art Rendering of Smooth Isosurfaces.",2008
 7270,journals/tvcg/San-VicenteAC12,"Cubical Mass-Spring Model Design Based on a Tensile Deformation Test and Nonlinear Material Model.",2012
 7271,journals/tvcg/SeredaBSG06,"Visualization of Boundaries in Volumetric Data Sets Using LH Histograms.",2006
@@ -7343,7 +7344,7 @@
 7342,journals/tvcg/RodgersZP12,"Wellformedness Properties in Euler Diagrams: Which Should Be Used?",2012
 7343,journals/tvcg/StolteTH02,"Polaris: A System for Query, Analysis, and Visualization of Multidimensional Relational Databases.",2002
 7344,journals/tvcg/ShenWYWQC17,"NameClarifier: A Visual Analytics System for Author Name Disambiguation.",2017
-7345,journals/tvcg/TennekesJ15,"Errata to "Tree Colors: Color Schemes for Tree-Structured Data".",2015
+7345,journals/tvcg/TennekesJ15,"Errata to 'Tree Colors: Color Schemes for Tree-Structured Data'.",2015
 7346,journals/tvcg/Wang06,"Bilateral Recovering of Sharp Edges on Feature-Insensitive Sampled Meshes.",2006
 7347,journals/tvcg/VermaP04,"Comparative Flow Visualization.",2004
 7348,journals/tvcg/EllisD07,"A Taxonomy of Clutter Reduction for Information Visualisation.",2007
@@ -7636,7 +7637,7 @@
 7635,journals/tvcg/CasasTGH13,"Interactive Animation of 4D Performance Capture.",2013
 7636,journals/tvcg/GaronL17,"Deep 6-DOF Tracking.",2017
 7637,journals/tvcg/Billinghurst13,"The 2013 Virtual Reality Technical Achievement Award.",2013
-7638,journals/tvcg/BhatiaNPB13,"Comments on the "Meshless Helmholtz-Hodge Decomposition".",2013
+7638,journals/tvcg/BhatiaNPB13,"Comments on the 'Meshless Helmholtz-Hodge Decomposition'.",2013
 7639,journals/tvcg/BarbosaPPGPN16,"Visualizing and Interacting with Kernelized Data.",2016
 7640,journals/tvcg/ElmqvistRRF10,"Melange: Space Folding for Visual Exploration.",2010
 7641,journals/tvcg/WuHM14,"Generating Facial Expressions Using an Anatomically Accurate Biomechanical Model.",2014
@@ -7921,7 +7922,7 @@
 7920,journals/tvcg/YangPRI17,"A 3D Steganalytic Algorithm and Steganalysis-Resistant Watermarking.",2017
 7921,journals/tvcg/CollomosseH03,"Cubist Style Rendering from Photographs.",2003
 7922,journals/tvcg/KimLKHS09,"GeneShelf: A Web-based Visual Interface for Large Gene Expression Time-Series Data Repositories.",2009
-7923,journals/tvcg/StrobeltOKSP16a,"Errata to "Guidelines for Effective Usage of Text Highlighting Techniques" [1].",2016
+7923,journals/tvcg/StrobeltOKSP16a,"Errata to 'Guidelines for Effective Usage of Text Highlighting Techniques' [1].",2016
 7924,journals/tvcg/HoganHH16,"The Elicitation Interview Technique: Capturing People's Experiences of Data Representations.",2016
 7925,journals/tvcg/GratzlLGPS13,"LineUp: Visual Analysis of Multi-Attribute Rankings.",2013
 7926,journals/tvcg/MaoDL07,"Sequential Document Visualization.",2007
@@ -7998,7 +7999,7 @@
 7997,journals/tvcg/MehtaJ06,"Detection and Visualization of Defects in 3D Unstructured Models of Nematic Liquid Crystals.",2006
 7998,journals/tvcg/OzerSBM14,"Activity Detection in Scientific Visualization.",2014
 7999,journals/tvcg/ChoKBS14,"Stroscope: Multi-Scale Visualization of Irregularly Measured Time-Series Data.",2014
-8000,journals/tvcg/NagarajN11a,"Errata to "Relation-Aware Isosurface Extraction in Multifield Data'.",2011
+8000,journals/tvcg/NagarajN11a,"Errata to 'Relation-Aware Isosurface Extraction in Multifield Data'.",2011
 8001,journals/tvcg/RochaASS17,"Decal-Maps: Real-Time Layering of Decals on Surfaces for Multivariate Visualization.",2017
 8002,journals/tvcg/LorenzoSCBPN16,"AllAboard: Visual Exploration of Cellphone Mobility Data to Optimise Public Transport.",2016
 8003,journals/tvcg/Hubbard95,"Collision Detection for Interactive Graphics Applications.",1995
@@ -8013,7 +8014,7 @@
 8012,journals/tvcg/InterranteLMH12,"Guest Editors' Introduction: Special Section on the IEEE Virtual Reality Conference (VR).",2012
 8013,journals/tvcg/VinesHLL14,"Vortical Inviscid Flows with Two-Way Solid-Fluid Coupling.",2014
 8014,journals/tvcg/JinZLG09,"Computing Teichmüller Shape Space.",2009
-8015,journals/tvcg/HamannJW99a,"Errata: Corrections to "On a Construction of a Hierarchy of Best Linear Spline Approximations Using Repeated Bisection".",1999
+8015,journals/tvcg/HamannJW99a,"Errata: Corrections to 'On a Construction of a Hierarchy of Best Linear Spline Approximations Using Repeated Bisection'.",1999
 8016,journals/tvcg/TsaiLCLL10,"Real-Time Physics-Based 3D Biped Character Animation Using an Inverted Pendulum Model.",2010
 8017,journals/tvcg/LindB17,"Comparing Cross-Sections and 3D Renderings for Surface Matching Tasks Using Physical Ground Truths.",2017
 8018,journals/tvcg/JianuDL12,"Exploring Brain Connectivity with Two-Dimensional Neural Maps.",2012
@@ -8285,7 +8286,7 @@
 8284,journals/tvcg/PajarolaZ12,"Guest Editor's Introduction: Special Section on the Eurographics Symposium on Parallel Graphics and Visualization (EGPGV).",2012
 8285,journals/tvcg/DunnTTKADMLF17,"Wide Field Of View Varifocal Near-Eye Display Using See-Through Deformable Membrane Mirrors.",2017
 8286,journals/tvcg/ChittaroRI06,"VU-Flow: A Visualization Tool for Analyzing Navigation in Virtual Environments.",2006
-8287,journals/tvcg/BiddiscombeGMMT08,"Corrections to "Time Dependent Processing in a Parallel Pipeline Architecture'.",2008
+8287,journals/tvcg/BiddiscombeGMMT08,"Corrections to 'Time Dependent Processing in a Parallel Pipeline Architecture'.",2008
 8288,journals/tvcg/RosenPHI08,"A High-Quality High-Fidelity Visualization of the September 11 Attack on the World Trade Center.",2008
 8289,journals/tvcg/LiuS10,"Mental Models, Visual Reasoning and Interaction in Information Visualization: A Top-down Perspective.",2010
 8290,journals/tvcg/RuttenC06,"Analyzing Vortex Breakdown Flow Structures by Assignment of Colors to Tensor Invariants.",2006
@@ -8578,7 +8579,7 @@
 8577,journals/tvcg/EvertsBBR015,"Exploration of the Brain's White Matter Structure through Visual Abstraction and Multi-Scale Local Fiber Tract Contraction.",2015
 8578,journals/tvcg/ByronW08,"Stacked Graphs - Geometry & Aesthetics.",2008
 8579,journals/tvcg/FuldaBM16,"TimeLineCurator: Interactive Authoring of Visual Timelines from Unstructured Text.",2016
-8580,journals/tvcg/WangC10,"Errata to "Isosurface Extraction and View-Dependent Filtering from Time-Varying Fields Using Persistent Time-Octree (PTOT)".",2010
+8580,journals/tvcg/WangC10,"Errata to 'Isosurface Extraction and View-Dependent Filtering from Time-Varying Fields Using Persistent Time-Octree (PTOT)'.",2010
 8581,journals/tvcg/AhmedGYFZD17,"A Simple Push-Pull Algorithm for Blue-Noise Sampling.",2017
 8582,journals/tvcg/MusseT01,"Hierarchical Model for Real Time Simulation of Virtual Human Crowds.",2001
 8583,journals/tvcg/PoullisY09,"Photorealistic Large-Scale Urban City Model Reconstruction.",2009
@@ -8657,7 +8658,7 @@
 8656,journals/tvcg/Ertl10a,"Guest Editor's Introduction: Special Section on the IEEE Symposium on Visual Analytics Science and Technology (VAST).",2010
 8657,journals/tvcg/Muraki95,"Multiscale Volume Representation by a DoG Wavelet.",1995
 8658,journals/tvcg/SteinJLBZGSAGK18,"Bring It to the Pitch: Combining Video and Movement Data to Enhance Team Sport Analysis.",2018
-8659,journals/tvcg/PuPMRR11,"Shape "Break-and-Repair" Strategy and Its Application to Automated Medical Image Segmentation.",2011
+8659,journals/tvcg/PuPMRR11,"Shape 'Break-and-Repair' Strategy and Its Application to Automated Medical Image Segmentation.",2011
 8660,journals/tvcg/CiprianoG08,"Text Scaffolds for Effective Surface Labeling.",2008
 8661,journals/tvcg/Rossignac11,"Ordered Boolean List (OBL): Reducing the Footprint for Evaluating Boolean Expressions.",2011
 8662,journals/tvcg/Wijk14,"Visualization of Regular Maps: The Chase Continues.",2014
@@ -8879,7 +8880,7 @@
 8878,journals/tvcg/GuntherBCPT14,"Characterizing Molecular Interactions in Chemical Systems.",2014
 8879,journals/tvcg/Simon07,"Usability of Multiviewpoint Images for Spatial Interaction in Projection-Based Display Systems.",2007
 8880,journals/tvcg/DuffyTWSTKGC15,"Glyph-Based Video Visualization for Semen Analysis.",2015
-8881,journals/tvcg/Chittaro16,"Designing Serious Games for Safety Education: "Learn to Brace" versus Traditional Pictorials for Aircraft Passengers.",2016
+8881,journals/tvcg/Chittaro16,"Designing Serious Games for Safety Education: 'Learn to Brace' versus Traditional Pictorials for Aircraft Passengers.",2016
 8882,journals/tvcg/LindstromI06,"Fast and Efficient Compression of Floating-Point Data.",2006
 8883,journals/tvcg/ChouM02,"Vertex Data Compression through Vector Quantization.",2002
 8884,journals/tvcg/Delingette08,"Triangular Springs for Modeling Nonlinear Membranes.",2008
@@ -8976,7 +8977,7 @@
 8975,journals/tvcg/SachaZSLPWNK17,"Visual Interaction with Dimensionality Reduction: A Structured Literature Analysis.",2017
 8976,journals/tvcg/HoK09,"Indexing and Retrieving Motions of Characters in Close Contact.",2009
 8977,journals/tvcg/MasonB01,"A Graphical Representation of the State Spaces of Hierarchical Level-of-Detail Scene Descriptions.",2001
-8978,journals/tvcg/JeunetAAL18,""Do You Feel in Control?": Towards Novel Approaches to Characterise, Manipulate and Measure the Sense of Agency in Virtual Environments.",2018
+8978,journals/tvcg/JeunetAAL18,"'Do You Feel in Control?': Towards Novel Approaches to Characterise, Manipulate and Measure the Sense of Agency in Virtual Environments.",2018
 8979,journals/tvcg/TsangTS10,"eSeeTrack - Visualizing Sequential Fixation Patterns.",2010
 8980,journals/tvcg/RohmerBDG15,"Interactive Near-Field Illumination for Photorealistic Augmented Reality with Varying Materials on Mobile Devices.",2015
 8981,journals/tvcg/ForssellC95,"Using Line Integral Convolution for Flow Visualization: Curvilinear Grids, Variable-Speed Animation, and Unsteady Flows.",1995
@@ -9048,7 +9049,7 @@
 9047,journals/tvcg/SorgerOLSGP16,"LiteVis: Integrated Visualization for Simulation-Based Decision Support in Lighting Design.",2016
 9048,journals/tvcg/TeyseyreC09,"An Overview of 3D Software Visualization.",2009
 9049,journals/tvcg/IsenbergC07,"Interactive Tree Comparison for Co-located Collaborative Information Visualization.",2007
-9050,journals/tvcg/Sequin12,"Keynote Speaker: Taking the "Virtual" Out of Virtual Reality.",2012
+9050,journals/tvcg/Sequin12,"Keynote Speaker: Taking the 'Virtual' Out of Virtual Reality.",2012
 9051,journals/tvcg/Floriani18a,"State of the Journal.",2018
 9052,journals/tvcg/LahaBS13,"Validation of the MR Simulation Approach for Evaluating the Effects of Immersion on Visual Analysis of Volume Data.",2013
 9053,journals/tvcg/LuPG15,"Position-Dependent Importance Sampling of Light Field Luminaires.",2015
@@ -9120,7 +9121,7 @@
 9119,journals/tvcg/VinklerHBS16,"Parallel On-Demand Hierarchy Construction on Contemporary GPUs.",2016
 9120,journals/tvcg/CollomosseRH05,"Stroke Surfaces: Temporally Coherent Artistic Animations from Video.",2005
 9121,journals/tvcg/SchulzHS11,"The Design Space of Implicit Hierarchy Visualization: A Survey.",2011
-9122,journals/tvcg/ForbesHL10,""behaviorism": a framework for dynamic data visualization.",2010
+9122,journals/tvcg/ForbesHL10,"'behaviorism': a framework for dynamic data visualization.",2010
 9123,journals/tvcg/MatsukuraYI13,"Smelling Screen: Development and Evaluation of an Olfactory Display System for Presenting a Virtual Odor Source.",2013
 9124,journals/tvcg/GhoshWPKHCRA18,"NotifiVR: Exploring Interruptions and Notifications in Virtual Reality.",2018
 9125,journals/tvcg/BergnerMWM06,"A Spectral Analysis of Function Composition and its Implications for Sampling in Direct Volume Visualization.",2006
@@ -9496,7 +9497,7 @@
 9495,journals/cga/Mathews96,"Visualizing space science data in 3D.",1996
 9496,journals/cga/Whitaker04,"Modeling Deformable Surfaces with Level Sets.",2004
 9497,journals/cga/StoneT10,"Goodbye, Hello.",2010
-9498,journals/cga/Abouaf00,"Maya: "So Ya Wanna Be a Rock 'n Roll Star" Revisited.",2000
+9498,journals/cga/Abouaf00,"Maya: 'So Ya Wanna Be a Rock 'n Roll Star' Revisited.",2000
 9499,journals/cga/WrzesienRBBBOB13,"The Therapeutic Lamp: Treating Small-Animal Phobias.",2013
 9500,journals/cga/ThudtLCC17,"Expanding Research Methods for a Realistic Understanding of Personal Visualization.",2017
 9501,journals/cga/RedaFKALJPH13,"Visualizing Large, Heterogeneous Data in Hybrid-Reality Environments.",2013
@@ -9672,7 +9673,7 @@
 9671,journals/cga/PonceP11,"Modeling Neck and Brain Injuries in Infants.",2011
 9672,journals/cga/NataneliF11,"Bringing Sketch Recognition into Your Hands.",2011
 9673,journals/cga/WillettGI15,"Understanding Digital Note-Taking Practice for Visualization.",2015
-9674,journals/cga/BishopW00,"Working in the Office of "Real Soon Now".",2000
+9674,journals/cga/BishopW00,"Working in the Office of 'Real Soon Now'.",2000
 9675,journals/cga/Pachet04,"Beyond the Cybernetic Jam Fantasy: The Continuator.",2004
 9676,journals/cga/CorneyRCPBM02,"Coarse Filters for Shape Matching.",2002
 9677,journals/cga/WahleOF96,"3D heart-vessel reconstruction from biplane angiograms.",1996
@@ -9816,7 +9817,7 @@
 9815,journals/cga/Dietrich85,"Visual Intelligence: The First Decade of Computer Art (1965-1975).",1985
 9816,journals/cga/YamaguchiK95,"Nonmanifold topology based on coupling entities.",1995
 9817,journals/cga/LindemanRS09,"Practicing What We Preach: IEEE VR 2009 Virtual Program Committee Meeting.",2009
-9818,journals/cga/SchellK13,"Building Virtual Worlds Carrying on the Legacy of Randy Pausch's "Head Fake".",2013
+9818,journals/cga/SchellK13,"Building Virtual Worlds Carrying on the Legacy of Randy Pausch's 'Head Fake'.",2013
 9819,journals/cga/WellsWC91,"Dithering for 12-bit true-color graphics.",1991
 9820,journals/cga/BrollS01,"Projects in VR.",2001
 9821,journals/cga/JohnsonF99,"Full-Spectral Color Calculations in Realistic Image Synthesis.",1999
@@ -9968,7 +9969,7 @@
 9967,journals/cga/Singh07,"Vamping on Ultrafractal.",2007
 9968,journals/cga/Sims95a,"At Oak Ridge, a car crash on the World Wide Web.",1995
 9969,journals/cga/KuhlenH14,"Quo Vadis CAVE: Does Immersive Visualization Still Matter?",2014
-9970,journals/cga/Laidlaw01,"Loose, Artistic "Textures" for Visualization.",2001
+9970,journals/cga/Laidlaw01,"Loose, Artistic 'Textures' for Visualization.",2001
 9971,journals/cga/RigauFS08,"Informational Aesthetics Measures.",2008
 9972,journals/cga/LiuCCCLH96,"Distributed computing: new power for scientific visualization.",1996
 9973,journals/cga/GreenS88,"Interactive animation: a language and system for procedural modeling and motion.",1988
@@ -10003,7 +10004,7 @@
 10002,journals/cga/Casale87,"Free-Form Solid Modeling with Trimmed Surface Patches.",1987
 10003,journals/cga/TsingosCEKF02,"Validating Acoustical Simulations in Bell Labs Box.",2002
 10004,journals/cga/Singh14e,"Filtering the World.",2014
-10005,journals/cga/MatsubaR99,""Bottom, Thou Art Translated": The Making of VRML Dream.",1999
+10005,journals/cga/MatsubaR99,"'Bottom, Thou Art Translated': The Making of VRML Dream.",1999
 10006,journals/cga/Woolsey91,"Multimedia scouting.",1991
 10007,journals/cga/ShenRFEVEWWMHT06,"Informing the Design of Direct-Touch Tabletops.",2006
 10008,journals/cga/Singh13b,"Creation and Deconstruction [About the Cover].",2013
@@ -10121,10 +10122,10 @@
 10120,journals/cga/JiaoWHW12,"Using Time-Varying Texels to Simulate Withering Grassland.",2012
 10121,journals/cga/Rensink15,"Preparing Undergraduates for Visual Analytics.",2015
 10122,journals/cga/LaViolaJ15,"Natural User Interfaces for Adjustable Autonomy in Robot Control.",2015
-10123,journals/cga/PaulRN15,"A "Design First" Approach to Visualization Innovation.",2015
+10123,journals/cga/PaulRN15,"A 'Design First' Approach to Visualization Innovation.",2015
 10124,journals/cga/SchwarzB97,"Optimizing Dot Graphics for Volumetric Displays.",1997
 10125,journals/cga/BuxtonFBK00,"Large Displays in Automotive Design.",2000
-10126,journals/cga/Addison95,""Detour: Brain Deconstruction Ahead".",1995
+10126,journals/cga/Addison95,"'Detour: Brain Deconstruction Ahead'.",1995
 10127,journals/cga/VilbrandtVPSP11,"Digitally Interpreting Traditional Folk Crafts.",2011
 10128,journals/cga/Reilly86a,"A Different Perspective on Space.",1986
 10129,journals/cga/ChenHRU85,"Surface Shading in the Cuberille Environment.",1985
@@ -10404,7 +10405,7 @@
 10403,journals/cga/GlassnerW98,"Rendering.",1998
 10404,journals/cga/RogersR86,"A Raster Display Graphics Package for Education.",1986
 10405,journals/cga/Meier85,"BUCOLIC: A Program for Teaching Color Theory to Art Students.",1985
-10406,journals/cga/WelchFRTB00,"Projected Imagery in Your "Office of the Future".",2000
+10406,journals/cga/WelchFRTB00,"Projected Imagery in Your 'Office of the Future'.",2000
 10407,journals/cga/ChionhG95a,"Elimination and resultants.2. Multivariate resultants.",1995
 10408,journals/cga/HentschelMHM18,"Applied Visualization.",2018
 10409,journals/cga/CaoLGYP16,"Customized Body Mapping to Facilitate the Ergonomic Design of Sportswear.",2016
@@ -10588,7 +10589,7 @@
 10587,journals/cga/Voorhies89,"Reduced-complexity graphics.",1989
 10588,journals/cga/DevL15,"Democratizing Digital Content Creation Using Mobile Devices with Inbuilt Sensors.",2015
 10589,journals/cga/YoonLR17,"Blending Face Details: Synthesizing a Face Using Multiscale Face Models.",2017
-10590,journals/cga/Abouaf99a,"Adventure Game Tools Get Smarter-"Prince of Persia 3D".",1999
+10590,journals/cga/Abouaf99a,"Adventure Game Tools Get Smarter-'Prince of Persia 3D'.",1999
 10591,journals/cga/Crocker87,"Screen-Area Coherence for Interactive Scanline Display Algorithms.",1987
 10592,journals/cga/JerardDHSM89,"Methods for detecting errors in numerically controlled machining of sculptured surfaces.",1989
 10593,journals/cga/MoezziKKJ96,"Reality modeling and visualization from multiple video sequences.",1996
@@ -11015,7 +11016,7 @@
 11014,journals/cga/ZydaTJEFHSKV07,"Educating the Next Generation of Mobile Game Developers.",2007
 11015,journals/cga/WyliePLM01,"Scalable Rendering on PC Clusters.",2001
 11016,journals/cga/KarahaliosB09,"Social Mirrors as Social Signals: Transforming Audio into Graphics.",2009
-11017,journals/cga/Sims96b,"WWW extends "Apprentice's Assistant" to global medical resource.",1996
+11017,journals/cga/Sims96b,"WWW extends 'Apprentice's Assistant' to global medical resource.",1996
 11018,journals/cga/Kasik12,"Looking at the Hard Stuff.",2012
 11019,journals/cga/Blinn03,"Lines in Space: Part 1 - The 4D Cross Product.",2003
 11020,journals/cga/FranklinJ87,"CAD for Architectural Design of Energy-Efficient Homes.",1987
@@ -11093,7 +11094,7 @@
 11092,journals/cga/Blinn98,"A Ghost in a Snowstorm.",1998
 11093,journals/cga/Glassner03a,"Digital Weaving, Part 3.",2003
 11094,journals/cga/Rosenblum89,"Visualizing oceanographic data.",1989
-11095,journals/cga/LiuSB18,"Application-Driven Design: Help Students Understand Employment and See the "Big Picture".",2018
+11095,journals/cga/LiuSB18,"Application-Driven Design: Help Students Understand Employment and See the 'Big Picture'.",2018
 11096,journals/cga/VarelaS07,"A Virtual Environment for Decision Support in Ship Damage Control.",2007
 11097,journals/cga/Arnold14a,"Computer Graphics and Cultural Heritage, Part 2: Continuing Inspiration for Future Tools.",2014
 11098,journals/cga/OuyangDW15,"Beautiful Math, Part 4: Polygonal Aesthetic Patterns Based on the Schwarz-Christoffel Mapping.",2015
@@ -11336,7 +11337,7 @@
 11335,journals/cga/BolasMC04,"New Research and Explorations into Multiuser Immersive Display Systems.",2004
 11336,journals/cga/BaileyL14,"A Summer Blender Camp: Modeling, Rendering, and Animation for High School Students.",2014
 11337,journals/cga/KamenS98,"Triangle Rendering Using Adaptive Subdivision.",1998
-11338,journals/cga/Blinn99b,"How Many Different Parametric Cubic Curves Are There? Part 2: The "Same" Game.",1999
+11338,journals/cga/Blinn99b,"How Many Different Parametric Cubic Curves Are There? Part 2: The 'Same' Game.",1999
 11339,journals/cga/Wilson87,"Conic Representations for Shape Description.",1987
 11340,journals/cga/Nurminen08,"Mobile 3D City Maps.",2008
 11341,journals/cga/PimentelB94,"Teaching your system to share.",1994
@@ -12554,7 +12555,7 @@
 12553,journals/tog/SokolovRUL17,"Hexahedral-dominant meshing.",2017
 12554,journals/tog/Coros16,"Designing structurally-sound ornamental curve networks.",2016
 12555,journals/tog/BirklbauerSB16,"Nonuniform Spatial Deformation of Light Fields by Locally Linear Transformations.",2016
-12556,journals/tog/0004YGLCAC13,""Mind the gap": tele-registration for structure-driven image completion.",2013
+12556,journals/tog/0004YGLCAC13,"'Mind the gap': tele-registration for structure-driven image completion.",2013
 12557,journals/tog/MitraYYLA10,"Illustrating how mechanical assemblies work.",2010
 12558,journals/tog/DeRose88,"Composing Bézier simplexes.",1988
 12559,journals/tog/PennerZ17,"Soft 3D reconstruction for view synthesis.",2017
@@ -13633,7 +13634,7 @@
 13632,journals/tog/ShiYBF06,"A fast multigrid algorithm for mesh deformation.",2006
 13633,journals/tog/MarwahWBR13,"Compressive light field photography using overcomplete dictionaries and optimized projections.",2013
 13634,journals/tog/RappoportE93,"User-Interface Devices for Rapid and Exact Number Specification.",1993
-13635,journals/tog/RotherKB04,""GrabCut": interactive foreground extraction using iterated graph cuts.",2004
+13635,journals/tog/RotherKB04,"'GrabCut': interactive foreground extraction using iterated graph cuts.",2004
 13636,journals/tog/TompkinKKT12,"Videoscapes: exploring sparse, unstructured video collections.",2012
 13637,journals/tog/LeeP10,"Learning behavior styles with inverse reinforcement learning.",2010
 13638,journals/tog/QuPWH08,"Richness-preserving manga screening.",2008

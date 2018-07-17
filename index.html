@@ -37,13 +37,13 @@
               <a class="nav-link" href="/authors">Authors</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/publications">Publications</a>
+              <a class="nav-link" href="/papers">Papers</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/journals">Journals</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/conferences">Conferences</a>
+              <a class="nav-link" href="/coauthorship">Coauthorship</a>
             </li>
           </ul>
         </div>
@@ -56,8 +56,7 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
         <h1 class="display-3">dblp data visualization</h1>
-        <p class="lead"></p>
-        <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
+        <p class="lead">Exam project for <b>Scientific and Large Data Visualization @ UniPi</b></p>
       </header>
 
       <!-- Page Features -->
@@ -69,7 +68,7 @@
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
               <h4 class="card-title">Authors</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+              <p class="card-text">Search among the <b id="authors_count"></b> authors present</p>
             </div>
             <div class="card-footer">
               <a href="/authors" class="btn btn-primary">Find Out More!</a>
@@ -81,11 +80,11 @@
           <div class="card">
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
-              <h4 class="card-title">Publications</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
+              <h4 class="card-title">Papers</h4>
+              <p class="card-text">Search among the <b id="papers_count"></b> papes present</p>
             </div>
             <div class="card-footer">
-              <a href="/publications" class="btn btn-primary">Find Out More!</a>
+              <a href="/papers" class="btn btn-primary">Find Out More!</a>
             </div>
           </div>
         </div>
@@ -95,7 +94,7 @@
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
               <h4 class="card-title">Journals</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+              <p class="card-text">Search among the <b id="journals_count"></b> journals present</p>
             </div>
             <div class="card-footer">
               <a href="/journals" class="btn btn-primary">Find Out More!</a>
@@ -107,11 +106,11 @@
           <div class="card">
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
-              <h4 class="card-title">Conferences</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
+              <h4 class="card-title">Coauthorship</h4>
+              <p class="card-text">Search among the <b id="coauthorship_count"></b> coauthor relationships present</p>
             </div>
             <div class="card-footer">
-              <a href="/conferences" class="btn btn-primary">Find Out More!</a>
+              <a href="/coauthorship" class="btn btn-primary">Find Out More!</a>
             </div>
           </div>
         </div>
@@ -138,6 +137,12 @@
     <script src="script/bootstrap.bundle.min.js"></script>
     <script src="script/d3.v5.min.js"></script>
 
+   <script>
+     d3.csv("data/authors.csv").then(data => $("#authors_count").text(data.length));
+     d3.csv("data/papers.csv").then(data => $("#papers_count").text(data.length));
+     d3.csv("data/journals.csv").then(data => $("#journals_count").text(data.length));
+     d3.csv("data/coauthorship.csv").then(data => $("#coauthorship_count").text(data.length));
+   </script>
   </body>
 
   </html>

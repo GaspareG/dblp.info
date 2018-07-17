@@ -1,5 +1,6 @@
-0,"cga",""
-1,"cgf",""
-2,"tog",""
-3,"tvcg",""
-4,"vc",""
+id,tag,name
+0,"cga","IEEE Computer Graphics and Applications"
+1,"cgf","Computer Graphics Forum"
+2,"tog","ACM Transactions on Graphics"
+3,"tvcg","IEEE Transactions on Visualization and Computer Graphics"
+4,"vc","The Visual Computer"
