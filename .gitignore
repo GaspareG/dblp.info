@@ -1,5 +1,5 @@
-dataset/data/*
+parsing/data/*
 dblp.json.gz
 dblp.xml.gz
-dataset/scraper/venv/*
+parsing/scraper/venv/*
 *.pyc
