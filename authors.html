@@ -142,8 +142,8 @@
         <!-- Timeline -->
         <br/>
         <a name="timeline"></a> 
-        <h3 style="margin: auto; text-align: center;">Co-authors timeline</h3>
-        <h5 style="margin: auto; text-align: center;">top-10 Co-Authors</h5>
+        <h3 style="margin: auto; text-align: center;">Author timeline</h3>
+        <h5 style="margin: auto; text-align: center;">top-25 Co-Authors</h5>
         <br/>
         <div id="timeline-container" style="margin: auto; text-align: center;"></div>
 
@@ -163,6 +163,13 @@
               </div>
 
             </fieldset>
+        </div>
+
+        <!-- Cluster years controls-->
+        <div class="filter">
+          <div id="start-text"></div>
+          <br/>
+          <div id="start-range"></div>
         </div>
 
       </header>
@@ -283,7 +290,7 @@
     
         $( "#author" ).autocomplete({
           source: names,
-          minLength: 4,
+          minLength: 3,
           autoFocus: true,
           select: function( event, ui ) {
             if( ui.item.value == undefined ) return alert("Error loading data!");
@@ -377,6 +384,7 @@
         loadCluster();
         loadCheckbox();
         loadCoauthor();
+        loadStartSlider();
         printInfo();
         plot();
         plotTimeline();
@@ -428,6 +436,31 @@
             maxYear = ui.values[ 1 ];
             $("#slider-text").html("<b>Year: " + minYear + " - " + maxYear+"</b>");
             plot();
+          }
+        });
+      }
+
+
+      
+      var startTimeline = 0;
+      var endTimeline = 0;
+      function loadStartSlider()
+      {
+
+        startTimeline = 0;
+        endTimeline = wroteAuthor.length;
+
+        $("#start-text").html("Selected papers: <b>"+startTimeline+"<sup>th</sup></b> -  <b>"+endTimeline+"<sup>th</sup></b> ");
+        $("#start-range").slider({
+          range: true,
+          min: 0,
+          max: wroteAuthor.length,
+          values: [startTimeline, endTimeline],
+          slide: function( event, ui ) {
+            startTimeline = ui.values[0];
+            endTimeline = ui.values[1];
+            $("#start-text").html("Selected papers: <b>"+startTimeline+"<sup>th</sup></b> -  <b>"+endTimeline+"<sup>th</sup></b> ");
+            plotTimeline();
           }
         });
       }
@@ -498,7 +531,7 @@
         {
           var label = $("<label></label>");
           var checkbox = $("<input type='checkbox' checked name='"+k+"'/>");
-          var title = $("<span>"+authors[k][1]+" ("+k+")</span>");
+          var title = $("<span> "+authors[k][1]+" ("+k+")</span>");
 
           label.append(checkbox);
           label.append(title);
@@ -776,9 +809,9 @@
       {
         // #timeline-container
 
-        var margin = {top: 35, right: 10, bottom: 10, left: 120};
+        var margin = {top: 35, right: 25, bottom: 10, left: 120};
 
-        var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
+        var width = 860 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
 
         d3.select("#timeline-container svg").remove();
 
@@ -794,17 +827,22 @@
         var minX = 2100; 
         var maxX = 1900;
         var coCont = {};
-        for( var i = 0; i < wroteAuthor.length; i++)
+
+        var wroteAuthor2 = wroteAuthor.slice();
+        wroteAuthor2.sort( (a,b) => papers[a][4] - papers[b][4] );
+        wroteAuthor2 = wroteAuthor2.slice(startTimeline, endTimeline);
+
+        for( var i = 0; i < wroteAuthor2.length; i++)
         {     
-          var y = papers[ wroteAuthor[i] ][4];
+          var y = papers[ wroteAuthor2[i] ][4];
           minX = Math.min(minX, y);
           maxX = Math.max(maxX, y);
           if( y2p[y] == undefined ) y2p[y] = [];
-          y2p[y].push( wroteAuthor[i] );
+          y2p[y].push( wroteAuthor2[i] );
           
-          for(var j = 0; j < p2w[ wroteAuthor[i] ].length; j++)
+          for(var j = 0; j < p2w[ wroteAuthor2[i] ].length; j++)
           {
-            var idCo = p2w[ wroteAuthor[i] ][j];
+            var idCo = p2w[ wroteAuthor2[i] ][j];
             if( coCont[idCo] == undefined ) coCont[idCo] = {};
             if( coCont[idCo][y] == undefined ) coCont[idCo][y] = 0;
             coCont[idCo][y]++;
@@ -826,7 +864,7 @@
 
         contA.sort( (a,b) => b[0] - a[0]);
 
-        contA = contA.slice(0, Math.min(contA.length, 10));
+        contA = contA.slice(0, Math.min(contA.length, 25));
         console.log(contA);
  
         var authorsNames = [""]; // , authors[selectedId][1] ];
@@ -870,7 +908,7 @@
           {
             minY = Math.min(minY, k);
             maxY = Math.max(maxY, k);
-
+            console.log(contA[i][0]);
             svg.append("circle")
             .attr("cx", x(k))
             .attr("cy", y(name))
@@ -897,8 +935,8 @@
       function plotTimeline1()
       {
         // #timeline-container
-        var margin = {top: 35, right: 10, bottom: 10, left: 120};
-        var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
+        var margin = {top: 35, right: 25, bottom: 10, left: 120};
+        var width = 860 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
 
         d3.select("#timeline-container svg").remove();
 
@@ -926,12 +964,16 @@
             coAuth[ wroteP[j] ]++ ;
           }
         }      
+
+        xValues.sort(function(a,b){
+          return papers[a][4] - papers[b][4];
+        });
         
         for(var idA in coAuth ) yValuesId.push([coAuth[idA], idA]);
         yValuesId.sort( (a,b) => b[0] - a[0] );
 
-        xValues = xValues.slice(0, 25);
-        yValues = yValuesId.slice(0, 10);
+        xValues = xValues.slice(startTimeline, endTimeline);
+        yValues = yValuesId.slice(0, 25);
         for(var i = 0; i < yValues.length; i++)
           yValues[i] = authors[yValues[i][1]][1];
 
@@ -982,15 +1024,6 @@
             .attr("stroke", z(xValues[j]));
 
           }
-/*
-          svg.append("line")
-          .attr("x1", x(xValues[minJ]))
-          .attr("y1", y(yValues[i]))
-          .attr("x2", x(xValues[maxJ]))
-          .attr("y2", y(yValues[i]))
-          .attr("stroke-width", 2)
-          .attr("stroke", "black");
-*/
         }
 
         return ;

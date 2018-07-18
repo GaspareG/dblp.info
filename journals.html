@@ -136,7 +136,7 @@
           min: minYear,
           max: maxYear,
           values: [ minYear, maxYear ],
-          stop: function( event, ui ) {
+          slide: function( event, ui ) {
             minYear = ui.values[ 0 ];
             maxYear = ui.values[ 1 ];
             $("#slider-text").text("Year: " + minYear + " - " + maxYear);

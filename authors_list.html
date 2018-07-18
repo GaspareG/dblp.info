@@ -24,6 +24,12 @@
         font: 10px sans-serif;
         shape-rendering: crispEdges;
       }
+
+      .filter {
+        margin: 16px;
+        padding: 16px;
+        border: 1px black solid;
+      }
     </style>
 
   </head>
@@ -69,8 +75,24 @@
 
         - <a href="javascript:sortByName()">Sort by name</a><br/>
         - <a href="javascript:sortByPapers()">Sort by number of publications</a><br/>
-        - <a href="javascript:sortByYear()">Sort by first year of publication</a><br/><br/>
+        - <a href="javascript:sortByYear()">Sort by first year of publication</a>
 
+
+        <!-- N° pub controls-->
+        <div class="filter">
+          <div id="publications-text"></div>
+          <br/>
+          <div id="publications-range"></div>
+        </div>
+
+        <!-- Years controls-->
+        <div class="filter">
+          <div id="years-text"></div>
+          <br/>
+          <div id="years-range"></div>
+        </div>
+
+        <!-- list -->
         <ul id="authors_list">
           Loading...
         </ul>
@@ -109,7 +131,7 @@
       {
         authors = [];
         d3.csv("data/authors.csv", function(d){
-          return [parseInt(d["id"]), d["name"], 0, 2020];
+          return [parseInt(d["id"]), d["name"], 0, 2100, 1900];
         }).then(function(data){
           authors = data;
           loadWrote();
@@ -150,34 +172,104 @@
         {
           authors[ wrote[i][0] ][2]++;
           authors[ wrote[i][0] ][3] = Math.min(authors[ wrote[i][0] ][3], papers[ wrote[i][1] ][4] );
+          authors[ wrote[i][0] ][4] = Math.max(authors[ wrote[i][0] ][4], papers[ wrote[i][1] ][4] );
         }
         sortByName();
+        loadSlider1();
+        loadSlider2();
       }
 
-
+      var authors2 = [];
       function sortByName(){
+        authors2 = authors.slice();
         $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => a[1] < b[1] ? -1 : 1 );
+        authors2.sort( (a,b) => a[1] < b[1] ? -1 : 1 );
         printList();
       }
 
       function sortByPapers(){
+        authors2 = authors.slice();
         $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => b[2] - a[2] );
+        authors2.sort( (a,b) => b[2] - a[2] );
         printList();
       }
 
       function sortByYear(){
+        authors2 = authors.slice();
         $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => a[3] - b[3] );
+        authors2.sort( (a,b) => a[3] - b[3] );
         printList();
+      }
+
+
+    
+      var minPub = 1;
+      var maxPub = 250;
+
+      var minYear = 1980;
+      var maxYear = 2020;
+
+      function loadSlider1()
+      {
+        minPub = 1;
+        maxPub = 250;
+
+        $("#publications-text").html("N° publications: <b>" + minPub + " - " + maxPub+"</b>");
+        $("#publications-range" ).slider({
+          range: true,
+          min: minPub,
+          max: maxPub,
+          values: [ minPub, maxPub ],
+          stop: function( event, ui ) {
+            minPub = ui.values[ 0 ];
+            maxPub = ui.values[ 1 ];
+            $("#publications-text").html("N° publications: <b>" + minPub + " - " + maxPub+"</b>");
+            filter();
+            printList();
+          }
+        });
+      }
+
+      function loadSlider2()
+      {
+
+        minYear = 1980;
+        maxYear = 2020;
+
+        $("#years-text").html("Years: <b>" + minYear + " - " + maxYear+"</b>");
+        $("#years-range" ).slider({
+          range: true,
+          min: minYear,
+          max: maxYear,
+          values: [ minYear, maxYear ],
+          stop: function( event, ui ) {
+            minYear = ui.values[ 0 ];
+            maxYear = ui.values[ 1 ];
+            $("#years-text").html("Years: <b>" + minYear + " - " + maxYear+"</b>");
+            filter();
+            printList();
+          }
+        });
+      }
+
+      function filter()
+      {
+        authors2 = [];
+        for(var i = 0; i < authors.length; i++)
+        {
+          var ai = authors[i];
+          if( !(minPub <= ai[2] && ai[2] <= maxPub ) ) continue;
+          if( !( minYear <= ai[3] )) continue;
+          if( !( ai[4] <= maxYear )) continue;
+          authors2.push(ai);
+        }        
       }
       
       function printList()
       {
         $("#authors_list").html("");
-        for(var i=0; i < authors.length; i++)
-            $("#authors_list").append("<li><a href='authors?id="+authors[i][0]+"'>"+authors[i][1]+" ("+authors[i][2]+" papers from "+authors[i][3]+")</a></li>");
+        for(var i=0; i < authors2.length; i++)
+            $("#authors_list").append("<li><a href='authors?id="+authors2[i][0]+"'>"+authors2[i][1]+" ("+authors2[i][2]+" papers from "+authors2[i][3]+" to "+authors2[i][4]+")</a></li>");
       }
     </script>
 

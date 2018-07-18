@@ -84,7 +84,7 @@
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
               <h4 class="card-title">Papers</h4>
-              <p class="card-text">Search among the <b id="papers_count"></b> papes present.</p>
+              <p class="card-text">Search among the <b id="papers_count"></b> papers present.</p>
             </div>
             <div class="card-footer">
               <a href="/papers" class="btn btn-primary">Find Out More!</a>
@@ -139,13 +139,8 @@
     <script src="script/jquery.min.js"></script>
     <script src="script/bootstrap.bundle.min.js"></script>
     <script src="script/d3.v5.min.js"></script>
+    <script src="script/index.js"></script>
 
-   <script>
-     d3.csv("data/authors.csv").then(data => $("#authors_count").text(data.length));
-     d3.csv("data/papers.csv").then(data => $("#papers_count").text(data.length));
-     d3.csv("data/journals.csv").then(data => $("#journals_count").text(data.length));
-     d3.csv("data/coauthorship.csv").then(data => $("#coauthorship_count").text(data.length));
-   </script>
   </body>
 
   </html>
