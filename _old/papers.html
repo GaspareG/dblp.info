@@ -3,32 +3,27 @@
 
   <head>
 
-    <!-- meta tag -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="DBLP Data visualization">
     <meta name="author" content="Gaspare Ferraro">
     <meta name="theme-color" content="#343a40">
-    <meta name="robots" content="index,follow" />
-    <meta name="rating" content="general" />
 
-    <!-- title -->
-    <title>Authors - dblp.info</title>
+    <title>dblp.info</title>
 
-    <!-- link -->
     <link rel="canonical" href="http://dblp.info">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/heroic-features.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/heroic-features.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
     <style type="text/css">
-      
+      svg {
+        font: 10px sans-serif;
+        shape-rendering: crispEdges;
+      }
     </style>
 
   </head>
@@ -47,10 +42,10 @@
             <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/authors">Authors</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="/papers">Papers</a>
             </li>
             <li class="nav-item">
@@ -70,26 +65,26 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <h3>Authors visualization</h3>
+        <h3>Papers visualization</h3>
 
-        <!-- Informations -->
-        <div class="filter" id="c_info"></div>
-        <!-- Search -->
-        <div class="filter" id="c_search"></div>
-        <!-- Sort -->
-        <div class="filter" id="c_sort"></div>
-        <!-- Publications slider -->
-        <div class="filter" id="c_slider_pub"></div>
-        <!-- Years slider -->
-        <div class="filter" id="c_slider_years"></div>
-        <!-- Chart type -->
-        <div class="filter" id="c_chart"></div>
-        <!-- Plot container -->
-        <div class="filter" id="c_plot"></div>
-        <!-- Authors List -->
-        <div class="filter" id="c_authors"></div>
+        <!-- Search author -->
+        <div class="ui-widget">
+          <label for="papers">Search paper: </label>
+          <input id="papers">
+          (<a href="papers_list">complete papers list</a>)
+         </div>
+
+        <!-- Search author -->
+        <div class="ui-widget">
+          <label for="authors">Search author: </label>
+          <input id="authors">
+          (<a href="authors_list">complete authors list</a>)
+         </div>
+    
+        TODO
 
       </header>
+
       <!-- /.row -->
 
     </div>
@@ -105,22 +100,13 @@
       <!-- /.container -->
     </footer>
 
-    <!-- Scripts -->
-    <script src="script/libs/jquery.min.js"></script>
-    <script src="script/libs/bootstrap.bundle.min.js"></script>
-    <script src="script/libs/d3.v5.min.js"></script>
-    <script src="script/libs/jquery-ui.js"></script>
-    <script src="script/pages/common.js"></script>
-    <script src="script/pages/authors.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122497833-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-122497833-1');
+    <!-- Bootstrap core JavaScript -->
+    <script src="script/jquery.min.js"></script>
+    <script src="script/bootstrap.bundle.min.js"></script>
+    <script src="script/d3.v5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+    <script type="text/javascript">
     </script>
 
   </body>

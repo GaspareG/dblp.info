@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DBLP Data visualization">
+    <meta name="author" content="Gaspare Ferraro">
+    <meta name="theme-color" content="#343a40">
+
+    <title>dblp.info</title>
+
+    <link rel="canonical" href="http://dblp.info">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/heroic-features.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+    <style type="text/css">
+      svg {
+        font: 10px sans-serif;
+        shape-rendering: crispEdges;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/">dblp.info</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/authors">Authors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/papers">Papers</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/journals">Journals</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/coauthorship">Coauthorship</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Jumbotron Header -->
+      <header class="jumbotron my-4">
+
+        <h3>Journals visualization</h3>
+
+        <div id="data-container" style="margin: auto; text-align: center;"></div>
+
+        <div id="slider-text"></div>
+
+        <div id="slider-range"></div>
+ 
+        <div id="checkbox-container">
+          
+        </div>
+
+      </header>
+
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+          <p class="m-0 text-center text-white"> Gaspare Ferraro @ <a href="https://gaspa.re">gaspa.re</a> </p>
+          <p class="m-0 text-center text-white"> Source code @ <a href="https://github.com/GaspareG/dblp.info">github.com</a> </p>
+          <p class="m-0 text-center text-white"> Dataset @ <a href="https://dblp.uni-trier.de">dblp.uni-trier.de</a> </p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="script/jquery.min.js"></script>
+    <script src="script/bootstrap.bundle.min.js"></script>
+    <script src="script/d3.v5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+    <script type="text/javascript">
+
+      var venue = [];
+      var venueName = [];
+      var check = [];
+      var minYear = 1982;
+      var maxYear = 2018;
+
+      $(document).ready(function(){
+        loadJournals();
+      });
+
+      function loadJournals()
+      {
+        d3.csv("data/journals.csv").then(function(data){
+          console.log(data);
+          for(var i=0; i < data.length; i++)
+          {
+            venue.push(data[i]["tag"]);
+            venueName.push(data[i]["name"]);
+            check.push(true);
+          }
+          loadSlider();
+          loadCheckbox();
+          loadData();
+        });
+      }
+
+      function loadSlider()
+      {
+        $("#slider-text").text("Year: " + minYear + " - " + maxYear);
+        $("#slider-range" ).slider({
+          range: true,
+          min: minYear,
+          max: maxYear,
+          values: [ minYear, maxYear ],
+          slide: function( event, ui ) {
+            minYear = ui.values[ 0 ];
+            maxYear = ui.values[ 1 ];
+            $("#slider-text").text("Year: " + minYear + " - " + maxYear);
+            loadData();
+          }
+        });
+      }
+
+      function loadCheckbox()
+      {
+        for(var i=0; i < venue.length; i++)
+        {
+          var label = $("<label id='"+venue[i]+"'></label>");
+          var checkbox = $("<input type='checkbox' checked name='"+venue[i]+"'/>");
+          var title = $("<span> "+venueName[i]+" ("+venue[i]+")</span>");
+
+          label.append(checkbox);
+          label.append(title);
+
+          checkbox.on("change", function(){
+            var name = $(this).attr("name");
+            check[ venue.indexOf(name) ] = this.checked;
+            loadData();
+          });
+
+          $("#checkbox-container").append("<br/>");
+          $("#checkbox-container").append(label);
+        }
+      }
+
+      function loadData(){
+        d3.csv("data/papers.csv", function(row){
+          return [row["year"], row["tag"].split("/")[1] ];
+        }).then(function(data){
+
+          var ret = {};
+
+          for(var i=0; i < data.length; i++){
+            // Creo l'anno
+            if( ret[data[i][0]] == undefined ) ret[data[i][0]] = {};
+
+            // Creo la venue
+            if( ret[data[i][0]][data[i][1]] == undefined ) ret[data[i][0]][data[i][1]] = 0;
+
+            // Incremento conteggio
+            ret[data[i][0]][data[i][1]]++;
+          }
+
+          var ret2 = [];
+          // Per ogni anno
+          for(var y in ret)
+          {
+            for(var j = 0 ; j < venue.length; j++)
+              if( ret[y][ venue[j] ] == undefined )
+                ret[y][ venue[j] ] = 0;
+
+            var v = [];
+            for(var j = 0 ; j < venue.length; j++)
+              v.push([ venue[j], check[j] ? ret[y][ venue[j] ] : 0 ]);
+
+            y = parseInt(y);
+            if( minYear <= y && y <= maxYear )
+              ret2.push( [y, v] );
+
+          }
+          plot(ret2);
+        });
+      }
+
+      function plot(data){
+        
+        data.sort( (a,b) => a[0] - b[0] );
+
+
+        var margin = {top: 35, right: 35, bottom: 35, left: 35};
+
+        var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
+
+        d3.select("#data-container svg").remove();
+
+        var svg = d3.select("#data-container")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X AXIS
+        var x = d3.scaleBand().rangeRound([0, width]);
+        var minX = data[0][0];
+        var maxX = data[data.length-1][0];
+        x.domain(d3.range(minX, maxX+1));
+
+        svg.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("y", 10)
+        .attr("x", 10)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
+
+        // Y AXIS
+        var y = d3.scaleLinear().range([height, 0]);
+        var minY = 0;
+        var maxY = d3.max(data, function(d){
+          var t = 0;
+          for(var i=0; i < d[1].length; i++)
+            t += d[1][i][1];
+          return t;
+        });
+        y.domain([minY, maxY+1]);
+        svg.append("g").call(d3.axisLeft(y));
+
+        // Z AXIS
+        var z = d3.scaleOrdinal(d3.schemeCategory10);
+        z.domain(venue);
+
+        for(var i=0; i < venue.length; i++)
+          $("#" + venue[i]).css("color", z(venue[i]) );
+
+        var stack = d3.stack()
+          .keys( venue )
+          .value(function(d, key){
+            return d[1][ venue.indexOf(key) ][1];
+          });
+
+        svg.append("g")
+        .selectAll("g")
+        .data(stack(data))
+        .enter().append("g")
+        .attr("fill", function(d) { return z(d.key); })
+        .selectAll("rect")
+        .data(function(d) { return d; })
+        .enter().append("rect")
+        .attr("x", function(d) { return x(d.data[0]); })
+        .attr("y", function(d) { return y(d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+        .attr("width", x.bandwidth());
+                    
+      }
+ 
+    </script>
+
+  </body>
+
+  </html>
