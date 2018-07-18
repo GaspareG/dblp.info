@@ -51,7 +51,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/journals">Journals</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="/coauthorship">Coauthorship</a>
             </li>
           </ul>
@@ -65,15 +65,9 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <h3>Complete authors list</h3>
-
-        - <a href="javascript:sortByName()">Sort by name</a><br/>
-        - <a href="javascript:sortByPapers()">Sort by number of publications</a><br/>
-        - <a href="javascript:sortByYear()">Sort by first year of publication</a><br/><br/>
-
-        <ul id="authors_list">
-          Loading...
-        </ul>
+        <h3>Coauthorship visualization</h3>
+          
+        TODO
 
       </header>
 
@@ -99,86 +93,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
     <script type="text/javascript">
-
-      $(document).ready(function(){
-        loadAuthors();
-      });
-
-      var authors = [];
-      function loadAuthors()
-      {
-        authors = [];
-        d3.csv("data/authors.csv", function(d){
-          return [parseInt(d["id"]), d["name"], 0, 2020];
-        }).then(function(data){
-          authors = data;
-          loadWrote();
-        });
-      }
-
-      var wrote = []
-      function loadWrote()
-      {
-        wrote = [];
-        d3.csv("data/wrote.csv", function(d){
-          return [parseInt(d["idA"]), parseInt(d["idP"])];
-        }).then(function(data){
-          wrote = data;
-          loadPapers();
-        });
-      }
-
-      var papers = [];
-      function loadPapers()
-      {
-        papers = [];
-        d3.csv("data/papers.csv", function(d){
-          var id = parseInt(d["id"]);
-          var tag = d["tag"];
-          var title = d["title"];
-          var year = parseInt(d["year"]);
-          return [id, tag.split("/")[1], tag.split("/")[2], title, year];
-        }).then(function(data){
-          papers = data;
-          createDataset();
-        });
-      }
-
-      function createDataset()
-      {
-        for(var i=0; i < wrote.length; i++)
-        {
-          authors[ wrote[i][0] ][2]++;
-          authors[ wrote[i][0] ][3] = Math.min(authors[ wrote[i][0] ][3], papers[ wrote[i][1] ][4] );
-        }
-        sortByName();
-      }
-
-
-      function sortByName(){
-        $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => a[1] < b[1] ? -1 : 1 );
-        printList();
-      }
-
-      function sortByPapers(){
-        $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => b[2] - a[2] );
-        printList();
-      }
-
-      function sortByYear(){
-        $("#authors_list").html("Loading...");
-        authors.sort( (a,b) => a[3] - b[3] );
-        printList();
-      }
-      
-      function printList()
-      {
-        $("#authors_list").html("");
-        for(var i=0; i < authors.length; i++)
-            $("#authors_list").append("<li><a href='authors?id="+authors[i][0]+"'>"+authors[i][1]+" ("+authors[i][2]+" papers from "+authors[i][3]+")</a></li>");
-      }
     </script>
 
   </body>

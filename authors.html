@@ -30,6 +30,13 @@
         padding: 16px;
         border: 1px black solid;
       }
+
+      .line {
+        /*fill: none;*/
+        /*stroke: steelblue;*/
+        stroke-width: 2px;
+      }
+
     </style>
 
   </head>
@@ -45,10 +52,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="/authors">Authors</a>
             </li>
             <li class="nav-item">
@@ -71,7 +78,7 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <h3>Authors data visualization</h3>
+        <h3>Authors visualization</h3>
 
         <!-- Search author -->
         <div class="ui-widget">
@@ -81,11 +88,36 @@
          </div>
 
         <!-- Info -->
-        <br>
+        <br/>
         <div id="author-info" style="margin: auto; text-align: center;"></div>
 
         <!-- Plot -->
         <div id="data-container" style="margin: auto; text-align: center;"></div>
+
+        <!-- Plot type -->
+        <div class="filter">
+          <fieldset>
+            <legend>Chart type</legend>
+
+              <div>
+                <input type="radio" id="stacked" name="chart" checked />
+                <label for="stacked">Stacked bar chart</label>
+              </div>
+              <div>
+                <input type="radio" id="lines" name="chart"/>
+                <label for="lines">Lines chart</label>
+              </div>
+              <div>
+                <input type="radio" id="pie-year" name="chart"/>
+                <label for="pie-year">Pie chart per year</label>
+              </div>
+              <div>
+                <input type="radio" id="pie-journal" name="chart"/>
+                <label for="pie-journal">Pie chart per journals</label>
+              </div>
+
+            </fieldset>
+        </div>
 
         <!-- Year controls-->
         <div class="filter">
@@ -94,11 +126,44 @@
           <div id="slider-range"></div>
         </div>
 
+        <!-- Cluster years controls-->
+        <div class="filter">
+          <div id="cluster-text"></div>
+          <br/>
+          <div id="cluster-range"></div>
+        </div>
+
         <!-- Venue controls --> 
         <div id="checkbox-container" class="filter"></div>
 
-        <!-- Venue contorls -->
+        <!-- Co-Authors controls -->
         <div id="checkbox-coauthor" class="filter" style="max-height: 300px; overflow-y: scroll"></div>
+
+        <!-- Timeline -->
+        <br/>
+        <a name="timeline"></a> 
+        <h3 style="margin: auto; text-align: center;">Co-authors timeline</h3>
+        <h5 style="margin: auto; text-align: center;">top-10 Co-Authors</h5>
+        <br/>
+        <div id="timeline-container" style="margin: auto; text-align: center;"></div>
+
+        <!-- Plot type -->
+        <div class="filter">
+          <fieldset>
+            <legend>Group by</legend>
+
+              <div>
+                <input type="radio" id="group-years" name="group" checked/>
+                <label for="group-years">Years</label>
+              </div>
+
+              <div>
+                <input type="radio" id="group-papers" name="group"/>
+                <label for="gruop-papers">Papers</label>
+              </div>
+
+            </fieldset>
+        </div>
 
       </header>
 
@@ -125,11 +190,42 @@
   
     <script type="text/javascript">
 
+      var chartType = 0;
+      var timelineType = 0;
       var selectedId = 0;
       var authors = [];
       var a2i = {};
       var names = [];
 
+      $("#stacked").on("change", function(){
+        chartType = 0;
+        plot();
+      });
+      $("#lines").on("change", function(){
+        chartType = 1;
+        plot();
+      });
+
+      $("#pie-year").on("change", function(){
+        chartType = 2;
+        plot();
+      });
+
+      $("#pie-journal").on("change", function(){
+        chartType = 3;
+        plot();
+      });
+
+      $("#group-years").on("change", function(){
+        timelineType = 0;
+        plotTimeline();
+      });
+
+      $("#group-papers").on("change", function(){
+        timelineType = 1;
+        plotTimeline();
+      });
+        
       function updateQueryStringParam(key, value) {
         baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
         urlQueryString = document.location.search;
@@ -254,6 +350,10 @@
     
       function loadVenues()
       {
+        venues = [];
+        venuesName = [];
+        venuesCheck = [];
+    
         d3.csv("data/journals.csv", function(d){
           var id = parseInt(d["id"]);
           var tag = d["tag"];
@@ -274,10 +374,12 @@
       function loadControls()
       {
         loadSlider();
+        loadCluster();
         loadCheckbox();
         loadCoauthor();
         printInfo();
         plot();
+        plotTimeline();
       }
 
       function printInfo()
@@ -289,11 +391,17 @@
         var active_years = $("<div>Active from year <b>"+minYear+"</b> to year <b>"+maxYear+"</b></div>");
         var npapers = $("<div>Has wrote <b>"+wroteAuthor.length+" papers</b> (in computer graphics venues)</div>");
         var coauth = $("<div>together with <b>"+Object.keys(coauthors).length+" co-authors</b></div>");
+        var timeline = $("<div>See author <a href='#timeline'>timeline</a></div>");
+        var papers = $("<div>See author <a href='papers?id="+selectedId+"'>papers</a> (TODO)</div>");
+        var coauthorship = $("<div>See co-authorship <a href='coauthorship?id="+selectedId+"'>graph</a> (TODO)</div>");
 
         $("#author-info").append(title);
         $("#author-info").append(active_years);
         $("#author-info").append(npapers);
         $("#author-info").append(coauth);
+        $("#author-info").append(timeline);
+        $("#author-info").append(papers);
+        $("#author-info").append(coauthorship);
 
       }
 
@@ -302,6 +410,9 @@
 
       function loadSlider()
       {
+
+        minYear = 3000;
+        maxYear = 0;
 
         for(var i=0; i < wroteAuthor.length; i++) minYear = Math.min(minYear, papers[wroteAuthor[i]][4] );
         for(var i=0; i < wroteAuthor.length; i++) maxYear = Math.max(maxYear, papers[wroteAuthor[i]][4] );
@@ -312,11 +423,30 @@
           min: minYear,
           max: maxYear,
           values: [ minYear, maxYear ],
-          stop: function( event, ui ) {
+          slide: function( event, ui ) {
             minYear = ui.values[ 0 ];
             maxYear = ui.values[ 1 ];
             $("#slider-text").html("<b>Year: " + minYear + " - " + maxYear+"</b>");
             plot();
+          }
+        });
+      }
+
+      var clusterYear = 1;
+
+      function loadCluster()
+      {
+
+        $("#cluster-text").html("<b>Cluster year: "+clusterYear+" (TODO) </b>");
+        $("#cluster-range" ).slider({
+          range: false,
+          min: 1,
+          max: 50,
+          value: clusterYear,
+          slide: function( event, ui ) {
+            clusterYear = ui.value;
+            $("#cluster-text").html("<b>Cluster year: "+clusterYear+" (TODO) </b>");
+            // plot();
           }
         });
       }
@@ -351,6 +481,7 @@
 
       function loadCoauthor()
       {
+        coauthors = {};
         for(var i=0; i < wroteAuthor.length; i++)
         {
           var id = wroteAuthor[i];
@@ -389,24 +520,23 @@
         
         // CREATE DATA
         var data = [];
-
         for(var i=0; i < wroteAuthor.length; i++)
         {
           var paper = papers[wroteAuthor[i]];
           var year = paper[4];
           var venue = paper[1];
           var coauth = p2w[wroteAuthor[i]];
-//          if( !( minYear <= year && year <= maxYear ) ) continue;
-//          if( !venuesCheck[ venuesName.indexOf( venue ) ] ) continue;
-//          var filtro = true;
-//          for(var k=0; k < coauth.length; k++)
-//            filtro &= coauthors[ coauth[k] ];
-//          if( !filtro ) continue;
+          if( !( minYear <= year && year <= maxYear ) ) continue;
+          if( !venuesCheck[ venues.indexOf( venue ) ] ) continue;
+          var filtro = true;
+          for(var k=0; k < coauth.length; k++)
+          {
+            if( coauth[k] == selectedId ) continue
+            filtro = filtro && coauthors[ coauth[k] ];
+          }
+          if( !filtro ) continue;
           data.push( [year, venue] ); 
         }
-
-
-        console.log(data);
 
         var ret = {};
 
@@ -437,13 +567,11 @@
         
         data = ret2;
 
-        console.log(data);
-
         data.sort( (a,b) => a[0] - b[0] );
 
-
-        var margin = {top: 35, right: 35, bottom: 35, left: 35};
-
+        var margin = (chartType == 0 || chartType == 1 ) ? 
+          {top: 35, right: 35, bottom: 35, left: 35} :
+          {top: 0, right: 0, bottom: 0, left: 0};
         var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
 
         d3.select("#data-container svg").remove();
@@ -461,6 +589,29 @@
         var maxX = data[data.length-1][0];
         x.domain(d3.range(minX, maxX+1));
 
+        // Y AXIS
+        var y = d3.scaleLinear().range([height, 0]);
+        var minY = 0;
+        var maxY = d3.max(data, function(d){
+          var t = 0;
+          for(var i=0; i < d[1].length; i++)
+            if( chartType == 0 ) t += d[1][i][1];
+            else t = Math.max(t, d[1][i][1]);
+          return t;
+        });
+        y.domain([minY, maxY+1]);
+
+        // Z AXIS
+        var z = d3.scaleOrdinal(d3.schemeCategory10);
+        z.domain(venues);
+
+        for(var i=0; i < venues.length; i++)
+          $("#" + venues[i]).css("color", z(venues[i]) );
+
+        if( chartType == 0 || chartType == 1 )
+        {
+
+        svg.append("g").call(d3.axisLeft(y));
         svg.append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + height + ")")
@@ -472,46 +623,412 @@
         .attr("transform", "rotate(45)")
         .style("text-anchor", "start");
 
+        }
+
+        if( chartType == 0 )
+        {
+          var stack = d3.stack()
+          .keys( venues )
+          .value(function(d, key){
+            return d[1][ venues.indexOf(key) ][1];
+          });
+
+          svg.append("g")
+          .selectAll("g")
+          .data(stack(data))
+          .enter().append("g")
+          .attr("fill", function(d) { return z(d.key); })
+          .selectAll("rect")
+          .data(function(d) { return d; })
+          .enter().append("rect")
+          .attr("x", function(d) { return x(d.data[0]); })
+          .attr("y", function(d) { return y(d[1]); })
+          .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+          .attr("width", x.bandwidth());
+        }
+        else if( chartType == 1 )
+        {
+
+          var clip = svg.append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", width)
+                .attr("height", height);
+          var chartBody = svg.append("g")
+                .attr("clip-path", "url(#clip)");
+          for(var i=0; i < venues.length; i++)
+          {
+            var valueline = d3.area()
+            .x(function(d) { return x(d[0]); })
+            .y0(height)
+            .y1(function(d) { return y(d[1][i][1]); })
+            .curve(d3.curveNatural)
+
+            chartBody.append("path")
+            .data([data])
+            .attr("class", "line")
+            .attr("fill-opacity", 0.5 )
+            .attr("fill", z(venues[i]) )
+            .attr("stroke", z(venues[i]) )
+            .attr("stroke-width", "2px" )
+            .attr("d", valueline);
+          }
+        }
+        else if( chartType == 2 )
+        {
+        
+          var pie = d3.pie()
+          .sort(null)
+          .value(function(d) { 
+            var sum = 0 ;
+            for(var i = 0; i < d[1].length; i++)
+              sum += d[1][i][1];
+            return sum; 
+          });
+
+          var radius = Math.min(width, height) / 2;
+          var path = d3.arc()
+          .outerRadius(radius - 10)
+          .innerRadius(0);
+ 
+          g = svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+          var arc = g.selectAll(".arc")
+          .data(pie(data))
+          .enter().append("g")
+          .attr("class", "arc");
+
+          arc.append("path")
+          .attr("d", path)
+          .attr("stroke", "#fff")
+          .attr("fill", function(d) { return z(d.data[0]); });
+
+          var label = d3.arc()
+          .outerRadius(radius - 60)
+          .innerRadius(radius - 60);
+
+          arc.append("text")
+          .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+          .attr("dy", "0.35em")
+          .text(function(d) { return d.data[0]; });
+
+        }          
+        else if( chartType == 3 )
+        {
+          
+          var piedata = [];
+          for(var i = 0 ; i < venues.length; i++)
+            piedata.push( [venues[i], 0] );
+         
+          for(var i = 0 ; i < data.length; i++)
+          {
+            for(var k = 0 ; k < data[i][1].length; k++)
+              piedata[ k ][1] += data[i][1][k][1];
+          }
+        
+          var pie = d3.pie()
+          .sort(null)
+          .value(function(d) { return d[1] });
+
+          var radius = Math.min(width, height) / 2;
+          var path = d3.arc()
+          .outerRadius(radius - 10)
+          .innerRadius(0);
+ 
+          console.log(piedata);
+          
+          g = svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+          var arc = g.selectAll(".arc")
+          .data(pie(piedata))
+          .enter().append("g")
+          .attr("class", "arc");
+
+          arc.append("path")
+          .attr("d", path)
+          .attr("stroke", "#fff")
+          .attr("fill", function(d) { return z(d.data[0]); });
+
+          var label = d3.arc()
+          .outerRadius(radius - 60)
+          .innerRadius(radius - 60);
+
+          arc.append("text")
+          .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+          .attr("dy", "0.35em")
+          .text(function(d) { return d.data[0] + " " + d.data[1]; });
+        }          
+      }
+
+
+      function plotTimeline()
+      {
+        if( timelineType == 0 )
+          plotTimeline0(); 
+        else if( timelineType == 1 )
+          plotTimeline1(); 
+
+      }
+
+      function plotTimeline0()
+      {
+        // #timeline-container
+
+        var margin = {top: 35, right: 10, bottom: 10, left: 120};
+
+        var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
+
+        d3.select("#timeline-container svg").remove();
+
+        var svg = d3.select("#timeline-container")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // Data
+        var y2p = {};
+        var minX = 2100; 
+        var maxX = 1900;
+        var coCont = {};
+        for( var i = 0; i < wroteAuthor.length; i++)
+        {     
+          var y = papers[ wroteAuthor[i] ][4];
+          minX = Math.min(minX, y);
+          maxX = Math.max(maxX, y);
+          if( y2p[y] == undefined ) y2p[y] = [];
+          y2p[y].push( wroteAuthor[i] );
+          
+          for(var j = 0; j < p2w[ wroteAuthor[i] ].length; j++)
+          {
+            var idCo = p2w[ wroteAuthor[i] ][j];
+            if( coCont[idCo] == undefined ) coCont[idCo] = {};
+            if( coCont[idCo][y] == undefined ) coCont[idCo][y] = 0;
+            coCont[idCo][y]++;
+          }
+        }
+
+        var myTimeline = coCont[selectedId];
+//        delete coCont[selectedId];
+
+        var contA = [];
+        for(var idA in coCont)
+        {
+          var sum = 0;
+          for(var y in coCont[idA])
+            sum += coCont[idA][y];
+
+          contA.push([sum, parseInt(idA), coCont[idA] ]);
+        }
+
+        contA.sort( (a,b) => b[0] - a[0]);
+
+        contA = contA.slice(0, Math.min(contA.length, 10));
+        console.log(contA);
+ 
+        var authorsNames = [""]; // , authors[selectedId][1] ];
+        for(var i = 0 ; i < contA.length; i++)
+        {
+          authorsNames.push( authors[contA[i][1]][1] );
+        }
+
+        // X AXIS
+        var x = d3.scalePoint().rangeRound([0, width]);
+        x.domain(d3.range(minX, maxX+1));
+
+        svg.append("g")
+        .attr("class", "axis axis--x")
+        //.attr("transform", "translate(0," + height + ")")
+        .call(d3.axisTop(x))
+        .selectAll("text")
+        .attr("y", 10)
+        .attr("x", 10)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(-90)")
+        .style("text-anchor", "start");
+
         // Y AXIS
-        var y = d3.scaleLinear().range([height, 0]);
-        var minY = 0;
-        var maxY = d3.max(data, function(d){
-          var t = 0;
-          for(var i=0; i < d[1].length; i++)
-            t += d[1][i][1];
-          return t;
-        });
-        y.domain([minY, maxY+1]);
-        svg.append("g").call(d3.axisLeft(y));
+        var y = d3.scalePoint()
+          .range([0, height])      
+           .domain(authorsNames);
 
         // Z AXIS
         var z = d3.scaleOrdinal(d3.schemeCategory10);
-        z.domain(venue);
+        z.domain(authorsNames);
 
-        for(var i=0; i < venue.length; i++)
-          $("#" + venue[i]).css("color", z(venue[i]) );
+        svg.append("g").call(d3.axisLeft(y));
 
-        var stack = d3.stack()
-          .keys( venue )
-          .value(function(d, key){
-            return d[1][ venue.indexOf(key) ][1];
-          });
+        for(var i = 0; i < contA.length; i++)
+        {
+          var name = authors[ contA[i][1] ][1];
+          var minY = 3000;
+          var maxY = 1000;
+          for(var k in contA[i][2])
+          {
+            minY = Math.min(minY, k);
+            maxY = Math.max(maxY, k);
 
-        svg.append("g")
-        .selectAll("g")
-        .data(stack(data))
-        .enter().append("g")
-        .attr("fill", function(d) { return z(d.key); })
-        .selectAll("rect")
-        .data(function(d) { return d; })
-        .enter().append("rect")
-        .attr("x", function(d) { return x(d.data[0]); })
-        .attr("y", function(d) { return y(d[1]); })
-        .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-        .attr("width", x.bandwidth());
-                    
-      }
- 
+            svg.append("circle")
+            .attr("cx", x(k))
+            .attr("cy", y(name))
+            .attr("r", 5)
+            .attr("stroke-width", 2)
+            .attr("stroke", z(name))
+            .attr("fill", z(name))
+            .attr("fill-opacity", 0.5);
+
+          }
+
+          svg.append("line")
+          .attr("x1", x(minY))
+          .attr("y1", y(name))
+          .attr("x2", x(maxY))
+          .attr("y2", y(name))
+          .attr("stroke-width", 2)
+          .attr("stroke", z(name));
+
+        }
+
+      } 
+
+      function plotTimeline1()
+      {
+        // #timeline-container
+        var margin = {top: 35, right: 10, bottom: 10, left: 120};
+        var width = 860 - margin.left - margin.right, height = 480 - margin.top - margin.bottom;
+
+        d3.select("#timeline-container svg").remove();
+
+        var svg = d3.select("#timeline-container")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var xValues = [];
+        var yValuesId = [];
+        var yValues = [];
+
+        var coAuth = {};
+
+        for(var i = 0; i < wroteAuthor.length; i++)
+        {
+          var idP = parseInt(wroteAuthor[i]);
+          xValues.push(idP);
+          var wroteP = p2w[idP];
+          for(var j=0; j < wroteP.length; j++)
+          {
+            if( coAuth[ wroteP[j] ] == undefined ) coAuth[ wroteP[j] ] = 0 ;
+            coAuth[ wroteP[j] ]++ ;
+          }
+        }      
+        
+        for(var idA in coAuth ) yValuesId.push([coAuth[idA], idA]);
+        yValuesId.sort( (a,b) => b[0] - a[0] );
+
+        xValues = xValues.slice(0, 25);
+        yValues = yValuesId.slice(0, 10);
+        for(var i = 0; i < yValues.length; i++)
+          yValues[i] = authors[yValues[i][1]][1];
+
+        // X AXIS
+        var x = d3.scalePoint().range([0, width]).domain(xValues);
+
+        // Y AXIS
+        var y = d3.scalePoint().range([0, height]).domain(yValues);
+
+        // Z AXIS
+        var z = d3.scaleOrdinal(d3.schemeCategory10);
+        z.domain(xValues);
+
+        svg.append("g").call(d3.axisLeft(y));
+        svg.append("g").call(d3.axisTop(x));
+
+        for(var i = 0 ; i < yValues.length; i++)
+        {
+          var idA = parseInt(yValuesId[i][1]);
+        
+          var minJ = -1;
+          var maxJ = -1;
+
+          for(var j=0; j < xValues.length; j++)
+          {
+            var idP = parseInt(xValues[j]);
+            console.log(idA, idP);
+            if( p2w[idP].indexOf(idA) == -1 ) continue;
+
+            maxJ = j;
+            minJ = (minJ == -1) ? j : minJ;
+
+            svg.append("circle")
+            .attr("cx", x(xValues[j]))
+            .attr("cy", y(yValues[i]))
+            .attr("r", 5)
+            .attr("stroke-width", 2)
+            .attr("stroke", z(xValues[j]))
+            .attr("fill", z(xValues[j]))
+            .attr("fill-opacity", 0.3);
+
+            svg.append("line")
+            .attr("x1", x(xValues[j]))
+            .attr("y1", y(yValues[0]))
+            .attr("x2", x(xValues[j]))
+            .attr("y2", y(yValues[i]))
+            .attr("stroke-width", 2)
+            .attr("stroke", z(xValues[j]));
+
+          }
+/*
+          svg.append("line")
+          .attr("x1", x(xValues[minJ]))
+          .attr("y1", y(yValues[i]))
+          .attr("x2", x(xValues[maxJ]))
+          .attr("y2", y(yValues[i]))
+          .attr("stroke-width", 2)
+          .attr("stroke", "black");
+*/
+        }
+
+        return ;
+
+        for(var i = 0; i < contA.length; i++)
+        {
+          var name = authors[ contA[i][1] ][1];
+          var minY = 3000;
+          var maxY = 1000;
+          for(var k in contA[i][2])
+          {
+            minY = Math.min(minY, k);
+            maxY = Math.max(maxY, k);
+
+            svg.append("circle")
+            .attr("cx", x(k))
+            .attr("cy", y(name))
+            .attr("r", 5)
+            .attr("stroke-width", 2)
+            .attr("stroke", z(name))
+            .attr("fill", z(name))
+            .attr("fill-opacity", 0.5);
+
+          }
+
+          svg.append("line")
+          .attr("x1", x(minY))
+          .attr("y1", y(name))
+          .attr("x2", x(maxY))
+          .attr("y2", y(name))
+          .attr("stroke-width", 2)
+          .attr("stroke", z(name));
+
+        }
+
+      } 
+
+
     </script>
 
   </body>
