@@ -37,7 +37,7 @@ def force ():
   for p, paper in enumerate (jsonDBLP.papers ()):
     tag, title, authors, year = paper
     tags = tag.split("/")
-    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc"]):
+    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
       for i in range(0, len(authors)):
         for j in range(0, len(authors)):
           if i == j:

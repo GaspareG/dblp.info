@@ -38,7 +38,7 @@ def force ():
   for p, paper in enumerate (jsonDBLP.papers ()):
     tag, title, authors, year = paper
     tags = tag.split("/")
-    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc"]):
+    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
         journal = tags[1]
         gw.write( str( idJ[journal] ) )
         gw.write( "," )

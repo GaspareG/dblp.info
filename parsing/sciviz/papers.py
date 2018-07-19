@@ -15,7 +15,7 @@ def force ():
     tag, title, authors, year = paper
     tags = tag.split("/")
     title = title.encode("utf-8")
-    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc"]):
+    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
       out.write( str(idx) + ",")
       out.write( tag + ",")
       out.write( "\"" + title + "\"" + ",")
