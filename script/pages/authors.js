@@ -1,10 +1,13 @@
 var plotFunctions = [];
+var filterFunctions = [];
+var plotDescr = [];
 var sort = 0;
 var minPub = 0;
 var maxPub = 0;
 var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
+var selectedId = -1;
 
 $(function(){
   loadAuthors(function(authors){
@@ -54,6 +57,8 @@ function loadControls()
   loadSliderPub();
   loadSliderYear();
   loadPlotType();
+  filterFunctions[plotType]();
+
 }
 
 function loadSearch(){
@@ -110,7 +115,7 @@ function loadSliderPub(){
   for(var i=0; i<data.length; i++)
     maxPub = Math.max(maxPub, data[i]["pubs"].length);
   var sliderPubText = $("<span></span>");
-  var sliderPubSlider = $("<div></div>");
+  var sliderPubSlider = $("<div id='slider_pub'></div>");
 
   sliderPubText.html("Number of publications: <b>"+minPub+" - "+maxPub+"</b>");
   sliderPubSlider.slider({
@@ -140,7 +145,7 @@ function loadSliderYear(){
   for(var i=0; i<data.length; i++)
     maxYear = Math.max(maxYear, data[i]["maxYear"]);
   var sliderYearText = $("<span></span>");
-  var sliderYearSlider = $("<div></div>");
+  var sliderYearSlider = $("<div id='slider_year'></div>");
 
   sliderYearText.html("Years of publications: <b>"+minYear+" - "+maxYear+"</b>");
   sliderYearSlider.slider({
@@ -163,7 +168,7 @@ function loadSliderYear(){
 }
 
 function loadPlotType(){
-  var plotLabel = ["Career timeline", "Bar graph", "Stream graph" ];
+  var plotLabel = ["Career timeline"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
 
   var label = $("<label for='plot'>Plot type: </label>");
@@ -177,10 +182,15 @@ function loadPlotType(){
       plotType = parseInt(this.value);
       plot();
     });
-
+    var optimalView = $("<span>(optimal filters)</span>");
+    optimalView.css("color", "#007bff");
+    optimalView.css("cursor", "pointer");
+    optimalView.on("click", (function(i){return function(){filterFunctions[i]();}})(i) );
     fields.append(el);
     fields.append("<span> </span>");
     fields.append("<label for='"+id+"'>"+plotLabel[i]+"</label>");
+    fields.append("<span> </span>");
+    fields.append(optimalView);
     fields.append("<br>");
   }
   $("#c_chart").append('<i class="fas fa-chart-bar"></i> ');
@@ -210,12 +220,13 @@ function filter()
   return ret;
 }
 
+var filterData = [];
 function plot()
 {
-  var data = filter();
-  updateInfo(data);
-  updateList(data);
-  plotFunctions[plotType](data);
+  filterData = filter();
+  updateInfo(filterData);
+  updateList(filterData);
+  plotFunctions[plotType](filterData);
 }
 
 function updateInfo(dataF)
@@ -234,19 +245,48 @@ function updateList(data)
   for(var i=0; i<data.length; i++)
   {
     var el = $("<li><a href='author?id="+data[i]["id"]+"'>"+data[i]["name"]+" ("+data[i]["pubs"].length+" publications between "+data[i]["minYear"]+" and "+data[i]["maxYear"]+")</a></li>");
+    el.hover((function(i){
+      return function(){
+        selectedId = i;
+        plotFunctions[plotType](filterData);
+      }
+    })(data[i]["id"]), function(){
+      selectedId = -1;
+      plotFunctions[plotType](filterData);
+    });
     list.append(el);
   }
   $("#c_authors").html("<h4>Authors list:</h4>");
   $("#c_authors").append(list);
 }
 
+filterFunctions[0] = function()
+{
+  $("#sort-0").attr("checked", false);
+  $("#sort-1").attr("checked", false);
+  $("#sort-2").attr("checked", true);
+  sort = 2;
+  minPub = 10;
+  maxPub = 127;
+  $("#slider_pub").slider( "values", 0, minPub );
+  $("#slider_pub").slider( "values", 1, maxPub );
+  //$("#slider_pub").slider('option', 'slide')(null, { values: $("#slider_pub").slider('values') })
+}
+
+plotDescr[0] = "In this plot we have in the x-axis the years of career (starting from the year of the first publication of each authors) ";
+plotDescr[0] += "and in the y-axis we have the number of publications so far.<br>";
+plotDescr[0] += "Each path is an author career, its point correspond to the years in which the author has made af least one publications<br>";
+plotDescr[0] += "Mouse over an author in the list to highlight its corrisponding career in the plot!";
+
 plotFunctions[0] = function(data)
 {
   // Chart 1
-  var margin = {top: 10, right: 10, bottom: 25, left: 30};
+  var margin = {top: 10, right: 10, bottom: 55, left: 55};
   var width = 810 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
 
-  d3.select("#c_plot svg").remove();
+  $("#c_plot").html("");
+  $("#c_plot").append("<h3>Plot</h3>");
+
   var svg = d3.select("#c_plot")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -254,6 +294,7 @@ plotFunctions[0] = function(data)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
   var minX = 0;
   var minY = 0;
@@ -266,11 +307,16 @@ plotFunctions[0] = function(data)
     maxY = Math.max(maxY, data[i]["pubs"].length);
   }
 
-  console.log(minX, maxX, minY, maxY);
-
   // X AXIS - year
   var x = d3.scalePoint().range([0, width]);
   x.domain(d3.range(minX, maxX+1));
+
+  svg.append("text")
+      .attr("transform",
+            "translate(" + (width/2) + " ," +
+                           (height + margin.top + 25) + ")")
+      .style("text-anchor", "middle")
+      .text("years of career");
 
   // Y AXIS - n pub
   var y = d3.scaleLinear().range([height, 0]);
@@ -281,13 +327,22 @@ plotFunctions[0] = function(data)
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 
+
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("number of publications");
+
+  // Data plot
   for(var i=0; i<data.length; i++)
   {
     var years = [];
     for(var k=0; k<data[i]["pubs"].length; k++)
       years.push( parseInt( data[i]["pubs"][k]["year"] ) );
     years.sort();
-
 
     for(var k=1; k<years.length; k++)
       years[k] -= years[0];
@@ -313,11 +368,31 @@ plotFunctions[0] = function(data)
 
     svg.append("path")
        .attr("d", line(points))
-       .attr("stroke", "blue")
-       .attr("stroke-width", 1)
-       .attr("stroke-opacity", 0.5)
+       .attr("stroke", data[i]["id"] == selectedId ? "red" : "blue")
+       .attr("stroke-width", data[i]["id"] == selectedId ? 2 : 1)
+       .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
        .attr("fill", "none");
+
+    svg.selectAll("dot")
+       .data([ points[points.length-1] ])
+       .enter().append("circle")
+       .attr("r", 4)
+       .attr("cx", function(d) { return x(d[0]); })
+       .attr("cy", function(d) { return y(d[1]); })
+       .attr("stroke", data[i]["id"] == selectedId ? "red" : "blue")
+       .attr("fill", data[i]["id"] == selectedId ? "red" : "blue")
+       .attr("stroke-width", data[i]["id"] == selectedId ? 2 : 1)
+       .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
+       .attr("fill-opacity", .3)
+       .style("cursor", "pointer")
+       .on("click", (function(id){ return function(d){
+          location.href = "author?id=" + id;
+        };
+       })(data[i]["id"]))
+      .append("svg:title")
+      .text(data[i]["name"]);
   }
+
 };
 
 plotFunctions[1] = function(data)
