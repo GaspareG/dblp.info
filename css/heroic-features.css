@@ -17,3 +17,12 @@ body {
 .card {
   height: 100%;
 }
+
+.m-0 {
+  width: 260px;
+  margin: auto !important;
+  text-align: justify !important;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}

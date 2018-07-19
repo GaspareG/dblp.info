@@ -28,7 +28,22 @@
     <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <style type="text/css">
-      
+      .filter {
+        margin: 8px;
+        padding: 8px;
+        padding-left: 16px;
+        padding-right: 16px;
+        border-radius: .3rem;
+        background: #e0e0e0;
+      }      
+
+      .jumbotron {
+        padding: 2rem !important;
+      }
+
+      .ui-slider {
+        margin-top: 8px !important;
+      }
     </style>
 
   </head>
@@ -45,19 +60,19 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/authors">Authors</a>
+              <a class="nav-link" href="/authors"><i class="fas fa-user"></i> Authors</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/papers">Papers</a>
+              <a class="nav-link" href="/papers"><i class="fas fa-file"></i> Papers</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/journals">Journals</a>
+                <a class="nav-link" href="/journals"><i class="fas fa-book"></i> Journals</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/coauthorship">Coauthorship</a>
+              <a class="nav-link" href="/coauthorship"><i class="fas fa-share-alt"></i> Coauthorship</a>
             </li>
           </ul>
         </div>
@@ -70,11 +85,22 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <h3>Journal visualization</h3>
+        <h3><i class="fas fa-book"></i> Journal visualization</h3>
 
-        <div>
-          Content
-        </div>
+        <!-- Informations -->
+        <div class="filter" id="c_info"></div>
+        <!-- Search -->
+        <div class="filter" id="c_search"></div>
+        <!-- Sort -->
+        <div class="filter" id="c_sort"></div>
+        <!-- Years slider -->
+        <div class="filter" id="c_slider_years"></div>
+        <!-- Chart type -->
+        <div class="filter" id="c_chart"></div>
+        <!-- Plot container -->
+        <div class="filter" id="c_plot"></div>
+        <!-- Authors List -->
+        <div class="filter" id="c_journals"></div>
 
       </header>
       <!-- /.row -->
@@ -85,9 +111,9 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-          <p class="m-0 text-center text-white"> Gaspare Ferraro @ <a href="https://gaspa.re">gaspa.re</a> </p>
-          <p class="m-0 text-center text-white"> Source code @ <a href="https://github.com/GaspareG/dblp.info">github.com</a> </p>
-          <p class="m-0 text-center text-white"> Dataset @ <a href="https://dblp.uni-trier.de">dblp.uni-trier.de</a> </p>
+          <p class="m-0 text-center text-white"><i class="fas fa-user-tie"></i> Gaspare Ferraro @ <a href="https://gaspa.re">gaspa.re <i class="fas fa-id-card-alt"></i></a> </p>
+          <p class="m-0 text-center text-white"><i class="fas fa-code"></i> Source code @ <a href="https://github.com/GaspareG/dblp.info">github.com <i class="fab fa-github"></i></a> </p>
+          <p class="m-0 text-center text-white"><i class="fas fa-database"></i> Dataset @ <a href="https://dblp.uni-trier.de">dblp.uni-trier.de <i class="fas fa-university"></i></a> </p>
       </div>
       <!-- /.container -->
     </footer>
@@ -98,7 +124,7 @@
     <script src="script/libs/d3.v5.min.js"></script>
     <script src="script/libs/jquery-ui.js"></script>
     <script src="script/pages/common.js"></script>
-    <script src="script/pages/journal.js"></script>
+    <script src="script/pages/journals.js"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122497833-1"></script>
