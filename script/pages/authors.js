@@ -232,7 +232,7 @@ function plot()
 function updateInfo(dataF)
 {
   $("#c_info").html("");
-  $("#c_info").append("<div><b>" +data.length+ "</b> total authors in dataset</div>");
+  $("#c_info").append("<div><i class='far fa-question-circle'></i> <b>" +data.length+ "</b> total authors in dataset</div>");
   $("#c_info").append("<div>Selected <b>" +dataF.length+ "</b> authors with number of publications between <b>" +minPub+ "</b> and <b>" +maxPub+ "</b> in the years <b>" +minYear+ "</b> - <b>" +maxYear+ "</b>  </div>");
 }
 
