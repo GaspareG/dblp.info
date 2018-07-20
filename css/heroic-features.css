@@ -26,3 +26,7 @@ body {
   display: flex;
   align-items: center;
 }
+
+label, ul {
+  margin: 0px !important;
+}

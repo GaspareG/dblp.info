@@ -15,7 +15,12 @@ function loadJournals(callback)
 
 function loadPapers(callback)
 {
-  d3.csv(baseUrl+"/papers.csv")
+  d3.csv(baseUrl+"/papers.csv", function(d){
+    d.id = parseInt(d.id)
+    if( d.year == undefined ) console.log(d);
+    d.year = parseInt(d.year)
+    return d;
+  })
     .then(data => callback(data));
 }
 

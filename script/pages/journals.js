@@ -282,7 +282,7 @@ plotFunctions[0] = function(dataF)
             return d[0]+d[1];
           });
         })])
-        .range([0, height]);
+        .range([0, height*.8]);
 
       var z = d3.scaleOrdinal().range(d3.schemeCategory10);
 
@@ -357,11 +357,9 @@ var y = d3.scaleLinear()
 var z = d3.scaleOrdinal()
     .range(d3.schemeCategory10);
 
-
   keys = [];
   for(var i = 0; i < data.length; i++)
      keys.push(data[i]["tag"]);
-
 
   var g = svg;
 
@@ -416,7 +414,6 @@ var z = d3.scaleOrdinal()
     .on("mousemove", function(d, i) {
       var xPosition = d3.mouse(this)[0] - 75;
       var yPosition = d3.mouse(this)[1] - 25;
-      console.log(d);
       var dif = d[1]-d[0];
       var lab = "";
       for(var k in d.data)
@@ -462,7 +459,7 @@ var z = d3.scaleOrdinal()
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Number of publications");
+      .text("#publications");
 
   // Prep the tooltip bits, initial display is hidden
   tooltip = g.append("g")
