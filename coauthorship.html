@@ -45,6 +45,48 @@
         margin-top: 8px !important;
       }
 
+.node {
+  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.node:hover {
+  fill: #000;
+}
+
+.link {
+  stroke: steelblue;
+  stroke-opacity: 0.4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+  font-weight: 700;
+}
+
+.node--source {
+  fill: #2ca02c;
+}
+
+.node--target {
+  fill: #d62728;
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link--source {
+  stroke: #d62728;
+}
+
+.link--target {
+  stroke: #d62728;
+}
     </style>
 
   </head>
@@ -94,16 +136,18 @@
         <div class="filter" id="c_search"></div>
         <!-- Authors List -->
         <div class="filter" id="c_authors"></div>
-        <!-- Degree slider
-        <div class="filter" id="c_slider_degree"></div>-->
         <!-- Plot container -->
         <div class="filter" id="c_plot"></div>
+        <!-- Plot container -->
+        <div class="filter" id="c_plot_edge"></div>
         <!-- Plot container -->
         <div class="filter" id="c_plot_degree"></div>
         <!-- Plot type -->
         <div class="filter" id="c_plot_type"></div>
         <!-- Couple -->
         <div class="filter" id="c_couple"></div>
+        <!-- Collaborative -->
+        <div class="filter" id="c_collab"></div>
 
 
       </header>

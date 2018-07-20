@@ -317,7 +317,13 @@ plotFunctions[0] = function(dataF)
        .append("svg:title")
        .text(function(d, i){ data[i]["name"] });
 
-      g.append("g").call(xAxis.ticks(16));
+      g.append("g").call(xAxis.ticks(16)).selectAll("text")
+        .attr("y", -10)
+        .attr("x", 10)
+        .attr("dy", ".50em")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "start")
+
       z.domain(keys);
 
 };

@@ -13,7 +13,11 @@ $(function(){
   loadAuthors(function(authors){
     loadWrote(function(wrote){
       loadPapers(function(papers){
-        parseData(authors, wrote, papers);
+        loadPublish(function(publish){
+          loadJournals(function(journals){
+            parseData(authors, wrote, papers, publish, journals);
+          });
+        });
       });
     });
   });
@@ -21,10 +25,13 @@ $(function(){
 
 var data = [];
 var name2id = {};
-// [id, name, minYear, maxYear, n° pub]
 
-function parseData(authors, wrote, papers)
+var dJournals = [];
+var wrotePJ = {};
+
+function parseData(authors, wrote, papers, publish, journals)
 {
+  dJournals = journals;
   // Parse
   for(var i=0; i<authors.length; i++)
   {
@@ -46,6 +53,13 @@ function parseData(authors, wrote, papers)
     data[idA]["minYear"] = Math.min(data[idA]["minYear"], parseInt(pData[idP]["year"]));
     data[idA]["maxYear"] = Math.max(data[idA]["maxYear"], parseInt(pData[idP]["year"]));
   }
+
+  for(var i=0; i<publish.length; i++)
+  {
+    var idP = +publish[i]["idP"];
+    var idJ = +publish[i]["idJ"];
+    wrotePJ[idP] = idJ;
+  }
   loadControls();
   plot();
 }
@@ -56,14 +70,13 @@ function loadControls()
   loadSort();
   loadSliderPub();
   loadSliderYear();
+//  loadJournalsCheck();
   loadPlotType();
   filterFunctions[plotType]();
-
 }
 
 function loadSearch(){
   $("#c_search").html("");
-  var label = $("<label for='authors'>Search author: </label>");
   var input = $("<input id='author'>");
 
   var names = [];
@@ -78,14 +91,13 @@ function loadSearch(){
     }
   });
 
-  $("#c_search").append('<i class="fas fa-search"></i> ');
-  $("#c_search").append(label);
+  $("#c_search").append('<b><i class="fas fa-search"></i> Search author:</b>');
   $("#c_search").append("<span> </span>");
   $("#c_search").append(input);
 }
 
 function loadSort(){
-  var sortLabel = ["Name", "Year", "N° of publications"];
+  var sortLabel = ["name", "year", "number of publications"];
   $("#c_sort").html("");
 
   var label = $("<label for='sort'>Sort by: </label>");
@@ -104,8 +116,7 @@ function loadSort(){
     fields.append("<label for='"+id+"'>"+sortLabel[i]+"</label>");
     fields.append("<br>");
   }
-  $("#c_sort").append('<i class="fas fa-sort-amount-up"></i> ');
-  $("#c_sort").append(label);
+  $("#c_sort").append('<b><i class="fas fa-sort-amount-up"></i> Sort by:</b>');
   $("#c_sort").append(fields);
 }
 
@@ -117,7 +128,7 @@ function loadSliderPub(){
   var sliderPubText = $("<span></span>");
   var sliderPubSlider = $("<div id='slider_pub'></div>");
 
-  sliderPubText.html("Number of publications: <b>"+minPub+" - "+maxPub+"</b>");
+  sliderPubText.html("<b>Number of publications: 10 - 128</b>");
   sliderPubSlider.slider({
    range: true,
    min: minPub,
@@ -126,7 +137,7 @@ function loadSliderPub(){
    slide: function( event, ui ) {
       minPub = ui.values[0];
       maxPub = ui.values[1];
-      sliderPubText.html("Number of publications: <b>"+minPub+" - "+maxPub+"</b>");
+      sliderPubText.html("<b>Number of publications: "+minPub+" - "+maxPub+"</b>");
       plot();
     }
   });
@@ -147,7 +158,7 @@ function loadSliderYear(){
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
-  sliderYearText.html("Years of publications: <b>"+minYear+" - "+maxYear+"</b>");
+  sliderYearText.html("<b>Years of publications: "+minYear+" - "+maxYear+"</b>");
   sliderYearSlider.slider({
    range: true,
    min: minYear,
@@ -156,7 +167,7 @@ function loadSliderYear(){
    slide: function( event, ui ) {
       minYear = ui.values[0];
       maxYear = ui.values[1];
-      sliderYearText.html("Years of publications: <b>"+minYear+" - "+maxYear+"</b>");
+      sliderYearText.html("<b>Years of publications: "+minYear+" - "+maxYear+"</b>");
       plot();
     }
   });
@@ -171,7 +182,6 @@ function loadPlotType(){
   var plotLabel = ["Career timeline"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
 
-  var label = $("<label for='plot'>Plot type: </label>");
   var fields = $("<form></form>");
   for(var i = 0; i<plotLabel.length; i++)
   {
@@ -193,10 +203,31 @@ function loadPlotType(){
     fields.append(optimalView);
     fields.append("<br>");
   }
-  $("#c_chart").append('<i class="fas fa-chart-bar"></i> ');
-  $("#c_chart").append(label);
+  $("#c_chart").append('<b><i class="fas fa-chart-bar"></i> Plot type: </b>');
   $("#c_chart").append(fields);
 
+}
+
+var journalsBanned = {};
+function loadJournalsCheck()
+{
+  var list = $("<div>");
+  for(var i=0; i<dJournals.length; i++)
+  {
+    journalsBanned[+dJournals[i]["id"]] = false;
+    var j = $("<div></div>");
+    j.append($("<input type=checkbox checked id='check-" +dJournals[i]["id"]+ "' />"))
+    j.append($("<label for='check-" +dJournals[i]["id"]+ "'>").html(" " + dJournals[i]["name"]).css("cursor","pointer").on("click",(function(id){
+      return function(){
+        journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
+        plot();
+      };
+    })(dJournals[i]["id"])));
+    list.append(j);
+  }
+  $("#c_journals").html("");
+  $("#c_journals").append('<b><i class="fas fa-book"></i> Journals: </b>');
+  $("#c_journals").append(list);
 }
 
 var sortF = [];
@@ -213,8 +244,10 @@ function filter()
     if( data[i]["pubs"].length > maxPub ) continue;
     if( data[i]["minYear"] < minYear ) continue;
     if( data[i]["maxYear"] > maxYear ) continue;
-
     ret.push(data[i]);
+//    ret[ret.length-1]["pubs"] = data[i]["pubs"].filter(function(paper){
+//      return !journalsBanned[ wrotePJ[paper["id"]] ];
+//   });
   }
   ret.sort(sortF[sort]);
   return ret;
@@ -232,7 +265,7 @@ function plot()
 function updateInfo(dataF)
 {
   $("#c_info").html("");
-  $("#c_info").append("<div><i class='far fa-question-circle'></i> <b>" +data.length+ "</b> total authors in dataset</div>");
+  $("#c_info").append("<div><i class='fas fa-info-circle'></i> <b>" +data.length+ "</b> total authors in dataset</div>");
   $("#c_info").append("<div>Selected <b>" +dataF.length+ "</b> authors with number of publications between <b>" +minPub+ "</b> and <b>" +maxPub+ "</b> in the years <b>" +minYear+ "</b> - <b>" +maxYear+ "</b>  </div>");
 }
 
@@ -256,7 +289,7 @@ function updateList(data)
     });
     list.append(el);
   }
-  $("#c_authors").html("<h4>Authors list:</h4>");
+  $("#c_authors").html("<b><i class='fas fa-users'></i> Authors list:</b>");
   $("#c_authors").append(list);
 }
 
@@ -285,7 +318,7 @@ plotFunctions[0] = function(data)
   var width = 810 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
 
   $("#c_plot").html("");
-  $("#c_plot").append("<h3>Plot</h3>");
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot</b>");
 
   var svg = d3.select("#c_plot")
     .append("svg")
@@ -334,7 +367,7 @@ plotFunctions[0] = function(data)
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("number of publications");
+      .text("#publications");
 
   tooltip = svg.append("g")
     .style("display", "none")
@@ -342,7 +375,7 @@ plotFunctions[0] = function(data)
     .style("z-index", 1000);
 
   tooltip.append("rect")
-    .attr("width", 80)
+    .attr("width", 160)
     .attr("height", 20)
     .attr("fill", "white")
     .style("text-align", "center")
@@ -350,7 +383,7 @@ plotFunctions[0] = function(data)
     .style("z-index", 1000);
 
   tooltip.append("text")
-    .attr("x", 40)
+    .attr("x", 80)
     .attr("dy", "1.2em")
     .style("text-anchor", "middle")
     .style("text-align", "center")
@@ -389,7 +422,7 @@ plotFunctions[0] = function(data)
 
     svg.append("path")
        .attr("d", line(points))
-       .attr("stroke", data[i]["id"] == selectedId ? "red" : "blue")
+       .attr("stroke", data[i]["id"] == selectedId ? "red" : "steelblue")
        .attr("stroke-width", data[i]["id"] == selectedId ? 2 : 1)
        .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
        .attr("fill", "none");

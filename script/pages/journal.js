@@ -92,7 +92,7 @@ function loadSliderYear(){
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
-  sliderYearText.html("Years: <b>"+minYear+" - "+maxYear+"</b>");
+  sliderYearText.html("<b>Years: "+minYear+" - "+maxYear+"</b>");
   sliderYearSlider.slider({
    range: true,
    min: minYear,
@@ -137,7 +137,7 @@ function loadPapersList(){
   }
 
   $("#c_papers").html("");
-  $("#c_papers").append('<h5><i class="fas fa-file"></i> Papers:</h5>');
+  $("#c_papers").append('<b><i class="fas fa-file"></i> Papers:</b>');
   $("#c_papers").append(ul);
 }
 
@@ -170,7 +170,7 @@ function loadAuthorsList(){
   }
 
   $("#c_authors").html("");
-  $("#c_authors").append('<h5><i class="fas fa-user"></i> Authors:</h5>');
+  $("#c_authors").append('<b><i class="fas fa-user"></i> Authors:</b>');
   $("#c_authors").append(ul);
 
 }

@@ -1,4 +1,6 @@
-var authIds = [];
+var authIds = getQueryVariable("ids");
+if( authIds == null ) authIds = [];
+else authIds = authIds.split(",").map(x => +x);
 var degree = 1;
 var plotType = 0;
 
@@ -74,6 +76,33 @@ function loadControls()
   loadSearch();
   loadPlotType();
   loadCouple();
+  loadCollab();
+}
+
+// c_collab
+function loadCollab(){
+  var cid = [];
+  for(var k in graph)
+    cid.push([ k, Object.keys(graph[k]).length ]);
+  cid.sort( (a,b) => b[1] - a[1] );
+
+  $("#c_collab").html("");
+
+  var ul = $("<ul></ul>");
+  ul.css("max-height", "300px");
+  ul.css("overflow-y", "scroll");
+  for(var i=0; i<256; i++)
+  {
+    var idA1 = +cid[i][0];
+    var cont = +cid[i][1];
+    var li = $("<li>"+(i+1)+" </li>");
+    li.append("<a href='author?id=" +idA1 +"'>" + data[idA1]["name"] + "</a>");
+    li.append(" ("+cont+" coauthors)");
+    ul.append(li);
+  }
+
+  $("#c_collab").append('<b><i class="fas fa-globe-africa"></i> Most collaborative authors:</b>');
+  $("#c_collab").append(ul);
 }
 
 function loadCouple(){
@@ -87,7 +116,7 @@ function loadCouple(){
   var ul = $("<ul></ul>");
   ul.css("max-height", "300px");
   ul.css("overflow-y", "scroll");
-  for(var i=0; i<100; i++)
+  for(var i=0; i<256; i++)
   {
     var idA1 = +cid[i][1][0];
     var idA2 = +cid[i][1][1];
@@ -142,6 +171,7 @@ function loadSearch(){
       var id = name2id[ui.item.value];
       if( authIds.indexOf(id) != -1 ) return;
       authIds.push(parseInt(id));
+      updateQueryStringParam("ids", authIds.join(",") );
       plot();
     }
   });
@@ -178,6 +208,7 @@ function loadSliderDegree(){
 
 function plot()
 {
+  if( authIds.length != 0 ) updateQueryStringParam("ids", authIds.join(","));
   updateInfo();
   updateList();
   draw();
@@ -202,10 +233,9 @@ function updateList()
       color: "red",
       cursor: "pointer"
     }).click((function(id){
-      id = authIds.indexOf(id);
       if( id == -1 ) return;
       return function(){
-        authIds = authIds.slice(0, id).concat( authIds.slice(id+1) );
+        authIds = authIds.filter( x => x != id );
         plot();
       };
     })(authIds[i]));
@@ -225,11 +255,12 @@ function draw()
 
   if( names.length == 0)
   {
+    drawEdge();
     $("#c_plot").append('<b><i class="fas fa-users"></i> ' + "Please selected at least one author!</b>");
     return;
   }
 
-  var common = {};
+  common = {};
   for(var k in graph[authIds[0]] )
     common[k] = graph[authIds[0]][k].length;
 
@@ -277,6 +308,165 @@ function draw()
   }
 
   $("#c_plot").append(ul);
+  drawEdge();
+
+}
+
+function drawEdge()
+{
+// c_plot_edge
+var diameter = 810,
+    radius = diameter / 2,
+    innerRadius = radius - 120;
+
+var cluster = d3.cluster()
+    .size([360, innerRadius]);
+
+var line = d3.radialLine()
+    .curve(d3.curveBundle.beta(0.85))
+    .radius(function(d) { return d.y; })
+    .angle(function(d) { return d.x / 180 * Math.PI; });
+
+$("#c_plot_edge").html("");
+$("#c_plot_edge").append("<b><i class='fas fa-bezier-curve'></i> Hierarchical edge bundling of selected authors</b>");
+
+if( authIds.length == 0 ) return;
+var svg = d3.select("#c_plot_edge").append("svg")
+    .attr("width", diameter)
+    .attr("height", diameter)
+  .append("g")
+    .attr("transform", "translate(" + radius + "," + radius + ")");
+
+var link = svg.append("g").selectAll(".link"),
+    node = svg.append("g").selectAll(".node");
+
+// CREATE CLASSES
+var classes = [{
+  "name": "iit.mumbai.pub1",
+  "imports": ["iit.chennai.pub3"]
+}, {
+  "name": "iit.delhi.pub2",
+  "imports": ["iit.mumbai.pub1"]
+}, {
+  "name": "iit.chennai.pub3",
+  "imports": ["iit.delhi.pub2"]
+}];
+
+classes = [];
+var common2 = Object.assign({}, common);
+for(var i=0; i<authIds.length; i++)
+  common2[authIds[i]] = 1;
+
+for(var k in common2)
+{
+  var p = {};
+  p["name"] = data[k]["name"];
+  p["imports"] = [];
+  for(var k2 in common2)
+  {
+    if( graph[k][k2] == undefined ) continue;
+    p["imports"].push(data[k2]["name"]);
+  }
+  classes.push(p);
+}
+
+  var root = packageHierarchy(classes)
+      .sum(function(d) { return d.size; });
+
+  cluster(root);
+
+  link = link
+    .data(packageImports(root.leaves()))
+    .enter().append("path")
+      .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+      .attr("class", "link")
+      .attr("d", line);
+
+  node = node
+    .data(root.leaves())
+    .enter().append("text")
+      .attr("class", "node")
+      .attr("dy", "0.31em")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .text(function(d) { return d.data.key; })
+      .style("cursor", "pointer")
+      .on("click", function(d){
+        location.href = "author?id=" + name2id[d.data.key];
+      })
+      .on("mouseover", mouseovered)
+      .on("mouseout", mouseouted);
+
+
+function mouseovered(d) {
+  node
+      .each(function(n) { n.target = n.source = false; });
+
+  link
+      .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+      .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+    .filter(function(l) { return l.target === d || l.source === d; })
+      .raise();
+
+  node
+      .classed("node--target", function(n) { return n.target; })
+      .classed("node--source", function(n) { return n.source; });
+}
+
+function mouseouted(d) {
+  link
+      .classed("link--target", false)
+      .classed("link--source", false);
+
+  node
+      .classed("node--target", false)
+      .classed("node--source", false);
+}
+
+// Lazily construct the package hierarchy from class names.
+function packageHierarchy(classes) {
+  var map = {};
+
+  function find(name, data) {
+    var node = map[name], i;
+    if (!node) {
+      node = map[name] = data || {name: name, children: []};
+      if (name.length) {
+        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+        node.parent.children.push(node);
+        node.key = name.substring(i + 1);
+      }
+    }
+    return node;
+  }
+
+  classes.forEach(function(d) {
+    find(d.name, d);
+  });
+
+  return d3.hierarchy(map[""]);
+}
+
+// Return a list of imports for the given array of nodes.
+function packageImports(nodes) {
+  var map = {},
+      imports = [];
+
+  // Compute a map from name to node.
+  nodes.forEach(function(d) {
+    map[d.data.name] = d;
+  });
+
+  // For each import, construct a link from the source to target node.
+  nodes.forEach(function(d) {
+    if (d.data.imports) d.data.imports.forEach(function(i) {
+      imports.push(map[d.data.name].path(map[i]));
+    });
+  });
+
+  return imports;
+}
+
 }
 
 function draw_old()
