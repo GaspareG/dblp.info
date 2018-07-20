@@ -11,40 +11,60 @@ $(function(){
   loadJournals(function(journals){
     loadPublish(function(publish){
       loadPapers(function(papers){
-        parseData(journals, publish, papers);
+        loadWrote(function(wrote){
+          loadAuthors(function(authors){
+            parseData(journals, publish, papers, wrote, authors);
+          });
+        });
       });
     });
   });
 });
 
-var data = [];
-var name2id = {};
-// [id, name, tag, pubs]
+var dJournals = [];
+var dPublish = [];
+var dPapers = [];
+var dWrote = [];
+var dAuthors = [];
+var paper2id = {};
 
-function parseData(journals, publish, papers)
+function parseData(journals, publish, papers, wrote, authors)
 {
-  // Parse
+
   for(var i=0; i<journals.length; i++)
   {
-    name2id[ journals[i]["name"] ] = parseInt(journals[i]["id"]);
-    data[parseInt(journals[i]["id"])] = journals[i];
-    data[parseInt(journals[i]["id"])]["pubs"] = [];
-    data[parseInt(journals[i]["id"])]["minYear"] = 3000;
-    data[parseInt(journals[i]["id"])]["maxYear"] = 1000;
+    dJournals[ parseInt(journals[i]["id"]) ] = journals[i];
+    dJournals[ parseInt(journals[i]["id"]) ]["pubs"] = [];
+  }
+  for(var i=0; i<papers.length; i++)
+  {
+    dPapers[ parseInt(papers[i]["id"]) ] = papers[i];
+    dPapers[ parseInt(papers[i]["id"]) ]["journals"] = [];
+    dPapers[ parseInt(papers[i]["id"]) ]["authors"] = [];
+    paper2id[ papers[i]["title"] ] =  parseInt(papers[i]["id"]);
+  }
+  for(var i=0; i<authors.length; i++)
+  {
+    dAuthors[ parseInt(authors[i]["id"]) ] = authors[i];
+    dAuthors[ parseInt(authors[i]["id"]) ]["pubs"] = [];
   }
 
-  var pData = []
-  for(var i=0; i<papers.length; i++)
-    pData[ parseInt(papers[i]["id"]) ] = papers[i];
+  for(var i=0; i<wrote.length; i++)
+  {
+    var idA = parseInt(wrote[i]["idA"]);
+    var idP = parseInt(wrote[i]["idP"]);
+    dAuthors[idA]["pubs"].push(idP);
+    dPapers[idP]["authors"].push(idA);
+  }
 
   for(var i=0; i<publish.length; i++)
   {
     var idJ = parseInt(publish[i]["idJ"]);
     var idP = parseInt(publish[i]["idP"]);
-    data[idJ]["pubs"].push(pData[idP]);
-    data[idJ]["minYear"] = Math.min(data[idJ]["minYear"], parseInt(pData[idP]["year"]));
-    data[idJ]["maxYear"] = Math.max(data[idJ]["maxYear"], parseInt(pData[idP]["year"]));
+    dJournals[idJ]["pubs"].push(idP);
+    dPapers[idP]["journals"].push(idJ);
   }
+
   loadControls();
   plot();
 }
@@ -54,23 +74,22 @@ function loadControls()
   loadSearch();
   loadSort();
   loadSliderYear();
-  loadPlotType();
+//  loadPlotType();
 }
 
 function loadSearch(){
   $("#c_search").html("");
-  var label = $("<label for='authors'>Search journal: </label>");
-  var input = $("<input id='author'>");
+  var label = $("<label for='authors'>Search papers: </label>");
+  var input = $("<input id='papers'>");
 
-  var names = [];
-  for(var k in name2id) names.push(k);
+  var names = dPapers.map(x => x["title"]);
   input.autocomplete({
     source: names,
-    minLength: 1,
+    minLength: 4,
     autoFocus: true,
     select: function( event, ui ) {
-      var id = name2id[ui.item.value];
-      location.href = "journal?id=" + id;
+      var id = paper2id[ui.item.value];
+      location.href = "paper?id=" + id;
     }
   });
 
@@ -81,7 +100,7 @@ function loadSearch(){
 }
 
 function loadSort(){
-  var sortLabel = ["Name", "N° of publications"];
+  var sortLabel = ["Year asc","Year desc", "Title"];
   $("#c_sort").html("");
 
   var label = $("<label for='sort'>Sort by: </label>");
@@ -106,13 +125,8 @@ function loadSort(){
 }
 
 function loadSliderYear(){
-  minYear = 3000;
-  maxYear = 1000;
-
-  for(var i=0; i<data.length; i++)
-    minYear = Math.min(minYear, data[i]["minYear"]);
-  for(var i=0; i<data.length; i++)
-    maxYear = Math.max(maxYear, data[i]["maxYear"]);
+  minYear = d3.min(dPapers, x => +x["year"]);
+  maxYear = d3.max(dPapers, x => +x["year"]);
 
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
@@ -165,12 +179,17 @@ function loadPlotType(){
 }
 
 var sortF = [];
-sortF[0] = (a,b) => (a["name"]< b["name"] ? -1 : 1);
-sortF[1] = (a,b) => (b["pubs"].length - a["pubs"].length);
+sortF[0] = (a,b) => (+a["year"] - +b["year"]);
+sortF[1] = (a,b) => (+b["year"] - +a["year"]);
+sortF[2] = (a,b) => (a["title"]< b["title"] ? -1 : 1);
 
 function filter()
 {
-  var ret = data.slice();
+  var ret = dPapers.filter(function(d){
+    if( d["year"] < minYear ) return false;
+    if( d["year"] > maxYear ) return false;
+    return true;
+  });
   ret.sort(sortF[sort]);
   return ret;
 }
@@ -187,36 +206,29 @@ function plot()
 function updateInfo(dataF)
 {
   $("#c_info").html("");
-  $("#c_info").append("<div><i class='far fa-question-circle'></i> <b>" +data.length+ "</b> total journals in dataset</div>");
+  $("#c_info").append("<div><i class='far fa-question-circle'></i> Found <b>" +dataF.length+ "</b> papers between <b>"+minYear+"</b> and <b>"+maxYear+"</b> </div>");
 }
 
 function updateList(data)
 {
-  $("#c_journals").html("");
+  $("#c_papers").html("");
   var list = $("<ul></ul>");
   list.css("max-height", "512px");
+  list.css("overflow-y", "scroll");
+
   for(var i=0; i<data.length; i++)
   {
-    var el = $("<li><a href='journal?id=" +data[i]["id"]+ "'>[" +data[i]["tag"].toUpperCase() + "] " +data[i]["name"]+" ("+data[i]["pubs"].length+" publications between "+data[i]["minYear"]+" and "+data[i]["maxYear"]+")</a></li>");
-    $("a",el).attr("id","journal-" + data[i]["id"]);
-    el.hover((function(i){
-      return function(){
-        selectedId = i;
-        plotFunctions[plotType](filterData);
-      }
-    })(data[i]["id"]), function(){
-      selectedId = -1;
-      plotFunctions[plotType](filterData);
-    });
+    var el = $("<li><a href='paper?id=" + data[i]["id"] + "'>" +data[i]["year"] + " " +data[i]["title"] + "</a></li>");
     list.append(el);
   }
-  $("#c_journals").html("<h4>Journals list:</h4>");
-  $("#c_journals").append(list);
+  $("#c_papers").html("<h4>Papers list:</h4>");
+  $("#c_papers").append(list);
 }
 
 plotDescr[0] = "";
 plotFunctions[0] = function(dataF)
 {
+  return;
   // Chart 1
   var margin = {top: 50, right: 50, bottom: 50, left: 50};
   var width = 810 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
@@ -416,7 +428,6 @@ var z = d3.scaleOrdinal()
     .on("mousemove", function(d, i) {
       var xPosition = d3.mouse(this)[0] - 75;
       var yPosition = d3.mouse(this)[1] - 25;
-      console.log(d);
       var dif = d[1]-d[0];
       var lab = "";
       for(var k in d.data)

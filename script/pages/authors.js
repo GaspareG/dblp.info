@@ -281,7 +281,7 @@ plotDescr[0] += "Mouse over an author in the list to highlight its corrisponding
 plotFunctions[0] = function(data)
 {
   // Chart 1
-  var margin = {top: 10, right: 10, bottom: 55, left: 55};
+  var margin = {top: 25, right: 40, bottom: 55, left: 55};
   var width = 810 - margin.left - margin.right, height = 600 - margin.top - margin.bottom;
 
   $("#c_plot").html("");
@@ -336,6 +336,27 @@ plotFunctions[0] = function(data)
       .style("text-anchor", "middle")
       .text("number of publications");
 
+  tooltip = svg.append("g")
+    .style("display", "none")
+    .style("opacity", 1)
+    .style("z-index", 1000);
+
+  tooltip.append("rect")
+    .attr("width", 80)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("text-align", "center")
+    .style("opacity", .5)
+    .style("z-index", 1000);
+
+  tooltip.append("text")
+    .attr("x", 40)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .style("text-align", "center")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");
+
   // Data plot
   for(var i=0; i<data.length; i++)
   {
@@ -385,12 +406,18 @@ plotFunctions[0] = function(data)
        .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
        .attr("fill-opacity", .3)
        .style("cursor", "pointer")
+       .on("mouseover", function() { tooltip.style("display", "block"); })
+       .on("mouseout", function() { tooltip.style("display", "none"); })
+       .on("mousemove", (function(auth){ return function(d, i) {
+          var xPosition = d3.mouse(this)[0] - 75;
+          var yPosition = d3.mouse(this)[1] - 25;
+          tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+          tooltip.select("text").text(auth["name"] + " - " + auth["pubs"].length);
+        }})(data[i]))
        .on("click", (function(id){ return function(d){
           location.href = "author?id=" + id;
         };
-       })(data[i]["id"]))
-      .append("svg:title")
-      .text(data[i]["name"]);
+       })(data[i]["id"]));
   }
 
 };
