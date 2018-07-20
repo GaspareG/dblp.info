@@ -19,7 +19,7 @@ body {
 }
 
 .m-0 {
-  max-width: 360px;
+  max-width: 300px;
   margin: auto !important;
   text-align: justify !important;
   justify-content: space-between;
@@ -29,4 +29,8 @@ body {
 
 label, ul {
   margin: 0px !important;
+}
+
+svg {
+  margin: auto;
 }
