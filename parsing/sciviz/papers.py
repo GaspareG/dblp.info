@@ -18,6 +18,7 @@ def force ():
     if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
       out.write( str(idx) + ",")
       out.write( tag + ",")
+      title = title.replace('"',"'")
       out.write( "\"" + title + "\"" + ",")
       out.write( str(year) + "\n")
       idx = idx+1
