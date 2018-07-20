@@ -19,7 +19,7 @@ body {
 }
 
 .m-0 {
-  width: 260px;
+  max-width: 360px;
   margin: auto !important;
   text-align: justify !important;
   justify-content: space-between;

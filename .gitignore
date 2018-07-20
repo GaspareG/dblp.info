@@ -3,3 +3,4 @@ dblp.json.gz
 dblp.xml.gz
 parsing/scraper/venv/*
 *.pyc
+todo.txt

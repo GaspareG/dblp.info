@@ -276,8 +276,7 @@ function draw() {
   commons.sort((a, b) => b[1] - a[1]);
   for (var k = 0; k < commons.length; k++) {
     var li = $("<li>" + data[commons[k][0]]["name"] + " (" + commons[k][1] + " common papers) </li>");
-    li.append($("<span>+</span>").css({
-      color: "#007bff",
+    li.append($("<i class='fas fa-plus text-success'></i>").css({
       cursor: "pointer"
     }).on("click", (function(id) {
       return function() {
@@ -313,7 +312,7 @@ function drawEdge() {
     });
 
   $("#c_plot_edge").html("");
-  $("#c_plot_edge").append("<b><i class='fas fa-bezier-curve'></i> Hierarchical edge bundling of selected authors</b>");
+  $("#c_plot_edge").append("<b><i class='fab fa-connectdevelop'></i> Hierarchical edge bundling of selected authors</b>");
 
   if (authIds.length == 0) return;
   var svg = d3.select("#c_plot_edge").append("svg")
