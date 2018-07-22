@@ -27,10 +27,15 @@ body {
   align-items: center;
 }
 
-label, ul {
+label, ul, ol {
   margin: 0px !important;
 }
 
 svg {
   margin: auto;
+}
+.tooltip {
+  background: #fff;
+  padding: 4px;
+  border-radius: 4px;
 }

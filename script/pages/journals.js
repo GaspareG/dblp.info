@@ -6,19 +6,32 @@ var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
 var selectedId = -1;
+
 $(function() {
   loadJournals(function(journals) {
     loadPublish(function(publish) {
       loadPapers(function(papers) {
-        parseData(journals, publish, papers);
+        loadCitations(function(citations){
+          parseData(journals, publish, papers, citations);
+        });
       });
     });
   });
 });
+
 var data = [];
 var name2id = {};
+var dCitations = {};
 // [id, name, tag, pubs]
-function parseData(journals, publish, papers) {
+function parseData(journals, publish, papers,citations) {
+  for(var i=0; i <citations.length; i++)
+  {
+    var idP1 = +citations[i]["idP1"];
+    var idP2 = +citations[i]["idP2"];
+    if( dCitations[idP1] == undefined)
+      dCitations[idP1] = [];
+      dCitations[idP1].push(idP2);
+  }
   // Parse
   for (var i = 0; i < journals.length; i++) {
     name2id[journals[i]["name"]] = parseInt(journals[i]["id"]);
@@ -115,7 +128,7 @@ function loadSliderYear() {
   $("#c_slider_years").append(sliderYearSlider);
 }
 function loadPlotType() {
-  var plotLabel = ["Stream graph", "Stacked bar"]; // TODO, "Bar graph", "Stream graph" ];
+  var plotLabel = ["Stream graph", "Stacked bar", "Citations timeline"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
   var label = $("<label for='plot'>Plot type: </label>");
   var fields = $("<form></form>");
@@ -156,6 +169,7 @@ function updateInfo(dataF) {
   $("#c_info").html("");
   $("#c_info").append("<div><i class='far fa-question-circle'></i> <b>" + data.length + "</b> total journals in dataset</div>");
 }
+
 function updateList(data) {
   $("#c_journals").html("");
   var list = $("<ul></ul>");

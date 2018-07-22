@@ -7,7 +7,9 @@ var maxPub = 0;
 var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
-var selectedId = -1;
+var selectedId = getQueryVariable("ids");
+if( selectedId == undefined ) selectedId = [];
+else selectedId = selectedId.split(",").map( x => +x);
 
 $(function() {
   loadAuthors(function(authors) {
@@ -15,7 +17,9 @@ $(function() {
       loadPapers(function(papers) {
         loadPublish(function(publish) {
           loadJournals(function(journals) {
-            parseData(authors, wrote, papers, publish, journals);
+            loadCitations(function(citations) {
+              parseData(authors, wrote, papers, publish, journals, citations);
+            });
           });
         });
       });
@@ -29,9 +33,19 @@ var name2id = {};
 var dJournals = [];
 var wrotePJ = {};
 
-function parseData(authors, wrote, papers, publish, journals) {
+var dCitations = {};
+
+function parseData(authors, wrote, papers, publish, journals, citations) {
   dJournals = journals;
-  // Parse
+
+  for(var i=0; i<citations.length; i++)
+  {
+    var idP1 = +citations[i]["idP1"];
+    var idP2 = +citations[i]["idP2"];
+    if( dCitations[idP1] == undefined ) dCitations[idP1] = [];
+    dCitations[idP1].push(idP2);
+  }
+
   for (var i = 0; i < authors.length; i++) {
     name2id[authors[i]["name"]] = parseInt(authors[i]["id"]);
     data[parseInt(authors[i]["id"])] = authors[i];
@@ -66,12 +80,14 @@ function loadControls() {
   loadSliderPub();
   loadSliderYear();
   //  loadJournalsCheck();
+  updateAuthors();
   loadPlotType();
   filterFunctions[plotType]();
 }
 
 function loadSearch() {
   $("#c_search").html("");
+  addCollapse();
   var input = $("<input id='author'>");
 
   var names = [];
@@ -81,8 +97,11 @@ function loadSearch() {
     minLength: 3,
     autoFocus: true,
     select: function(event, ui) {
-      var id = name2id[ui.item.value];
-      location.href = "author?id=" + id;
+      var id = +name2id[ui.item.value];
+      if( selectedId.indexOf(id) != -1 ) return;
+      selectedId.push(id);
+      updateAuthors();
+      plot();
     }
   });
 
@@ -91,9 +110,34 @@ function loadSearch() {
   $("#c_search").append(input);
 }
 
+function updateAuthors()
+{
+  if( selectedId.length > 0 ) updateQueryStringParam("ids", selectedId.join(","));
+  var ol = $("<ol>").css("padding-left", "50px");
+  for(var i=0; i<selectedId.length; i++)
+  {
+    var li = $("<li>")
+    li.append( $("<a>").text( data[selectedId[i]]["name"] ).attr("href", "author?id=" + selectedId[i]) )
+      .append(" - ")
+      .append( $("<i class='fas fa-times'></i>").css({"color":"red","cursor": "pointer"}).on("click", (function(id){
+        return function(){
+          var pos = selectedId.indexOf(id);
+          selectedId = selectedId.slice(0, pos).concat(selectedId.slice(pos+1));
+          updateAuthors();
+        }
+      })(selectedId[i])))
+    ol.append(li);
+  }
+  $("#c_selected").html("");
+  addCollapse();
+  $("#c_selected").append('<b><i class="fas fa-user"></i> Selected authors:</b>');
+  $("#c_selected").append(ol);
+}
+
 function loadSort() {
-  var sortLabel = ["name", "year", "number of publications"];
+  var sortLabel = ["Name", "Year", "Number of publications"];
   $("#c_sort").html("");
+  addCollapse();
 
   var label = $("<label for='sort'>Sort by: </label>");
   var fields = $("<form></form>");
@@ -136,6 +180,7 @@ function loadSliderPub() {
     }
   });
 
+  addCollapse();
   $("#c_slider_pub").append('<i class="fas fa-list-ol"></i> ');
   $("#c_slider_pub").append(sliderPubText);
   $("#c_slider_pub").append("<div></div>");
@@ -166,6 +211,7 @@ function loadSliderYear() {
     }
   });
 
+  addCollapse();
   $("#c_slider_years").append('<i class="fas fa-calendar-alt"></i> ');
   $("#c_slider_years").append(sliderYearText);
   $("#c_slider_years").append(sliderYearSlider);
@@ -173,8 +219,9 @@ function loadSliderYear() {
 }
 
 function loadPlotType() {
-  var plotLabel = ["Career timeline"]; // TODO, "Bar graph", "Stream graph" ];
+  var plotLabel = ["Career timeline", "Papers/Citations scatterplot"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
+  addCollapse();
 
   var fields = $("<form></form>");
   for (var i = 0; i < plotLabel.length; i++) {
@@ -222,6 +269,7 @@ function loadJournalsCheck() {
     list.append(j);
   }
   $("#c_journals").html("");
+  addCollapse();
   $("#c_journals").append('<b><i class="fas fa-book"></i> Journals: </b>');
   $("#c_journals").append(list);
 }
@@ -253,34 +301,44 @@ function plot() {
   filterData = filter();
   updateInfo(filterData);
   updateList(filterData);
+  updateQuote(filterData);
   plotFunctions[plotType](filterData);
 }
 
 function updateInfo(dataF) {
   $("#c_info").html("");
+  addCollapse();
   $("#c_info").append("<div><i class='fas fa-info-circle'></i> <b>" + data.length + "</b> total authors in dataset</div>");
   $("#c_info").append("<div>Selected <b>" + dataF.length + "</b> authors with number of publications between <b>" + minPub + "</b> and <b>" + maxPub + "</b> in the years <b>" + minYear + "</b> - <b>" + maxYear + "</b>  </div>");
 }
 
 function updateList(data) {
   $("#c_authors").html("");
-  var list = $("<ul></ul>");
+  addCollapse();
+  var list = $("<ol></ol>");
   list.css("max-height", "376px");
   list.css("overflow-y", "scroll");
+  list.css("padding-left", "50px");
   for (var i = 0; i < data.length; i++) {
-    var el = $("<li><a href='author?id=" + data[i]["id"] + "'>" + data[i]["name"] + " (" + data[i]["pubs"].length + " publications between " + data[i]["minYear"] + " and " + data[i]["maxYear"] + ")</a></li>");
+    var el = $("<li><a href='author?id=" + data[i]["id"] + "'>" + data[i]["name"] + "</a> (" + data[i]["pubs"].length + " publications between " + data[i]["minYear"] + " and " + data[i]["maxYear"] + ")</li>");
     el.hover((function(i) {
       return function() {
-        selectedId = i;
+        if( selectedId.indexOf(i) == -1 )
+          selectedId.push(i);
         plotFunctions[plotType](filterData);
       }
-    })(data[i]["id"]), function() {
-      selectedId = -1;
+    })(+data[i]["id"]), (function(i){ return function() {
+      if( selectedId.indexOf(i) != -1 ){
+      var pos = selectedId.indexOf(i);
+      selectedId = selectedId.slice(0, pos).concat(selectedId.slice(pos+1));;
       plotFunctions[plotType](filterData);
-    });
+      }
+      }
+    })(+data[i]["id"]));
     list.append(el);
   }
   $("#c_authors").html("<b><i class='fas fa-users'></i> Authors list:</b>");
+  addCollapse();
   $("#c_authors").append(list);
 }
 
@@ -296,10 +354,45 @@ filterFunctions[0] = function() {
   //$("#slider_pub").slider('option', 'slide')(null, { values: $("#slider_pub").slider('values') })
 }
 
+function updateQuote(data) {
+
+  for(var i=0; i<data.length; i++)
+  {
+    data[i]["citations"] = 0;
+    for(var j=0; j<data[i]["pubs"].length; j++)
+    {
+      var idP = +data[i]["pubs"][j]["id"];
+      if( dCitations[idP] == undefined ) continue;
+      data[i]["citations"] += dCitations[+idP].length;
+    }
+  }
+
+  data.sort( (a,b) => b["citations"] - a["citations"] );
+  $("#c_cited").html("");
+  addCollapse();
+  var list = $("<ol></ol>");
+  list.css("max-height", "376px");
+  list.css("overflow-y", "scroll");
+  list.css("padding-left", "50px");
+  for (var i = 0; i < data.length; i++) {
+    var el = $("<li><a href='author?id=" + data[i]["id"] + "'>" + data[i]["name"] + "</a> (" + data[i]["citations"] + " citations)</li>");
+    list.append(el);
+  }
+  $("#c_cited").html("<b><i class='fas fa-quote-right'></i> Most cited authors:</b>");
+  addCollapse();
+  $("#c_cited").append(list);
+}
+
+$(window).resize(plot);
+
 plotDescr[0] = "In this plot we have in the x-axis the years of career (starting from the year of the first publication of each authors) ";
 plotDescr[0] += "and in the y-axis we have the number of publications so far.<br>";
 plotDescr[0] += "Each path is an author career, its point correspond to the years in which the author has made af least one publications<br>";
-plotDescr[0] += "Mouse over an author in the list to highlight its corrisponding career in the plot!";
+plotDescr[0] += "<b>Mouse over a dot to highlight its path!</b>";
+
+plotDescr[1] = "In this plot we have in the x-axis the number of papers wrote ";
+plotDescr[1] += "and in the y-axis the number of citations<br>";
+plotDescr[1] += "Each author is represented by a single dot with coordinate (number of his papers, number of citations to his papers)";
 
 plotFunctions[0] = function(data) {
   // Chart 1
@@ -309,11 +402,12 @@ plotFunctions[0] = function(data) {
     bottom: 55,
     left: 55
   };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
 
   $("#c_plot").html("");
-  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot</b>");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
 
   var svg = d3.select("#c_plot")
     .append("svg")
@@ -321,8 +415,8 @@ plotFunctions[0] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
   $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+
 
   var minX = 0;
   var minY = 0;
@@ -335,8 +429,8 @@ plotFunctions[0] = function(data) {
   }
 
   // X AXIS - year
-  var x = d3.scalePoint().range([0, width]);
-  x.domain(d3.range(minX, maxX + 1));
+  var x = d3.scaleLinear().range([0, width]);
+  x.domain([minX, maxX + 1]).nice();
 
   svg.append("text")
     .attr("transform",
@@ -347,12 +441,12 @@ plotFunctions[0] = function(data) {
 
   // Y AXIS - n pub
   var y = d3.scaleLinear().range([height, 0]);
-  y.domain([minY, maxY + 1]);
+  y.domain([minY, maxY + 1]).nice();
 
   svg.append("g").call(d3.axisLeft(y).ticks(20));
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).ticks(16));
 
 
   svg.append("text")
@@ -363,26 +457,10 @@ plotFunctions[0] = function(data) {
     .style("text-anchor", "middle")
     .text("#publications");
 
-  tooltip = svg.append("g")
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("display", "none")
-    .style("opacity", 1)
-    .style("z-index", 1000);
-
-  tooltip.append("rect")
-    .attr("width", 160)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("text-align", "center")
-    .style("opacity", .5)
-    .style("z-index", 1000);
-
-  tooltip.append("text")
-    .attr("x", 80)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .style("text-align", "center")
-    .attr("font-size", "12px")
-    .attr("font-weight", "bold");
+    .style("opacity", "1");
 
   // Data plot
   for (var i = 0; i < data.length; i++) {
@@ -403,7 +481,7 @@ plotFunctions[0] = function(data) {
 
     var points = [];
     for (var k in contYear)
-      points.push([k, contYear[k]]);
+      points.push([k, contYear[k], data[i]["name"], data[i]["pubs"].length, data[i]["id"]]);
     points.sort((a, b) => a[0] - b[0]);
 
     for (var k = 1; k < points.length; k++)
@@ -415,9 +493,10 @@ plotFunctions[0] = function(data) {
 
     svg.append("path")
       .attr("d", line(points))
-      .attr("stroke", data[i]["id"] == selectedId ? "red" : "steelblue")
-      .attr("stroke-width", data[i]["id"] == selectedId ? 2 : 1)
-      .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
+      .attr("class", "path-" + data[i]["id"])
+      .attr("stroke", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : "steelblue")
+      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
+      .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
       .attr("fill", "none");
 
     svg.selectAll("dot")
@@ -430,35 +509,122 @@ plotFunctions[0] = function(data) {
       .attr("cy", function(d) {
         return y(d[1]);
       })
-      .attr("stroke", data[i]["id"] == selectedId ? "red" : "blue")
-      .attr("fill", data[i]["id"] == selectedId ? "red" : "blue")
-      .attr("stroke-width", data[i]["id"] == selectedId ? 2 : 1)
-      .attr("stroke-opacity", data[i]["id"] == selectedId ? 1 : .25)
+      .attr("stroke", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : "steelblue")
+      .style("z-index", selectedId.indexOf(+data[i]["id"]) != -1 ? "1000" : "1")
+      .attr("fill", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : "steelblue")
+      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
+      .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
       .attr("fill-opacity", .3)
       .style("cursor", "pointer")
-      .on("mouseover", function() {
-        tooltip.style("display", "block");
+      .on("click", function(d){ location.href = "author?id="+d[4]; })
+      .on("mouseover", function(d) {
+          d3.select(this).attr("fill", "red").attr("fill-opacity", 1);
+          d3.select(".path-" + d[4]).attr("stroke", "red").attr("stroke-opacity", 1)
+          tooltip.style("display", "block");
+          tooltip.html(d[2] + "<br>" + d[3] + " papers in " + d[0] + " years"  )
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
       })
-      .on("mouseout", function() {
-        tooltip.style("display", "none");
-      })
-      .on("mousemove", (function(auth) {
-        return function(d, i) {
-          var xPosition = d3.mouse(this)[0] - 75;
-          var yPosition = d3.mouse(this)[1] - 25;
-          tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-          tooltip.select("text").text(auth["name"] + " - " + auth["pubs"].length);
-        }
-      })(data[i]))
-      .on("click", (function(id) {
-        return function(d) {
-          location.href = "author?id=" + id;
-        };
-      })(data[i]["id"]));
+      .on("mouseout", function(d) {
+          console.log( selectedId.indexOf( +d[4] ), +d[4] );
+          tooltip.style("display", "none");
+          if( selectedId.indexOf( +d[4] ) != -1 ) return;
+          d3.select(this).attr("fill", "steelblue").attr("fill-opacity", .3);
+          d3.select(".path-" + d[4]).attr("stroke", "steelblue").attr("stroke-opacity", .25)
+      });
+
   }
 
 };
 
 plotFunctions[1] = function(data) {
-  // Chart 2
+  // Chart 1
+  var margin = {
+    top: 25,
+    right: 40,
+    bottom: 55,
+    left: 55
+  };
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  $("#c_plot").html("");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
+
+  var svg = d3.select("#c_plot")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+
+
+  var minX = 0;
+  var minY = 0;
+  var maxX = 0;
+  var maxY = 0;
+
+  maxX = d3.max(data, a => a["pubs"].length);
+  maxY = d3.max(data, a => a["citations"]);
+
+  // X AXIS - year
+  var x = d3.scaleLinear().range([0, width]).domain([minX, maxX]).nice()
+
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," +
+      (height + margin.top + 25) + ")")
+    .style("text-anchor", "middle")
+    .text("#papers");
+
+  // Y AXIS - n pub
+  var y = d3.scaleLinear().range([height, 0]).domain([minY, maxY + 1]).nice();
+
+  svg.append("g").call(d3.axisLeft(y).ticks(20));
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("#citations");
+
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 1)
+    .style("display", "none");
+
+  // draw dots
+  svg.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 3.5)
+      .attr("cx", function(d){ return x(d["pubs"].length); })
+      .attr("cy", function(d){ return y(d["citations"]); })
+      .attr("stroke", function(d){ return selectedId.indexOf(+d["id"]) != -1 ? "red" : "steelblue"; })
+      .attr("fill", function(d){ return selectedId.indexOf(+d["id"]) != -1 ? "red" : "steelblue"; })
+      .attr("fill-opacity", .3)
+      .style("cursor", "pointer")
+      .on("click", function(d){ location.href = "author?id=" + d["id"];})
+      .on("mouseover", function(d) {
+          d3.select(this).attr("stroke", "red").attr("fill", "red").attr("fill-opacity", 1)
+          tooltip.style("display", "block");
+          tooltip.html(d["name"] + "<br>" + d["citations"] + " citations in " + d["pubs"].length + "papers")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d) {
+          tooltip.style("display", "none");
+          if( selectedId.indexOf( +d["id"] ) != -1 ) return;
+          d3.select(this).attr("stroke", "steelblue").attr("fill", "steelblue").attr("fill-opacity", .3)
+      });
 };
+
+filterFunctions[1] = filterFunctions[0];

@@ -36,6 +36,11 @@ function loadWrote(callback) {
     .then(data => callback(data));
 }
 
+function loadCitations(callback) {
+  d3.csv(baseUrl + "/citations.csv")
+    .then(data => callback(data));
+}
+
 // Query string functions
 function updateQueryStringParam(key, value) {
   baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
@@ -64,4 +69,85 @@ function getQueryVariable(variable) {
     }
   }
   return undefined;
+}
+
+function quickSort(arr, leftPos, rightPos, arrLength) {
+  let initialLeftPos = leftPos;
+  let initialRightPos = rightPos;
+  let direction = true;
+  let pivot = rightPos;
+  while ((leftPos - rightPos) < 0) {
+    if (direction) {
+      if (arr[pivot] < arr[leftPos]) {
+        quickSort.swap(arr, pivot, leftPos);
+        pivot = leftPos;
+        rightPos--;
+        direction = !direction;
+      } else
+        leftPos++;
+    } else {
+      if (arr[pivot] <= arr[rightPos]) {
+        rightPos--;
+      } else {
+        quickSort.swap(arr, pivot, rightPos);
+        leftPos++;
+        pivot = rightPos;
+        direction = !direction;
+      }
+    }
+  }
+  if (pivot - 1 > initialLeftPos) {
+    quickSort(arr, initialLeftPos, pivot - 1, arrLength);
+  }
+  if (pivot + 1 < initialRightPos) {
+    quickSort(arr, pivot + 1, initialRightPos, arrLength);
+  }
+}
+
+quickSort.swap = (arr, el1, el2) => {
+  let swapedElem = arr[el1];
+  arr[el1] = arr[el2];
+  arr[el2] = swapedElem;
+}
+
+
+function addCollapse(){
+  var el = $(".filter");
+  $(el).each(function(e){
+    e = $(this);
+    e.css("position", "relative");
+    $(".collapse-button", e).remove();
+    e.append(
+      $('<i class="collapse-button fas"></i>')
+      .addClass( e.attr("collapsed") == undefined || e.attr("collapsed") == "false" ? "fa-minus-square" : "fa-plus-square")
+      .css({
+        "position": "absolute",
+        "top": "8px",
+        "right": "16px",
+        "cursor": "pointer"
+      })
+      .click( (function(filter){
+        return function(){
+          if( $(filter).attr("collapsed") == undefined || $(filter).attr("collapsed") == "false"  )
+          {
+            $(filter).attr("collapsed", "true");
+            $(this).removeClass("fa-minus-square").addClass("fa-plus-square");
+            $(filter).css({
+              "height": "36px",
+              "overflow-y": "hidden"
+            });
+          }
+          else
+          {
+            $(filter).attr("collapsed", "false");
+            $(this).removeClass("fa-plus-square").addClass("fa-minus-square");
+            $(filter).css({
+              "height": "auto",
+              "overflow-y": "auto"
+            });
+          }
+        }
+      })(e))
+    );
+  });
 }
