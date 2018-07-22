@@ -1,18 +1,20 @@
 var plotFunctions = [];
-var filterFunctions = [];
-var plotDescr = [];
 var sort = 0;
 var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
-var selectedId = -1;
+var journalsBanned = {};
 
 $(function() {
-  loadJournals(function(journals) {
-    loadPublish(function(publish) {
+  loadAuthors(function(authors) {
+    loadWrote(function(wrote) {
       loadPapers(function(papers) {
-        loadCitations(function(citations){
-          parseData(journals, publish, papers, citations);
+        loadPublish(function(publish) {
+          loadJournals(function(journals) {
+            loadCitations(function(citations) {
+              parseData(authors, wrote, papers, publish, journals, citations);
+            });
+          });
         });
       });
     });
@@ -21,67 +23,68 @@ $(function() {
 
 var data = [];
 var name2id = {};
+
+var dJournals = [];
+var wrotePJ = {};
+
 var dCitations = {};
-// [id, name, tag, pubs]
-function parseData(journals, publish, papers,citations) {
-  for(var i=0; i <citations.length; i++)
+var pData = []
+
+function parseData(authors, wrote, papers, publish, journals, citations) {
+  dJournals = journals;
+
+  for(var i=0; i<journals.length; i++)
+    journalsBanned[+journals[i]["id"]] = false;
+
+  for(var i=0; i<citations.length; i++)
   {
     var idP1 = +citations[i]["idP1"];
     var idP2 = +citations[i]["idP2"];
-    if( dCitations[idP1] == undefined)
-      dCitations[idP1] = [];
-      dCitations[idP1].push(idP2);
+    if( dCitations[idP1] == undefined ) dCitations[idP1] = [];
+    dCitations[idP1].push(idP2);
   }
-  // Parse
-  for (var i = 0; i < journals.length; i++) {
-    name2id[journals[i]["name"]] = parseInt(journals[i]["id"]);
-    data[parseInt(journals[i]["id"])] = journals[i];
-    data[parseInt(journals[i]["id"])]["pubs"] = [];
-    data[parseInt(journals[i]["id"])]["minYear"] = 3000;
-    data[parseInt(journals[i]["id"])]["maxYear"] = 1000;
+
+  for (var i = 0; i < authors.length; i++) {
+    name2id[authors[i]["name"]] = parseInt(authors[i]["id"]);
+    data[parseInt(authors[i]["id"])] = authors[i];
+    data[parseInt(authors[i]["id"])]["pubs"] = [];
+    data[parseInt(authors[i]["id"])]["minYear"] = 3000;
+    data[parseInt(authors[i]["id"])]["maxYear"] = 1000;
   }
-  var pData = []
   for (var i = 0; i < papers.length; i++)
     pData[parseInt(papers[i]["id"])] = papers[i];
+
+  for(var i=0; i<publish.length; i++)
+    pData[ +publish[i]["idP"] ]["journals"] = [+publish[i]["idJ"]];
+
+  for (var i = 0; i < wrote.length; i++) {
+    var idA = parseInt(wrote[i]["idA"]);
+    var idP = parseInt(wrote[i]["idP"]);
+    data[idA]["pubs"].push(pData[idP]);
+    data[idA]["minYear"] = Math.min(data[idA]["minYear"], parseInt(pData[idP]["year"]));
+    data[idA]["maxYear"] = Math.max(data[idA]["maxYear"], parseInt(pData[idP]["year"]));
+  }
+
   for (var i = 0; i < publish.length; i++) {
-    var idJ = parseInt(publish[i]["idJ"]);
-    var idP = parseInt(publish[i]["idP"]);
-    data[idJ]["pubs"].push(pData[idP]);
-    data[idJ]["minYear"] = Math.min(data[idJ]["minYear"], parseInt(pData[idP]["year"]));
-    data[idJ]["maxYear"] = Math.max(data[idJ]["maxYear"], parseInt(pData[idP]["year"]));
+    var idP = +publish[i]["idP"];
+    var idJ = +publish[i]["idJ"];
+    wrotePJ[idP] = idJ;
   }
   loadControls();
   plot();
 }
+
 function loadControls() {
-  loadSearch();
   loadSort();
   loadSliderYear();
   loadPlotType();
 }
-function loadSearch() {
-  $("#c_search").html("");
-  var label = $("<label for='authors'>Search journal: </label>");
-  var input = $("<input id='author'>");
-  var names = [];
-  for (var k in name2id) names.push(k);
-  input.autocomplete({
-    source: names,
-    minLength: 1,
-    autoFocus: true,
-    select: function(event, ui) {
-      var id = name2id[ui.item.value];
-      location.href = "journal?id=" + id;
-    }
-  });
-  $("#c_search").append('<i class="fas fa-search"></i> ');
-  $("#c_search").append(label);
-  $("#c_search").append("<span> </span>");
-  $("#c_search").append(input);
-}
+
 function loadSort() {
-  var sortLabel = ["Name", "N° of publications"];
+  var sortLabel = ["Name", "Number of publications", "Number of citations"];
   $("#c_sort").html("");
+  addCollapse();
+
   var label = $("<label for='sort'>Sort by: </label>");
   var fields = $("<form></form>");
   for (var i = 0; i < sortLabel.length; i++) {
@@ -97,10 +100,10 @@ function loadSort() {
     fields.append("<label for='" + id + "'>" + sortLabel[i] + "</label>");
     fields.append("<br>");
   }
-  $("#c_sort").append('<i class="fas fa-sort-amount-up"></i> ');
-  $("#c_sort").append(label);
+  $("#c_sort").append('<b><i class="fas fa-sort-amount-up"></i> Sort by:</b>');
   $("#c_sort").append(fields);
 }
+
 function loadSliderYear() {
   minYear = 3000;
   maxYear = 1000;
@@ -110,7 +113,8 @@ function loadSliderYear() {
     maxYear = Math.max(maxYear, data[i]["maxYear"]);
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
-  sliderYearText.html("Years: <b>" + minYear + " - " + maxYear + "</b>");
+
+  sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
   sliderYearSlider.slider({
     range: true,
     min: minYear,
@@ -119,18 +123,23 @@ function loadSliderYear() {
     slide: function(event, ui) {
       minYear = ui.values[0];
       maxYear = ui.values[1];
-      sliderYearText.html("Years: <b>" + minYear + " - " + maxYear + "</b>");
+      sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
       plot();
     }
   });
+
+  addCollapse();
   $("#c_slider_years").append('<i class="fas fa-calendar-alt"></i> ');
   $("#c_slider_years").append(sliderYearText);
   $("#c_slider_years").append(sliderYearSlider);
+
 }
+
 function loadPlotType() {
-  var plotLabel = ["Stream graph", "Stacked bar", "Citations timeline"]; // TODO, "Bar graph", "Stream graph" ];
+  var plotLabel = ["Stacked bars", "Streamgraph publications/year", "Streamgraph citations/year"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
-  var label = $("<label for='plot'>Plot type: </label>");
+  addCollapse();
+
   var fields = $("<form></form>");
   for (var i = 0; i < plotLabel.length; i++) {
     var id = "plot-" + i;
@@ -146,212 +155,178 @@ function loadPlotType() {
     fields.append("<span> </span>");
     fields.append("<br>");
   }
-  $("#c_chart").append('<i class="fas fa-chart-bar"></i> ');
-  $("#c_chart").append(label);
+  $("#c_chart").append('<b><i class="fas fa-chart-bar"></i> Plot type: </b>');
   $("#c_chart").append(fields);
+
 }
-var sortF = [];
-sortF[0] = (a, b) => (a["name"] < b["name"] ? -1 : 1);
-sortF[1] = (a, b) => (b["pubs"].length - a["pubs"].length);
+
+
 function filter() {
-  var ret = data.slice();
-  ret.sort(sortF[sort]);
+  var ret = pData.filter(function(pp){
+    if( pp["year"] < minYear ) return false;
+    if( pp["year"] > maxYear ) return false;
+    if( journalsBanned[ pp["journals"][0] ] ) return false;
+    return true;
+  });
+
+  for (var i = 0; i < dJournals.length; i++)
+    dJournals[i]["pubs"] = [];
+
+  for(var i=0; i<ret.length; i++)
+  { 
+    dJournals[ ret[i]["journals"][0] ]["pubs"].push(ret[i]["id"]);
+  }
+
+  for (var i = 0; i < dJournals.length; i++)
+  {
+    dJournals[i]["citations"] = d3.sum(dJournals[i]["pubs"], x => (dCitations[x]||[]).length ) || 0 ;
+    dJournals[i]["minYear"] = d3.min(dJournals[i]["pubs"], x => +pData[x]["year"] ) || 0 ;
+    dJournals[i]["maxYear"] = d3.max(dJournals[i]["pubs"], x => +pData[x]["year"] ) || 0;
+  }
   return ret;
 }
+
 var filterData = [];
+
 function plot() {
   filterData = filter();
   updateInfo(filterData);
   updateList(filterData);
   plotFunctions[plotType](filterData);
 }
+
 function updateInfo(dataF) {
   $("#c_info").html("");
-  $("#c_info").append("<div><i class='far fa-question-circle'></i> <b>" + data.length + "</b> total journals in dataset</div>");
+  addCollapse();
+  $("#c_info").append("<div><i class='fas fa-info-circle'></i> <b>" + dJournals.length + "</b> total journals in dataset</div>");
+  $("#c_info").append("<div>Selected <b>" + dataF.length + "</b> papers published in the years <b>" + minYear + "</b> - <b>" + maxYear + "</b></div>");
 }
 
-function updateList(data) {
-  $("#c_journals").html("");
-  var list = $("<ul></ul>");
-  list.css("max-height", "512px");
-  for (var i = 0; i < data.length; i++) {
-    var el = $("<li><a href='journal?id=" + data[i]["id"] + "'>[" + data[i]["tag"].toUpperCase() + "] " + data[i]["name"] + " (" + data[i]["pubs"].length + " publications between " + data[i]["minYear"] + " and " + data[i]["maxYear"] + ")</a></li>");
-    $("a", el).attr("id", "journal-" + data[i]["id"]);
-    el.hover((function(i) {
-      return function() {
-        selectedId = i;
-        plotFunctions[plotType](filterData);
+function updateList(dataF) {
+
+  var sortF = [];
+  sortF[0] = (a,b) => a["tag"] < b["tag"] ? -1 : 1;
+  sortF[1] = (a,b) => b["pubs"].length - a["pubs"].length;
+  sortF[2] = (a,b) => b["citations"] - a["citations"];
+
+  var dJournalsC = dJournals.slice().sort( sortF[sort] );
+
+  var list = $("<div>");
+  for (var i = 0; i < dJournalsC.length; i++)
+  {
+    var j = $("<div></div>");
+    j.append($("<input type=checkbox "+ (journalsBanned[dJournalsC[i]["id"]] == true ? "" : "checked") + " />").on("change", (function(id){
+       return function(){
+        journalsBanned[ +dJournals[id]["id"] ] = !journalsBanned[+dJournals[id]["id"]];
+        plot();
       }
-    })(data[i]["id"]), function() {
-      selectedId = -1;
-      plotFunctions[plotType](filterData);
-    });
-    list.append(el);
+    })(dJournalsC[i]["id"])));
+    j.append(" ");
+    j.append("<a href='journal?id=" + dJournals[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
+    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
+    list.append(j);
   }
-  $("#c_journals").html("<h4>Journals list:</h4>");
+
+  $("#c_journals").html("");
+  addCollapse();
+  $("#c_journals").append('<b><i class="fas fa-book"></i> Journals: </b>');
   $("#c_journals").append(list);
 }
-plotDescr[0] = "";
-plotFunctions[0] = function(dataF) {
-  // Chart 1
-  var margin = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50
-  };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
-  $("#c_plot").html("");
-  $("#c_plot").append("<h3>Plot</h3>");
-  var svg = d3.select("#c_plot")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
-  svg.selectAll("*").remove();
-  g = svg.append("g");
-  var data = [];
-  for (var i = minYear; i <= maxYear; i++) {
-    var o = {};
-    o["year"] = i;
-    for (var j = 0; j < dataF.length; j++)
-      o[dataF[j]["tag"]] = 0;
-    data.push(o);
-  }
-  for (var i = 0; i < dataF.length; i++) {
-    var tag = dataF[i]["tag"];
-    for (var j = 0; j < dataF[i]["pubs"].length; j++) {
-      var pub = dataF[i]["pubs"][j];
-      if (pub["year"] < minYear) continue;
-      if (pub["year"] > maxYear) continue;
-      data[pub["year"] - minYear][tag]++;
-    }
-  }
-  var keys = [];
-  for (var i = 0; i < dataF.length; i++)
-    keys.push(dataF[i]["tag"]);
-  var stack = d3.stack()
-    .keys(keys)
-    .order(d3.stackOrderNone)
-    .offset(d3.stackOffsetWiggle);
-  var series = stack(data);
-  var x = d3.scaleLinear()
-    .domain([minYear, maxYear])
-    .range([0, width]);
-  var xAxis = d3.axisTop(x);
-  var y = d3.scaleLinear()
-    .domain([0, d3.max(series, function(layer) {
-      return d3.max(layer, function(d) {
-        return d[0] + d[1];
-      });
-    })])
-    .range([0, height * .8]);
-  var z = d3.scaleOrdinal().range(d3.schemeCategory10);
-  var area = d3.area()
-    .x(function(d) {
-      return x(d.data.year);
-    })
-    .y0(function(d) {
-      return y(d[0]) + height / 2;
-    })
-    .y1(function(d) {
-      return y(d[1]) + height / 2;
-    })
-    .curve(d3.curveBasis);
 
-  g.selectAll("path")
-    .data(series)
-    .enter().append("path")
-    .attr("d", area)
-    .style("fill", function(d, i) {
-      $("#journal-" + i).css("color", z(i));
-      return z(i);
-    })
-    .style("fill-opacity", function(d, i) {
-      return selectedId == -1 ? 1 : (selectedId == i ? 1 : 0.5);
-    })
-    .style("cursor", "pointer")
-    .on("click", function(d, i) {
-      location.href = "journal?id=" + i;
-    })
-    .append("svg:title")
-    .text(function(d, i) {
-      data[i]["name"]
-    });
-  g.append("g").call(xAxis.ticks(16)).selectAll("text")
-    .attr("y", -10)
-    .attr("x", 10)
-    .attr("dy", ".50em")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "start")
-  z.domain(keys);
-};
-plotDescr[1] = "";
-plotFunctions[1] = function(data) {
-  // Chart 1
-  var margin = {
-    top: 10,
-    right: 20,
-    bottom: 70,
-    left: 70
+$(window).resize(plot);
+
+plotFunctions[0] = function(data) {
+    var margin = {
+    top: 25,
+    right: 25,
+    bottom: 80,
+    left: 55
   };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
   $("#c_plot").html("");
-  $("#c_plot").append("<h3>Plot</h3>");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
+
   var svg = d3.select("#c_plot")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
-  svg.selectAll("*").remove();
-  // set x scale
-  var x = d3.scaleBand()
-    .rangeRound([0, width]);
-  //    .paddingInner(0.05)
-  //    .align(0.1);
-  // set y scale
-  var y = d3.scaleLinear()
-    .rangeRound([height, 0]);
-  // set the colors
-  var z = d3.scaleOrdinal()
-    .range(d3.schemeCategory10);
-  keys = [];
-  for (var i = 0; i < data.length; i++)
-    keys.push(data[i]["tag"]);
-  var g = svg;
+
+
+  // X Axis
+  var minY = d3.min(data, x => +x["year"]);
+  var maxY = d3.max(data, x => +x["year"]);
+  var x = d3.scaleBand().rangeRound([0, width]).domain(d3.range(minY, maxY+1));
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("y", 10)
+    .attr("x", 10)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(45)")
+    .style("text-anchor", "start");
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
+    .style("text-anchor", "middle")
+    .text("Year");
+
+  // Y Axis
+  var keys = dJournals.map(x => x["tag"]);
+
   var dataP = [];
   for (var i = minYear; i <= maxYear; i++) {
     var o = {};
     o["year"] = i;
-    for (var k in keys) o[keys[k]] = 0;
+    keys.forEach( t => o[t] = 0);
     dataP.push(o);
   }
-  for (var i = 0; i < data.length; i++) {
-    for (var j = 0; j < data[i]["pubs"].length; j++) {
-      var yy = data[i]["pubs"][j]["year"];
-      if (yy < minYear) continue;
-      if (yy > maxYear) continue;
-      dataP[yy - minYear][data[i]["tag"]]++;
-    }
-  }
-  x.domain(d3.range(minYear, maxYear + 1)); // d3.range(minYear, maxYear)).nice();
-  y.domain([0, d3.max(dataP, function(d) {
-    var val = 0;
-    for (var k in d)
-      if (k != "year")
-        val += d[k]
-    return val;
+
+  for(var i=0; i<data.length; i++)
+    dataP[ data[i]["year"]-minYear ][ dJournals[ data[i]["journals"][0] ]["tag"] ]++
+
+  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, d3.max(dataP,function(e){
+    var s=0;
+    keys.forEach( t => s += e[t] );
+    return s;
   })]).nice();
-  z.domain(keys);
-  for (var i = 0; i < data.length; i++)
-    $("#journal-" + data[i]["id"]).css("color", z(data[i]["tag"]));
-  g.append("g")
+
+  svg.append("g")
+    .attr("class", "axis")
+    .call(d3.axisLeft(y))
+    .append("text")
+    .attr("x", 2)
+    .attr("y", y(y.ticks().pop()) + 0.5)
+    .attr("dy", "0.32em")
+    .attr("fill", "#000")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start");
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("#publications");
+
+  var z = d3.scaleOrdinal().range(d3.schemeCategory10).domain(keys);
+
+  // Plot
+  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("display", "none")
+    .style("z-index", "1000")
+    .style("opacity", "1");
+
+
+  svg.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(dataP))
     .enter().append("g")
@@ -373,25 +348,67 @@ plotFunctions[1] = function(data) {
       return y(d[0]) - y(d[1]);
     })
     .attr("width", x.bandwidth())
-    .on("mouseover", function() {
-      tooltip.style("display", "block");
-    })
-    .on("mouseout", function() {
-      tooltip.style("display", "none");
-    })
-    .on("mousemove", function(d, i) {
-      var xPosition = d3.mouse(this)[0] - 75;
-      var yPosition = d3.mouse(this)[1] - 25;
+    .style("cursor", "pointer")
+    .on("click", function(d, i){
       var dif = d[1] - d[0];
       var lab = "";
       for (var k in d.data)
         if (d.data[k] == dif)
           lab = k;
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(lab + " - " + dif);
+      var id = -1;
+      for(var i=0; i<dJournals.length; i++)
+        if( lab == dJournals[i]["tag"] ) id = i;
+      location.href="journal?id=" + id;
+    })
+    .on("mouseover", function(d, i) {
+      tooltip.style("display", "block");
+      var dif = d[1] - d[0];
+      var lab = "";
+      for (var k in d.data)
+        if (d.data[k] == dif)
+          lab = k;
+      tooltip.html("[" + lab.toUpperCase() + "] " + dif + " papers in " + d.data["year"]);
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mouseout", function() {
+      tooltip.style("display", "none");
+    })
+    .on("mousemove", function(d, i) {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
     });
-  // X AXIS
-  g.append("g")
+
+};
+
+/************************************************/
+plotFunctions[1] = function(data) {
+    var margin = {
+    top: 80,
+    right: 25,
+    bottom: 80,
+    left: 55
+  };
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  console.log(data);
+  $("#c_plot").html("");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
+
+  var svg = d3.select("#c_plot")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // X Axis
+  var minY = d3.min(data, x => +x["year"]);
+  var maxY = d3.max(data, x => +x["year"]);
+  var x = d3.scaleBand().rangeRound([0, width]).domain(d3.range(minY, maxY+1));
+  svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x))
@@ -406,42 +423,217 @@ plotFunctions[1] = function(data) {
       "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
     .style("text-anchor", "middle")
     .text("Year");
-  // Y AXIS
-  g.append("g")
-    .attr("class", "axis")
-    .call(d3.axisLeft(y))
-    .append("text")
-    .attr("x", 2)
-    .attr("y", y(y.ticks().pop()) + 0.5)
-    .attr("dy", "0.32em")
-    .attr("fill", "#000")
-    .attr("font-weight", "bold")
-    .attr("text-anchor", "start");
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text("#publications");
-  // Prep the tooltip bits, initial display is hidden
-  tooltip = g.append("g")
+
+  // Y Axis
+  var keys = dJournals.map(x => x["tag"]);
+
+  var dataP = [];
+  for (var i = minY; i <= maxY; i++) {
+    var o = {};
+    o["year"] = i;
+    keys.forEach( t => o[t] = 0);
+    dataP.push(o);
+  }
+
+  for(var i=0; i<data.length; i++)
+    dataP[ data[i]["year"]-minY ][ dJournals[ data[i]["journals"][0] ]["tag"] ]++
+
+  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, d3.max(dataP,function(e){
+    var s=0;
+    keys.forEach( t => s += e[t] );
+    return s;
+  })]).nice();
+
+  var z = d3.scaleOrdinal().range(d3.schemeCategory10).domain(keys);
+
+  // Plot
+  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("display", "none")
-    .style("opacity", 1)
-    .style("z-index", 1000);
-  tooltip.append("rect")
-    .attr("width", 80)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("text-align", "center")
-    .style("opacity", .5)
-    .style("z-index", 1000);
-  tooltip.append("text")
-    .attr("x", 40)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .style("text-align", "center")
-    .attr("font-size", "12px")
-    .attr("font-weight", "bold");
+    .style("z-index", "1000")
+    .style("opacity", "1");
+
+  var stack = d3.stack().keys(keys)
+    .order(d3.stackOrderNone)
+    .offset(d3.stackOffsetWiggle);
+  var series = stack(dataP);
+
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(series, function(layer) {
+      return d3.max(layer, function(d) {
+        return d[0]+d[1];
+      });
+    })])
+    .range([0, height]);
+
+  var area = d3.area()
+    .x(function(d) { return x(d.data["year"]); })
+    .y0(function(d) { return y(d[0])+height/2-80; })
+    .y1(function(d) { return y(d[1])+height/2-80; })
+    .curve(d3.curveBasis);
+
+  svg.selectAll("path")
+    .data(series)
+    .enter().append("path")
+    .attr("d", area)
+    .style("cursor", "pointer")
+    .style("fill", function(d,i) {
+      return z(d.key);
+    })
+    .on('mouseover', function(d){
+      d3.select(this).style('fill',d3.rgb( d3.select(this).style("fill") ).brighter());
+      d3.select("#major").text(d.key);
+      tooltip.style("display", "block");
+      tooltip.html("[" + d.key.toUpperCase() + "] ");
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on('mouseout', function(d){
+      tooltip.style("display", "none");
+      d3.select(this).style('fill',
+         d3.rgb( d3.select(this).style("fill") ).darker());
+         d3.select("#major").text("Mouse over");
+    })
+    .on("mousemove", function(d, i) {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("click", function(d, i){
+      var id = -1;
+      dJournals.forEach(function(e){
+        if( e["tag"] == d.key ) id = e["id"];
+      });
+      location.href = "journal?id=" + id;
+    });
 
 };
+
+/************************************************/
+plotFunctions[2] = function(data) {
+    var margin = {
+    top: 80,
+    right: 25,
+    bottom: 80,
+    left: 55
+  };
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  console.log(data);
+  $("#c_plot").html("");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
+
+  var svg = d3.select("#c_plot")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // X Axis
+  var minY = d3.min(data, x => +x["year"]);
+  var maxY = d3.max(data, x => +x["year"]);
+  var x = d3.scaleBand().rangeRound([0, width]).domain(d3.range(minY, maxY+1));
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("y", 10)
+    .attr("x", 10)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(45)")
+    .style("text-anchor", "start");
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
+    .style("text-anchor", "middle")
+    .text("Year");
+
+  // Y Axis
+  var keys = dJournals.map(x => x["tag"]);
+
+  var dataP = [];
+  for (var i = minY; i <= maxY; i++) {
+    var o = {};
+    o["year"] = i;
+    keys.forEach( t => o[t] = 0);
+    dataP.push(o);
+  }
+
+  for(var i=0; i<data.length; i++)
+    dataP[ data[i]["year"]-minY ][ dJournals[ data[i]["journals"][0] ]["tag"] ] += (dCitations[+data[i]["id"]]||[]).length;
+
+  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, d3.max(dataP,function(e){
+    var s=0;
+    keys.forEach( t => s += e[t] );
+    return s;
+  })]).nice();
+
+  var z = d3.scaleOrdinal().range(d3.schemeCategory10).domain(keys);
+
+  // Plot
+  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("display", "none")
+    .style("z-index", "1000")
+    .style("opacity", "1");
+
+  var stack = d3.stack().keys(keys)
+    .order(d3.stackOrderNone)
+    .offset(d3.stackOffsetWiggle);
+  var series = stack(dataP);
+
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(series, function(layer) {
+      return d3.max(layer, function(d) {
+        return d[0]+d[1];
+      });
+    })])
+    .range([0, height]);
+
+  var area = d3.area()
+    .x(function(d) { return x(d.data["year"]); })
+    .y0(function(d) { return y(d[0])+height/2-80; })
+    .y1(function(d) { return y(d[1])+height/2-80; })
+    .curve(d3.curveBasis);
+
+  svg.selectAll("path")
+    .data(series)
+    .enter().append("path")
+    .attr("d", area)
+    .style("cursor", "pointer")
+    .style("fill", function(d,i) {
+      return z(d.key);
+    })
+    .on('mouseover', function(d){
+      d3.select(this).style('fill',d3.rgb( d3.select(this).style("fill") ).brighter());
+      d3.select("#major").text(d.key);
+      tooltip.style("display", "block");
+      tooltip.html("[" + d.key.toUpperCase() + "] ");
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on('mouseout', function(d){
+      tooltip.style("display", "none");
+      d3.select(this).style('fill',
+         d3.rgb( d3.select(this).style("fill") ).darker());
+         d3.select("#major").text("Mouse over");
+    })
+    .on("mousemove", function(d, i) {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("click", function(d, i){
+      var id = -1;
+      dJournals.forEach(function(e){
+        if( e["tag"] == d.key ) id = e["id"];
+      });
+      location.href = "journal?id=" + id;
+    });
+
+};
+

@@ -76,6 +76,41 @@ function loadControls() {
   loadSort();
   loadChart();
   loadDegree();
+  loadInfluences();
+}
+
+function loadInfluences()
+{
+  var authInfl = {};
+  dAuthors[id]["pubs"].map( x => dCitations[x] )
+  .forEach(function(pp){
+    pp.map( p => dPapers[p]["authors"] ).forEach(function(as){
+      as.forEach(function(aas){
+        if( authInfl[aas] == undefined ) authInfl[aas] = 1;
+        else authInfl[aas]++;
+      });
+    });
+   });
+  var auths = [];
+  for(var ida in authInfl) auths.push( [+ida, authInfl[ida]] );
+  auths.sort( (a,b) => b[1] - a[1] );
+
+  console.log(auths);
+  var ul = $("<ol>");
+  ul.css({
+    "max-height": "300px",
+    "overflow-y": "scroll"
+  });
+  for (var i = 0; i < Math.min(128, auths.length); i++) {
+    var li = $("<li>");
+    li.html( "<a href='author?id="+ auths[i][0] + "'>" + dAuthors[ +auths[i][0] ]["name"] + "</a> ("+auths[i][1]+" citations of "+dAuthors[id]["name"]+" papers)");
+    ul.append(li);
+  }
+  $("#c_influenced").html("");
+  addCollapse();
+  $("#c_influenced").append("<b><i class='fas fa-users'></i> Top influenced authors:</b>");
+  $("#c_influenced").append(ul);
+
 }
 
 var minYear = 0;
