@@ -136,7 +136,7 @@ function loadSliderYear() {
 }
 
 function loadPlotType() {
-  var plotLabel = ["Stacked bars", "Streamgraph publications/year", "Streamgraph citations/year"]; // TODO, "Bar graph", "Stream graph" ];
+  var plotLabel = ["Stacked bars", "Streamgraph paper/year", "Citations timeline", "Papers timeline"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
   addCollapse();
 
@@ -222,7 +222,7 @@ function updateList(dataF) {
       }
     })(dJournalsC[i]["id"])));
     j.append(" ");
-    j.append("<a href='journal?id=" + dJournals[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
+    j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
     j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
     list.append(j);
   }
@@ -483,7 +483,6 @@ plotFunctions[1] = function(data) {
     })
     .on('mouseover', function(d){
       d3.select(this).style('fill',d3.rgb( d3.select(this).style("fill") ).brighter());
-      d3.select("#major").text(d.key);
       tooltip.style("display", "block");
       tooltip.html("[" + d.key.toUpperCase() + "] ");
       tooltip.style("left", (d3.event.pageX + 5) + "px")
@@ -493,7 +492,6 @@ plotFunctions[1] = function(data) {
       tooltip.style("display", "none");
       d3.select(this).style('fill',
          d3.rgb( d3.select(this).style("fill") ).darker());
-         d3.select("#major").text("Mouse over");
     })
     .on("mousemove", function(d, i) {
       tooltip.style("left", (d3.event.pageX + 5) + "px")
@@ -512,15 +510,14 @@ plotFunctions[1] = function(data) {
 /************************************************/
 plotFunctions[2] = function(data) {
     var margin = {
-    top: 80,
+    top: 20,
     right: 25,
     bottom: 80,
-    left: 55
+    left: 80
   };
   var width = $("#c_plot").width() - margin.left - margin.right,
     height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
 
-  console.log(data);
   $("#c_plot").html("");
   addCollapse();
   $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
@@ -532,10 +529,33 @@ plotFunctions[2] = function(data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // X Axis
   var minY = d3.min(data, x => +x["year"]);
   var maxY = d3.max(data, x => +x["year"]);
-  var x = d3.scaleBand().rangeRound([0, width]).domain(d3.range(minY, maxY+1));
+  var maxV = 0;
+  var dataP = []
+  for(var i=0; i <data.length; i++)
+  {
+    var y = +data[i]["year"];
+    var j = +data[i]["journals"][0];
+    if( dataP[j] == undefined )
+    {
+      dataP[j] = [];
+      for(var k=minY; k<=maxY; k++)
+        dataP[j][k-minY] = [k, 0];
+    }
+    dataP[j][y-minY][1] += (dCitations[data[i]["id"]]||[]).length;
+  }
+
+  for(var i=0; i<dataP.length; i++)
+    for(var j=1; j<dataP[i].length; j++)
+    {
+      dataP[i][j][1] += dataP[i][j-1][1];
+      maxV = Math.max(maxV, dataP[i][j][1]);
+    }
+  console.log(dataP);
+
+  // X Axis
+  var x = d3.scaleLinear().rangeRound([0, width]).domain([minY, maxY+1]).nice();
   svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
@@ -546,32 +566,25 @@ plotFunctions[2] = function(data) {
     .attr("dy", ".35em")
     .attr("transform", "rotate(45)")
     .style("text-anchor", "start");
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("#citations");
+
   svg.append("text")
     .attr("transform",
-      "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
+      "translate(" + (width / 2) + " ," + (height + margin.top+ 40) + ")")
     .style("text-anchor", "middle")
     .text("Year");
 
   // Y Axis
+  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, maxV]).nice();
+
   var keys = dJournals.map(x => x["tag"]);
-
-  var dataP = [];
-  for (var i = minY; i <= maxY; i++) {
-    var o = {};
-    o["year"] = i;
-    keys.forEach( t => o[t] = 0);
-    dataP.push(o);
-  }
-
-  for(var i=0; i<data.length; i++)
-    dataP[ data[i]["year"]-minY ][ dJournals[ data[i]["journals"][0] ]["tag"] ] += (dCitations[+data[i]["id"]]||[]).length;
-
-  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, d3.max(dataP,function(e){
-    var s=0;
-    keys.forEach( t => s += e[t] );
-    return s;
-  })]).nice();
-
   var z = d3.scaleOrdinal().range(d3.schemeCategory10).domain(keys);
 
   // Plot
@@ -582,58 +595,193 @@ plotFunctions[2] = function(data) {
     .style("z-index", "1000")
     .style("opacity", "1");
 
-  var stack = d3.stack().keys(keys)
-    .order(d3.stackOrderNone)
-    .offset(d3.stackOffsetWiggle);
-  var series = stack(dataP);
 
-  var y = d3.scaleLinear()
-    .domain([0, d3.max(series, function(layer) {
-      return d3.max(layer, function(d) {
-        return d[0]+d[1];
-      });
-    })])
-    .range([0, height]);
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
 
-  var area = d3.area()
-    .x(function(d) { return x(d.data["year"]); })
-    .y0(function(d) { return y(d[0])+height/2-80; })
-    .y1(function(d) { return y(d[1])+height/2-80; })
-    .curve(d3.curveBasis);
 
-  svg.selectAll("path")
-    .data(series)
-    .enter().append("path")
-    .attr("d", area)
-    .style("cursor", "pointer")
-    .style("fill", function(d,i) {
-      return z(d.key);
-    })
-    .on('mouseover', function(d){
-      d3.select(this).style('fill',d3.rgb( d3.select(this).style("fill") ).brighter());
-      d3.select("#major").text(d.key);
+    var line = d3.line()
+      .x(d => x(d[0]))
+      .y(d => y(d[1]))
+
+  for(var i=0; i<dataP.length; i++)
+  {
+    svg.append("path")
+      .attr("d", line(dataP[i]))
+      .attr("stroke", z( keys[i] ) )
+      .attr("stroke-width",2)
+      .attr("fill", "none");
+
+    svg.selectAll("dot")
+      .data(dataP[i])
+      .enter().append("circle")
+      .attr("stroke", z( keys[i] ) )
+      .attr("fill", z( keys[i] ) )
+      .attr("fill-opacity", 0.5)
+      .attr("r", 4)
+      .attr("cx", function(d) {
+        return x(d[0]);
+      })
+      .attr("cy", function(d) {
+        return y(d[1]);
+      })
+      .style("cursor", "pointer")
+      .on("click", (function(id){ return _ => location.href = "journal?id=" + id;})(i))
+    .on('mouseover', (function(tag, num){ return function(d, i){
       tooltip.style("display", "block");
-      tooltip.html("[" + d.key.toUpperCase() + "] ");
+      tooltip.html("["+tag.toUpperCase()+"] " + d[1] + " citations");
       tooltip.style("left", (d3.event.pageX + 5) + "px")
              .style("top", (d3.event.pageY - 28) + "px");
-    })
+    }})(keys[i], dataP[i]))
     .on('mouseout', function(d){
       tooltip.style("display", "none");
-      d3.select(this).style('fill',
-         d3.rgb( d3.select(this).style("fill") ).darker());
-         d3.select("#major").text("Mouse over");
     })
     .on("mousemove", function(d, i) {
       tooltip.style("left", (d3.event.pageX + 5) + "px")
              .style("top", (d3.event.pageY - 28) + "px");
     })
-    .on("click", function(d, i){
-      var id = -1;
-      dJournals.forEach(function(e){
-        if( e["tag"] == d.key ) id = e["id"];
-      });
-      location.href = "journal?id=" + id;
-    });
 
+
+  }
+};
+
+/************************************************/
+plotFunctions[3] = function(data) {
+    var margin = {
+    top: 20,
+    right: 25,
+    bottom: 80,
+    left: 80
+  };
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  $("#c_plot").html("");
+  addCollapse();
+  $("#c_plot").append("<b><i class='fas fa-chart-line'></i> Plot:</b>");
+
+  var svg = d3.select("#c_plot")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var minY = d3.min(data, x => +x["year"]);
+  var maxY = d3.max(data, x => +x["year"]);
+  var maxV = 0;
+  var dataP = []
+  for(var i=0; i <data.length; i++)
+  {
+    var y = +data[i]["year"];
+    var j = +data[i]["journals"][0];
+    if( dataP[j] == undefined )
+    {
+      dataP[j] = [];
+      for(var k=minY; k<=maxY; k++)
+        dataP[j][k-minY] = [k, 0];
+    }
+    dataP[j][y-minY][1]++;
+  }
+
+  for(var i=0; i<dataP.length; i++)
+    for(var j=1; j<dataP[i].length; j++)
+    {
+      dataP[i][j][1] += dataP[i][j-1][1];
+      maxV = Math.max(maxV, dataP[i][j][1]);
+    }
+  console.log(dataP);
+
+  // X Axis
+  var x = d3.scaleLinear().rangeRound([0, width]).domain([minY, maxY+1]).nice();
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("y", 10)
+    .attr("x", 10)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(45)")
+    .style("text-anchor", "start");
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("#papers");
+
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," + (height + margin.top+ 40) + ")")
+    .style("text-anchor", "middle")
+    .text("Year");
+
+  // Y Axis
+  var y = d3.scaleLinear().rangeRound([height, 0]).domain([0, maxV]).nice();
+
+  var keys = dJournals.map(x => x["tag"]);
+  var z = d3.scaleOrdinal().range(d3.schemeCategory10).domain(keys);
+
+  // Plot
+  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("display", "none")
+    .style("z-index", "1000")
+    .style("opacity", "1");
+
+
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+
+    var line = d3.line()
+      .x(d => x(d[0]))
+      .y(d => y(d[1]))
+
+  for(var i=0; i<dataP.length; i++)
+  {
+    svg.append("path")
+      .attr("d", line(dataP[i]))
+      .attr("stroke", z( keys[i] ) )
+      .attr("stroke-width",2)
+      .attr("fill", "none");
+
+    svg.selectAll("dot")
+      .data(dataP[i])
+      .enter().append("circle")
+      .attr("stroke", z( keys[i] ) )
+      .attr("fill", z( keys[i] ) )
+      .attr("fill-opacity", 0.5)
+      .attr("r", 4)
+      .attr("cx", function(d) {
+        return x(d[0]);
+      })
+      .attr("cy", function(d) {
+        return y(d[1]);
+      })
+      .style("cursor", "pointer")
+      .on("click", (function(id){ return _ => location.href = "journal?id=" + id;})(i))
+    .on('mouseover', (function(tag, num){ return function(d, i){
+      tooltip.style("display", "block");
+      tooltip.html("["+tag.toUpperCase()+"] " + d[0] + "<br>" + d[1] + " papers");
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    }})(keys[i], dataP[i]))
+    .on('mouseout', function(d){
+      tooltip.style("display", "none");
+    })
+    .on("mousemove", function(d, i) {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+
+
+  }
 };
 
