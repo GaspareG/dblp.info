@@ -201,7 +201,7 @@ function loadAuthorsList() {
 
   for (var i = 0; i < points.length; i++) {
     var name = dAuthors[points[i][0]]["name"]
-    var li = $("<li><a href='author?id='" + points[i][0] + "'>" + name + " (" + points[i][1] + " publications)</a></li>");
+    var li = $("<li><a href='author?id='" + points[i][0] + "'>" + name + "</a> (" + points[i][1] + " publications)</li>");
     ul.append(li);
   }
 
