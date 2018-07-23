@@ -1,88 +1,92 @@
 var plotFunctions = [];
-var filterFunctions = [];
-var plotDescr = [];
 var sort = 0;
 var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
-var selectedId = -1;
+var journalsBanned = {};
+var plotTypeChart = 0;
+
 $(function() {
-  loadJournals(function(journals) {
-    loadPublish(function(publish) {
+  loadAuthors(function(authors) {
+    loadWrote(function(wrote) {
       loadPapers(function(papers) {
-        loadWrote(function(wrote) {
-          loadAuthors(function(authors) {
-            parseData(journals, publish, papers, wrote, authors);
+        loadPublish(function(publish) {
+          loadJournals(function(journals) {
+            loadCitations(function(citations) {
+              parseData(authors, wrote, papers, publish, journals, citations);
+            });
           });
         });
       });
     });
   });
 });
+
+var data = [];
+var name2id = {};
+
 var dJournals = [];
-var dPublish = [];
-var dPapers = [];
-var dWrote = [];
-var dAuthors = [];
-var paper2id = {};
-function parseData(journals, publish, papers, wrote, authors) {
-  for (var i = 0; i < journals.length; i++) {
-    dJournals[parseInt(journals[i]["id"])] = journals[i];
-    dJournals[parseInt(journals[i]["id"])]["pubs"] = [];
+var wrotePJ = {};
+
+var dCitations = {};
+var pData = []
+
+function parseData(authors, wrote, papers, publish, journals, citations) {
+  dJournals = journals;
+
+  for(var i=0; i<journals.length; i++)
+    journalsBanned[+journals[i]["id"]] = false;
+
+  for(var i=0; i<citations.length; i++)
+  {
+    var idP1 = +citations[i]["idP1"];
+    var idP2 = +citations[i]["idP2"];
+    if( dCitations[idP1] == undefined ) dCitations[idP1] = [];
+    dCitations[idP1].push(idP2);
   }
-  for (var i = 0; i < papers.length; i++) {
-    dPapers[parseInt(papers[i]["id"])] = papers[i];
-    dPapers[parseInt(papers[i]["id"])]["journals"] = [];
-    dPapers[parseInt(papers[i]["id"])]["authors"] = [];
-    paper2id[papers[i]["title"]] = parseInt(papers[i]["id"]);
-  }
+
   for (var i = 0; i < authors.length; i++) {
-    dAuthors[parseInt(authors[i]["id"])] = authors[i];
-    dAuthors[parseInt(authors[i]["id"])]["pubs"] = [];
+    name2id[authors[i]["name"]] = parseInt(authors[i]["id"]);
+    data[parseInt(authors[i]["id"])] = authors[i];
+    data[parseInt(authors[i]["id"])]["pubs"] = [];
+    data[parseInt(authors[i]["id"])]["minYear"] = 3000;
+    data[parseInt(authors[i]["id"])]["maxYear"] = 1000;
   }
+  for (var i = 0; i < papers.length; i++)
+    pData[parseInt(papers[i]["id"])] = papers[i];
+
+  for(var i=0; i<publish.length; i++)
+    pData[ +publish[i]["idP"] ]["journals"] = [+publish[i]["idJ"]];
+
   for (var i = 0; i < wrote.length; i++) {
     var idA = parseInt(wrote[i]["idA"]);
     var idP = parseInt(wrote[i]["idP"]);
-    dAuthors[idA]["pubs"].push(idP);
-    dPapers[idP]["authors"].push(idA);
+    data[idA]["pubs"].push(pData[idP]);
+    data[idA]["minYear"] = Math.min(data[idA]["minYear"], parseInt(pData[idP]["year"]));
+    data[idA]["maxYear"] = Math.max(data[idA]["maxYear"], parseInt(pData[idP]["year"]));
   }
+
   for (var i = 0; i < publish.length; i++) {
-    var idJ = parseInt(publish[i]["idJ"]);
-    var idP = parseInt(publish[i]["idP"]);
-    dJournals[idJ]["pubs"].push(idP);
-    dPapers[idP]["journals"].push(idJ);
+    var idP = +publish[i]["idP"];
+    var idJ = +publish[i]["idJ"];
+    wrotePJ[idP] = idJ;
   }
   loadControls();
   plot();
 }
+
 function loadControls() {
-  loadSearch();
   loadSort();
   loadSliderYear();
-  //  loadPlotType();
+  loadPlotType();
+  loadScaleType();
 }
-function loadSearch() {
-  $("#c_search").html("");
-  var label = $("<label for='authors'>Search papers: </label>");
-  var input = $("<input id='papers'>");
-  var names = dPapers.map(x => x["title"]);
-  input.autocomplete({
-    source: names,
-    minLength: 4,
-    autoFocus: true,
-    select: function(event, ui) {
-      var id = paper2id[ui.item.value];
-      location.href = "paper?id=" + id;
-    }
-  });
-  $("#c_search").append('<i class="fas fa-search"></i> ');
-  $("#c_search").append(label);
-  $("#c_search").append("<span> </span>");
-  $("#c_search").append(input);
-}
+
 function loadSort() {
-  var sortLabel = ["Year asc", "Year desc", "Title"];
+  var sortLabel = ["Year", "Name", "Number of citations"];
   $("#c_sort").html("");
+  addCollapse();
+
   var label = $("<label for='sort'>Sort by: </label>");
   var fields = $("<form></form>");
   for (var i = 0; i < sortLabel.length; i++) {
@@ -98,16 +102,44 @@ function loadSort() {
     fields.append("<label for='" + id + "'>" + sortLabel[i] + "</label>");
     fields.append("<br>");
   }
-  $("#c_sort").append('<i class="fas fa-sort-amount-up"></i> ');
-  $("#c_sort").append(label);
+  $("#c_sort").append('<b><i class="fas fa-sort-amount-up"></i> Sort by:</b>');
   $("#c_sort").append(fields);
 }
+
+function loadScaleType() {
+  var plotLabel = ["x: Log - y: Log", "x: Lin - y: Log", "x: Log - y: Lin", "x: Lin - y: Lin"];
+  $("#c_plot_type").html("");
+  addCollapse();
+
+  var fields = $("<form></form>");
+  for (var i = 0; i < plotLabel.length; i++) {
+    var id = "axis-" + i;
+    var el = $("<input type='radio' name='axis' id='" + id + "' value='" + i + "'>");
+    el.attr("checked", i == 0);
+    el.on("change", function() {
+      plotType = parseInt(this.value);
+      drawDegree(filterData); // plot();
+    });
+    fields.append(el)
+    fields.append("<span> </span>");
+    fields.append("<label for='" + id + "'>" + plotLabel[i] + "</label>");
+    fields.append("<br>");
+  }
+  $("#c_plot_type").append('<b><i class="fas fa-sort-amount-up"></i> Axis scales:</b>');
+  $("#c_plot_type").append(fields);
+}
+
 function loadSliderYear() {
-  minYear = d3.min(dPapers, x => +x["year"]);
-  maxYear = d3.max(dPapers, x => +x["year"]);
+  minYear = 3000;
+  maxYear = 1000;
+  for (var i = 0; i < data.length; i++)
+    minYear = Math.min(minYear, data[i]["minYear"]);
+  for (var i = 0; i < data.length; i++)
+    maxYear = Math.max(maxYear, data[i]["maxYear"]);
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
-  sliderYearText.html("Years: <b>" + minYear + " - " + maxYear + "</b>");
+
+  sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
   sliderYearSlider.slider({
     range: true,
     min: minYear,
@@ -116,25 +148,31 @@ function loadSliderYear() {
     slide: function(event, ui) {
       minYear = ui.values[0];
       maxYear = ui.values[1];
-      sliderYearText.html("Years: <b>" + minYear + " - " + maxYear + "</b>");
+      sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
       plot();
     }
   });
+
+  $("#c_slider_years").html("");
+  addCollapse();
   $("#c_slider_years").append('<i class="fas fa-calendar-alt"></i> ');
   $("#c_slider_years").append(sliderYearText);
   $("#c_slider_years").append(sliderYearSlider);
+
 }
+
 function loadPlotType() {
-  var plotLabel = ["Stream graph", "Stacked bar"]; // TODO, "Bar graph", "Stream graph" ];
+  var plotLabel = ["Stacked bars", "Streamgraph paper/year", "Citations timeline", "Papers timeline"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
-  var label = $("<label for='plot'>Plot type: </label>");
+  addCollapse();
+
   var fields = $("<form></form>");
   for (var i = 0; i < plotLabel.length; i++) {
     var id = "plot-" + i;
     var el = $("<input type='radio' id='" + id + "' name='plot' value='" + i + "'>");
     el.attr("checked", i == 0);
     el.on("change", function() {
-      plotType = parseInt(this.value);
+      plotTypeChart = parseInt(this.value);
       plot();
     });
     fields.append(el);
@@ -143,296 +181,261 @@ function loadPlotType() {
     fields.append("<span> </span>");
     fields.append("<br>");
   }
-  $("#c_chart").append('<i class="fas fa-chart-bar"></i> ');
-  $("#c_chart").append(label);
+  $("#c_chart").append('<b><i class="fas fa-chart-bar"></i> Plot type: </b>');
   $("#c_chart").append(fields);
+
 }
-var sortF = [];
-sortF[0] = (a, b) => (+a["year"] - +b["year"]);
-sortF[1] = (a, b) => (+b["year"] - +a["year"]);
-sortF[2] = (a, b) => (a["title"] < b["title"] ? -1 : 1);
+
+
 function filter() {
-  var ret = dPapers.filter(function(d) {
-    if (d["year"] < minYear) return false;
-    if (d["year"] > maxYear) return false;
+  var ret = pData.filter(function(pp){
+    if( pp["year"] < minYear ) return false;
+    if( pp["year"] > maxYear ) return false;
+    if( journalsBanned[ pp["journals"][0] ] ) return false;
     return true;
   });
-  ret.sort(sortF[sort]);
+
+  for (var i = 0; i < dJournals.length; i++)
+    dJournals[i]["pubs"] = [];
+
+  for(var i=0; i<ret.length; i++)
+  {
+    dJournals[ ret[i]["journals"][0] ]["pubs"].push(ret[i]["id"]);
+  }
+
+  for (var i = 0; i < dJournals.length; i++)
+  {
+    dJournals[i]["citations"] = d3.sum(dJournals[i]["pubs"], x => (dCitations[x]||[]).length ) || 0 ;
+    dJournals[i]["minYear"] = d3.min(dJournals[i]["pubs"], x => +pData[x]["year"] ) || 0 ;
+    dJournals[i]["maxYear"] = d3.max(dJournals[i]["pubs"], x => +pData[x]["year"] ) || 0;
+  }
   return ret;
 }
+
 var filterData = [];
+
 function plot() {
   filterData = filter();
   updateInfo(filterData);
   updateList(filterData);
-  plotFunctions[plotType](filterData);
+  plotFunctions[plotTypeChart](filterData);
+  drawDegree(filterData);
+  updatePapers(filterData);
 }
+
 function updateInfo(dataF) {
   $("#c_info").html("");
-  $("#c_info").append("<div><i class='far fa-question-circle'></i> Found <b>" + dataF.length + "</b> papers between <b>" + minYear + "</b> and <b>" + maxYear + "</b> </div>");
+  addCollapse();
+  $("#c_info").append("<div><i class='fas fa-info-circle'></i> <b>" + pData.length + "</b> total papers in dataset</div>");
+  $("#c_info").append("<div>Selected <b>" + dataF.length + "</b> papers published in the years <b>" + minYear + "</b> - <b>" + maxYear + "</b></div>");
 }
-function updateList(data) {
-  $("#c_papers").html("");
-  var list = $("<ul></ul>");
-  list.css("max-height", "512px");
-  list.css("overflow-y", "scroll");
-  for (var i = 0; i < data.length; i++) {
-    var el = $("<li><a href='paper?id=" + data[i]["id"] + "'>" + data[i]["year"] + " " + data[i]["title"] + "</a></li>");
-    list.append(el);
+
+function updateList(dataF) {
+
+  var sortF = [];
+  sortF[0] = (a,b) => a["tag"] < b["tag"] ? -1 : 1;
+
+  var dJournalsC = dJournals.slice().sort( sortF[0] );
+
+  var list = $("<div>");
+  for (var i = 0; i < dJournalsC.length; i++)
+  {
+    var j = $("<div></div>");
+    j.append($("<input type=checkbox "+ (journalsBanned[dJournalsC[i]["id"]] == true ? "" : "checked") + " />").on("change", (function(id){
+       return function(){
+        journalsBanned[ +dJournals[id]["id"] ] = !journalsBanned[+dJournals[id]["id"]];
+        plot();
+      }
+    })(dJournalsC[i]["id"])));
+    j.append(" ");
+    j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
+    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]);
+    list.append(j);
   }
-  $("#c_papers").html("<h4>Papers list:</h4>");
+
+  $("#c_journals").html("");
+  addCollapse();
+  $("#c_journals").append('<b><i class="fas fa-book"></i> Journals: </b>');
+  $("#c_journals").append(list);
+}
+
+$(window).resize(plot);
+function updatePapers(dataF) {
+
+  var sortF = [];
+
+  sortF[0] = function(a,b){
+    var diff = a["year"] - b["year"];
+    return diff == 0 ? sortF[1](a,b) : diff;
+  };
+  sortF[1] = (a,b) => a["title"] < b["title"] ? -1 : 1;
+  sortF[2] = ((a,b) => (dCitations[b["id"]]||[]).length - (dCitations[a["id"]]||[]).length);
+
+  dataF = dataF.slice().sort( sortF[ sort ] );
+
+  var list = $("<ol>");
+  list.css({
+    "max-height": "300px",
+    "overflow-y": "scroll"
+  });
+
+  for (var i = 0; i < dataF.length; i++)
+  {
+    var li = $("<li>");
+    li.append(dataF[i]["year"]);
+    li.append(" ");
+    li.append( "<a href='journal?id="+dJournals[ dataF[i]["journals"][0] ]["id"]+"'>[" + dJournals[ dataF[i]["journals"][0] ]["tag"].toUpperCase() + "]</a>");
+    li.append(" ");
+    li.append("<a href='paper?id='"+dataF[i]["id"]+">" + dataF[i]["title"] + "</a>");
+    li.append(" ");
+    li.append( (dCitations[dataF[i]["id"]]||[]).length + " citations");
+    list.append(li);
+  }
+
+  $("#c_papers").html("");
+  addCollapse();
+  $("#c_papers").append('<b><i class="fas fa-file"></i> Papers: </b>');
   $("#c_papers").append(list);
 }
-plotDescr[0] = "";
-plotFunctions[0] = function(dataF) {
-  return;
-  // Chart 1
+
+
+function drawDegree(dataP) {
   var margin = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50
+    top: 20,
+    right: 20,
+    bottom: 60,
+    left: 60
   };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
-  $("#c_plot").html("");
-  $("#c_plot").append("<h3>Plot</h3>");
-  var svg = d3.select("#c_plot")
+  var width = $("#c_plot_degree").width() - margin.left - margin.right,
+    height = $("#c_plot_degree").width()*3/4 - margin.top - margin.bottom;
+
+  $("#c_plot_degree").html("");
+  addCollapse();
+  $("#c_plot_degree").append('<b><i class="fas fa-chart-line"></i> Network degree distribution:</b>');
+
+  var svg = d3.select("#c_plot_degree")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+
   svg.selectAll("*").remove();
   g = svg.append("g");
-  var data = [];
-  for (var i = minYear; i <= maxYear; i++) {
-    var o = {};
-    o["year"] = i;
-    for (var j = 0; j < dataF.length; j++)
-      o[dataF[j]["tag"]] = 0;
-    data.push(o);
+
+  degreeCount = {};
+  for (var i=0; i<dataP.length; i++)
+  {
+    var count = (dCitations[ dataP[i]["id"] ]||[]).length;
+    if (degreeCount[count] == undefined)
+      degreeCount[count] = 0;
+    degreeCount[count]++;
   }
-  for (var i = 0; i < dataF.length; i++) {
-    var tag = dataF[i]["tag"];
-    for (var j = 0; j < dataF[i]["pubs"].length; j++) {
-      var pub = dataF[i]["pubs"][j];
-      if (pub["year"] < minYear) continue;
-      if (pub["year"] > maxYear) continue;
-      data[pub["year"] - minYear][tag]++;
-    }
-  }
-  var keys = [];
-  for (var i = 0; i < dataF.length; i++)
-    keys.push(dataF[i]["tag"]);
-  var stack = d3.stack()
-    .keys(keys)
-    .order(d3.stackOrderNone)
-    .offset(d3.stackOffsetWiggle);
-  var series = stack(data);
-  var x = d3.scaleLinear()
-    .domain([minYear, maxYear])
-    .range([0, width]);
-  var xAxis = d3.axisTop(x);
-  var y = d3.scaleLinear()
-    .domain([0, d3.max(series, function(layer) {
-      return d3.max(layer, function(d) {
-        return d[0] + d[1];
-      });
-    })])
-    .range([0, height]);
-  var z = d3.scaleOrdinal().range(d3.schemeCategory10);
-  var area = d3.area()
+
+  if( plotType == 0 || plotType == 2 ) delete degreeCount[0];
+
+  var points = [];
+  for (var deg in degreeCount)
+    points.push([parseInt(deg), degreeCount[deg]]);
+
+  points.sort((a, b) => a[0] - b[0]);
+
+  var x, y;
+
+  if (plotType == 0 || plotType == 2) x = d3.scaleLog().range([0, width]).nice();
+  else x = d3.scaleLinear().range([0, width]).nice();
+
+  if (plotType == 0 || plotType == 1)
+    y = d3.scaleLog().range([height, 0]).nice();
+  else
+    y = d3.scaleLinear().range([height, 0]).nice();
+
+  x.domain(d3.extent(points, function(d) {
+    return d[0];
+  }));
+  y.domain(d3.extent(points, function(d) {
+    return d[1];
+  }));
+
+  var line = d3.line()
     .x(function(d) {
-      return x(d.data.year);
+      return x(d[0]);
     })
-    .y0(function(d) {
-      return y(d[0]) + height / 2;
-    })
-    .y1(function(d) {
-      return y(d[1]) + height / 2;
-    })
-    .curve(d3.curveBasis);
-
-  g.selectAll("path")
-    .data(series)
-    .enter().append("path")
-    .attr("d", area)
-    .style("fill", function(d, i) {
-      $("#journal-" + i).css("color", z(i));
-      return z(i);
-    })
-    .style("fill-opacity", function(d, i) {
-      return selectedId == -1 ? 1 : (selectedId == i ? 1 : 0.5);
-    })
-    .style("cursor", "pointer")
-    .on("click", function(d, i) {
-      location.href = "journal?id=" + i;
-    })
-    .append("svg:title")
-    .text(function(d, i) {
-      data[i]["name"]
-    });
-  g.append("g").call(xAxis.ticks(16));
-  z.domain(keys);
-};
-plotDescr[1] = "";
-plotFunctions[1] = function(data) {
-  // Chart 1
-  var margin = {
-    top: 10,
-    right: 20,
-    bottom: 70,
-    left: 70
-  };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
-  $("#c_plot").html("");
-  $("#c_plot").append("<h3>Plot</h3>");
-  var svg = d3.select("#c_plot")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
-  svg.selectAll("*").remove();
-  // set x scale
-  var x = d3.scaleBand()
-    .rangeRound([0, width]);
-  //    .paddingInner(0.05)
-  //    .align(0.1);
-  // set y scale
-  var y = d3.scaleLinear()
-    .rangeRound([height, 0]);
-  // set the colors
-  var z = d3.scaleOrdinal()
-    .range(d3.schemeCategory10);
-
-  keys = [];
-  for (var i = 0; i < data.length; i++)
-    keys.push(data[i]["tag"]);
-
-  var g = svg;
-  var dataP = [];
-  for (var i = minYear; i <= maxYear; i++) {
-    var o = {};
-    o["year"] = i;
-    for (var k in keys) o[keys[k]] = 0;
-    dataP.push(o);
-  }
-  for (var i = 0; i < data.length; i++) {
-    for (var j = 0; j < data[i]["pubs"].length; j++) {
-      var yy = data[i]["pubs"][j]["year"];
-      if (yy < minYear) continue;
-      if (yy > maxYear) continue;
-      dataP[yy - minYear][data[i]["tag"]]++;
-    }
-  }
-  x.domain(d3.range(minYear, maxYear + 1)); // d3.range(minYear, maxYear)).nice();
-  y.domain([0, d3.max(dataP, function(d) {
-    var val = 0;
-    for (var k in d)
-      if (k != "year")
-        val += d[k]
-    return val;
-  })]).nice();
-  z.domain(keys);
-  for (var i = 0; i < data.length; i++)
-    $("#journal-" + data[i]["id"]).css("color", z(data[i]["tag"]));
-  g.append("g")
-    .selectAll("g")
-    .data(d3.stack().keys(keys)(dataP))
-    .enter().append("g")
-    .attr("fill", function(d) {
-      return z(d.key);
-    })
-    .selectAll("rect")
-    .data(function(d) {
-      return d;
-    })
-    .enter().append("rect")
-    .attr("x", function(d) {
-      return x(d.data["year"]);
-    })
-    .attr("y", function(d) {
+    .y(function(d) {
       return y(d[1]);
-    })
-    .attr("height", function(d) {
-      return y(d[0]) - y(d[1]);
-    })
-    .attr("width", x.bandwidth())
-    .on("mouseover", function() {
-      tooltip.style("display", "block");
-    })
-    .on("mouseout", function() {
-      tooltip.style("display", "none");
-    })
-    .on("mousemove", function(d, i) {
-      var xPosition = d3.mouse(this)[0] - 75;
-      var yPosition = d3.mouse(this)[1] - 25;
-      var dif = d[1] - d[0];
-      var lab = "";
-      for (var k in d.data)
-        if (d.data[k] == dif)
-          lab = k;
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(lab + " - " + dif);
     });
-  // X AXIS
-  g.append("g")
-    .attr("class", "axis")
+
+  // Add the valueline path.
+  svg.append("path")
+    .datum(points)
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 1.5)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("d", line);
+
+  svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
+    .call(d3.axisBottom(x).tickFormat(d3.format(".0f")))
     .selectAll("text")
     .attr("y", 10)
     .attr("x", 10)
     .attr("dy", ".35em")
     .attr("transform", "rotate(45)")
     .style("text-anchor", "start");
-  svg.append("text")
-    .attr("transform",
-      "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
-    .style("text-anchor", "middle")
-    .text("Year");
-  // Y AXIS
-  g.append("g")
-    .attr("class", "axis")
-    .call(d3.axisLeft(y))
-    .append("text")
-    .attr("x", 2)
-    .attr("y", y(y.ticks().pop()) + 0.5)
-    .attr("dy", "0.32em")
-    .attr("fill", "#000")
-    .attr("font-weight", "bold")
-    .attr("text-anchor", "start");
+
+  svg.append("g")
+    .call(d3.axisLeft(y).tickFormat(d3.format(".0f")));
+
   svg.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left)
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Number of publications");
+    .text("#papers");
+
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," + (height + margin.top + 30) + ")")
+    .style("text-anchor", "middle")
+    .text("#citations");
 
   // Prep the tooltip bits, initial display is hidden
   tooltip = g.append("g")
     .style("display", "none")
     .style("opacity", 1)
     .style("z-index", 1000);
+
   tooltip.append("rect")
-    .attr("width", 80)
+    .attr("width", 160)
     .attr("height", 20)
     .attr("fill", "white")
     .style("text-align", "center")
     .style("opacity", .5)
     .style("z-index", 1000);
+
   tooltip.append("text")
-    .attr("x", 40)
+    .attr("x", 80)
     .attr("dy", "1.2em")
     .style("text-anchor", "middle")
     .style("text-align", "center")
     .attr("font-size", "12px")
     .attr("font-weight", "bold");
 
-};
+}
+
+
+plotFunctions[0] = function(){
+
+}
+plotFunctions[1] = function(){
+
+}
+plotFunctions[2] = function(){
+
+}
+plotFunctions[3] = function(){
+
+}
