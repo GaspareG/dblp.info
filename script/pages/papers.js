@@ -286,7 +286,7 @@ function updatePapers(dataF) {
     li.append(" ");
     li.append( "<a href='journal?id="+dJournals[ dataF[i]["journals"][0] ]["id"]+"'>[" + dJournals[ dataF[i]["journals"][0] ]["tag"].toUpperCase() + "]</a>");
     li.append(" ");
-    li.append("<a href='paper?id='"+dataF[i]["id"]+">" + dataF[i]["title"] + "</a>");
+    li.append("<a href='paper?id="+dataF[i]["id"]+"'>" + dataF[i]["title"] + "</a>");
     li.append(" ");
     li.append( (dCitations[dataF[i]["id"]]||[]).length + " citations");
     list.append(li);

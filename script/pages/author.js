@@ -261,16 +261,19 @@ function loadInfo(filter) {
   $("#c_info").html("");
   addCollapse();
   $("#c_info").append("<b><i class='fas fa-info-circle'></i> " + dAuthors[id]["name"] + "</b>");
-  $("#c_info").append("<div>Found <b>" + filter.length + "</b> papers, citeted <b>"+totCit+"</b> times, between <b>" + minYear + "</b> and <b>" + maxYear + "</b> in selected journals</div>");
+  $("#c_info").append("<div>Found <b>" + filter.length + "</b> papers, cited <b>"+totCit+"</b> times, between <b>" + minYear + "</b> and <b>" + maxYear + "</b> in selected journals</div>");
 }
 
 function loadFPapers(filter) {
   var ul = $("<ol>").css("padding-left","50px").append(filter.map(function(idP) {
     var li = $("<li>");
     var paper = dPapers[idP];
-    li.append($("<a>").attr("href", "paper?id=" + paper["id"]).text(
-      paper["year"] + " [" + dJournals[paper["journals"][0]]["tag"].toUpperCase() + "] " + paper["title"]
-    )).append(" (" + dCitations[idP].length + " citations)");
+    li.append( paper["year"] );
+    li.append(" ");
+    li.append( " <a href='journal?id="+ paper["journals"][0] +"'>[" + dJournals[paper["journals"][0]]["tag"].toUpperCase() + "]</a> ");
+    li.append(" - ");
+    li.append($("<a>").attr("href", "paper?id=" + paper["id"]).text(paper["title"]));
+    li.append(" (" + dCitations[idP].length + " citations)");
     return li;
   })).css({
     "max-height": "300px",
