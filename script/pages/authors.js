@@ -84,7 +84,6 @@ function loadControls() {
   loadSliderPub();
   loadSliderYear();
   loadSliderCitations();
-  //  loadJournalsCheck();
   updateAuthors();
   loadPlotType();
   filterFunctions[plotType]();
@@ -317,14 +316,29 @@ sortF[1] = (a, b) => (a["minYear"] - b["minYear"]);
 sortF[2] = (a, b) => (b["pubs"].length - a["pubs"].length);
 
 function filter() {
-  var ret = data.slice().filter(function(auth){
+  var ret = data.slice();
+  ret = ret.filter(function(auth){
     if (auth["pubs"].length < minPub) return false;
     if (auth["pubs"].length > maxPub) return false;
     if (auth["minYear"] < minYear) return false;
     if (auth["maxYear"] > maxYear) return false;
     return true;
   });
-
+/*
+  console.log("BEFORE MAP", data.length, ret.length);
+  ret = ret.map(function(r){
+    r["pubs"] = [];
+    for(var i=0; i<data[r["id"]]["pubs"].length; i++)
+    {
+      var cit = dCitations[ data[r["id"]]["pubs"][i]["id"] ];
+      if( cit == undefined ) cit = [];
+      if( cit.length < minCitations ) continue;
+      if( cit.length > maxmCitations ) continue;
+      r["pubs"].push( data[r["id"]]["pubs"][i] );
+    }
+    return r;
+  });*/
+  console.log("AFTER MAP", ret.length);
   ret.sort(sortF[sort]);
 
   return ret;
@@ -424,6 +438,7 @@ $(window).resize(plot);
 plotDescr[0] = "In this plot we have in the x-axis the years of career (starting from the year of the first publication of each authors) ";
 plotDescr[0] += "and in the y-axis we have the number of publications so far.<br>";
 plotDescr[0] += "Each path is an author career, its point correspond to the years in which the author has made af least one publications<br>";
+plotDescr[0] += "Each path has a color based on the number of citations received<br>";
 plotDescr[0] += "<b>Mouse over a dot to highlight its path!</b>";
 
 plotDescr[1] = "In this plot we have in the x-axis the years of career";
