@@ -19,7 +19,7 @@ body {
 }
 
 .m-0 {
-  max-width: 300px;
+  max-width: 330px;
   margin: auto !important;
   text-align: justify !important;
   justify-content: space-between;
@@ -38,4 +38,21 @@ svg {
   background: #fff;
   padding: 4px;
   border-radius: 4px;
+}
+
+.filter {
+  margin: 8px;
+  padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: .3rem;
+  background: #e0e0e0;
+}      
+
+.jumbotron {
+  padding: 2rem !important;
+}
+
+.ui-slider {
+  margin-top: 8px !important;
 }

@@ -344,6 +344,40 @@ function filter() {
   return ret;
 }
 
+function filter2() {
+  var ret = [];
+  for(var i=0; i<data.length; i++)
+    ret.push( $.extend(true,{},data[i]) );
+
+  ret = ret.filter(function(auth){
+    if (auth["pubs"].length < minPub) return false;
+    if (auth["pubs"].length > maxPub) return false;
+    if (auth["minYear"] < minYear) return false;
+    if (auth["maxYear"] > maxYear) return false;
+    return true;
+  });
+
+  console.log("BEFORE MAP", data.length, ret.length);
+  ret = ret.map(function(r){
+    r["pubs"] = $.extend(true,{},r["pubs"]);
+    r["pubs"].filter(function(pub){
+      var id = pub["id"];
+      var cit = dCitations[ id ];
+      if( cit == undefined ) cit = [];
+      if( cit.length < minCitations ) return false;
+      if( cit.length > maxCitations ) return false;
+      return true;
+    });
+ 
+    return r;
+  });
+
+  console.log("AFTER MAP", ret.length);
+  ret.sort(sortF[sort]);
+
+  return ret;
+}
+
 var filterData = [];
 
 function plot() {

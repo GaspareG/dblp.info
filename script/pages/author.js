@@ -262,8 +262,6 @@ function filterData() {
     return true;
   }).sort( sortF[sort] );
 
-// ["name", "year", "venue", "citations"]
-
 }
 
 function plot() {
