@@ -1,6 +1,8 @@
 var authIds = getQueryVariable("ids");
+
 if (authIds == null) authIds = [];
 else authIds = authIds.split(",").map(x => +x);
+
 var degree = 1;
 var plotType = 0;
 
@@ -79,14 +81,14 @@ function loadCollab() {
   cid.sort((a, b) => b[1] - a[1]);
 
   $("#c_collab").html("");
-
-  var ul = $("<ul></ul>");
+  addCollapse();
+  var ul = $("<ol></ol>").css("padding-left", "50px");
   ul.css("max-height", "300px");
   ul.css("overflow-y", "scroll");
   for (var i = 0; i < 256; i++) {
     var idA1 = +cid[i][0];
     var cont = +cid[i][1];
-    var li = $("<li>" + (i + 1) + " </li>");
+    var li = $("<li></li>");
     li.append("<a href='author?id=" + idA1 + "'>" + data[idA1]["name"] + "</a>");
     li.append(" (" + cont + " coauthors)");
     ul.append(li);
@@ -103,15 +105,16 @@ function loadCouple() {
   cid.sort((a, b) => b[0] - a[0]);
 
   $("#c_couple").html("");
+  addCollapse();
 
-  var ul = $("<ul></ul>");
+  var ul = $("<ol></ol>").css("padding-left", "50px");
   ul.css("max-height", "300px");
   ul.css("overflow-y", "scroll");
   for (var i = 0; i < 256; i++) {
     var idA1 = +cid[i][1][0];
     var idA2 = +cid[i][1][1];
     var cont = +cid[i][0];
-    var li = $("<li>" + (i + 1) + " </li>");
+    var li = $("<li></li>");
     li.append("<a href='author?id=" + idA1 + "'>" + data[idA1]["name"] + "</a>");
     li.append(" - ");
     li.append("<a href='author?id=" + idA2 + "'>" + data[idA2]["name"] + "</a>");
@@ -126,6 +129,7 @@ function loadCouple() {
 function loadPlotType() {
   var plotLabel = ["x: Log - y: Log", "x: Lin - y: Log", "x: Log - y: Lin", "x: Lin - y: Lin"];
   $("#c_plot_type").html("");
+  addCollapse();
 
   var fields = $("<form></form>");
   for (var i = 0; i < plotLabel.length; i++) {
@@ -147,6 +151,7 @@ function loadPlotType() {
 
 function loadSearch() {
   $("#c_search").html("");
+  addCollapse();
   var label = $("<label for='authors'>Search author: </label>");
   var input = $("<input id='author'>");
 
@@ -189,6 +194,7 @@ function loadSliderDegree() {
     }
   });
 
+  addCollapse();
   $("#c_slider_degree").append('<i class="fas fa-list-ol"></i> ');
   $("#c_slider_degree").append(sliderDegText);
   $("#c_slider_degree").append("<div></div>");
@@ -205,10 +211,12 @@ function plot() {
 
 function updateInfo() {
   $("#c_info").html("<b><i class='fas fa-info-circle'></i> " + data.length + " authors in dataset</b>");
+  addCollapse();
 }
 
 function updateList() {
   $("#c_authors").html("");
+  addCollapse();
   var label = $("<b><i class='fas fa-user'></i> Selected authors:</b>");
   var ul = $("<ul></ul>");
 
@@ -234,6 +242,7 @@ function updateList() {
 function draw() {
 
   $("#c_plot").html("");
+  addCollapse();
 
   var names = authIds.map(x => data[x]["name"]);
 
@@ -267,15 +276,16 @@ function draw() {
 
   $("#c_plot").append('<b><i class="fas fa-users"></i> ' + names.join(", ") + " have " + Object.keys(common).length + " common co-authors:</b>");
 
-  var ul = $("<ul>");
+  var ul = $("<ol>");
   ul.css("max-height", "300px");
   ul.css("overflow-y", "scroll");
+  ul.css("padding-left", "50px");
 
   var commons = [];
   for (var k in common) commons.push([+k, common[k]]);
   commons.sort((a, b) => b[1] - a[1]);
   for (var k = 0; k < commons.length; k++) {
-    var li = $("<li>" + data[commons[k][0]]["name"] + " (" + commons[k][1] + " common papers) </li>");
+    var li = $("<li><a href='author?id=" +data[commons[k][0]]["id"]+ "'>" + data[commons[k][0]]["name"] + "</a> (" + commons[k][1] + " common papers) </li>");
     li.append($("<i class='fas fa-plus text-success'></i>").css({
       cursor: "pointer"
     }).on("click", (function(id) {
@@ -292,10 +302,11 @@ function draw() {
   drawEdge();
 
 }
-
+$(window).resize(plot);
 function drawEdge() {
   // c_plot_edge
-  var diameter = 810,
+
+  var diameter = Math.min(800, $("#c_plot_edge").width()),
     radius = diameter / 2,
     innerRadius = radius - 120;
 
@@ -312,12 +323,14 @@ function drawEdge() {
     });
 
   $("#c_plot_edge").html("");
-  $("#c_plot_edge").append("<b><i class='fab fa-connectdevelop'></i> Hierarchical edge bundling of selected authors</b>");
+  addCollapse();
+  $("#c_plot_edge").append("<b><i class='fab fa-connectdevelop'></i> Hierarchical edge bundling of selected authors:</b>");
 
   if (authIds.length == 0) return;
   var svg = d3.select("#c_plot_edge").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
+    .style("margin-left", ($("#c_plot_edge").width()-diameter)/2)
     .append("g")
     .attr("transform", "translate(" + radius + "," + radius + ")");
 
@@ -368,6 +381,7 @@ function drawEdge() {
     .attr("class", "link")
     .attr("d", line);
 
+  console.log(root.leaves())
   node = node
     .data(root.leaves())
     .enter().append("text")
@@ -378,6 +392,13 @@ function drawEdge() {
     })
     .attr("text-anchor", function(d) {
       return d.x < 180 ? "start" : "end";
+    })
+    .attr("fill", function(d){
+      var kk = name2id[d.data.key]
+      var found = false;
+      for(var i=0; i<authIds.length; i++)
+        if( authIds[i] == kk ) found = true;
+      return found  ? "red" : "black";
     })
     .text(function(d) {
       return d.data.key;
@@ -440,7 +461,7 @@ function drawEdge() {
           children: []
         };
         if (name.length) {
-          node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+          node.parent = find(name.substring(0, i = name.lastIndexOf("_")));
           node.parent.children.push(node);
           node.key = name.substring(i + 1);
         }
@@ -484,10 +505,12 @@ function draw_old() {
     bottom: 20,
     left: 20
   };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+
+  var width = $("#c_plot").width() - margin.left - margin.right,
+    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
 
   $("#c_plot").html("");
+  addCollapse();
   $("#c_plot").append("<h3>Coauthor:</h3>");
 
   var svg = d3.select("#c_plot")
@@ -694,11 +717,12 @@ function drawDegree() {
     bottom: 60,
     left: 60
   };
-  var width = 810 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+  var width = $("#c_plot_degree").width() - margin.left - margin.right,
+    height = $("#c_plot_degree").width()*3/4 - margin.top - margin.bottom;
 
   $("#c_plot_degree").html("");
-  $("#c_plot_degree").append('<b><i class="fas fa-chart-line"></i> Network degree distribution</b>');
+  addCollapse();
+  $("#c_plot_degree").append('<b><i class="fas fa-chart-line"></i> Network degree distribution:</b>');
 
   var svg = d3.select("#c_plot_degree")
     .append("svg")
@@ -761,7 +785,7 @@ function drawDegree() {
 
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(32).tickFormat(d3.format(".0f")))
+    .call(d3.axisBottom(x).tickFormat(d3.format(".0f")))
     .selectAll("text")
     .attr("y", 10)
     .attr("x", 10)
@@ -770,7 +794,7 @@ function drawDegree() {
     .style("text-anchor", "start");
 
   svg.append("g")
-    .call(d3.axisLeft(y).ticks(4).tickFormat(d3.format(".0f")));
+    .call(d3.axisLeft(y).tickFormat(d3.format(".0f")));
 
   svg.append("text")
     .attr("transform", "rotate(-90)")
