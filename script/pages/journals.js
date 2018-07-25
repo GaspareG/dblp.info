@@ -105,20 +105,17 @@ function loadSort() {
 }
 
 function loadSliderYear() {
-  minYear = 3000;
-  maxYear = 1000;
-  for (var i = 0; i < data.length; i++)
-    minYear = Math.min(minYear, data[i]["minYear"]);
-  for (var i = 0; i < data.length; i++)
-    maxYear = Math.max(maxYear, data[i]["maxYear"]);
+  minYear = 1985;
+  maxYear = 2018;
+
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
   sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
   sliderYearSlider.slider({
     range: true,
-    min: minYear,
-    max: maxYear,
+    min: d3.min(data, x => x["minYear"]),
+    max: d3.max(data, x => x["maxYear"]),
     values: [minYear, maxYear],
     slide: function(event, ui) {
       minYear = ui.values[0];
@@ -342,6 +339,37 @@ plotFunctions[0] = function(data) {
     .style("opacity", "1");
 
 
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
   svg.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(dataP))
@@ -474,6 +502,37 @@ plotFunctions[1] = function(data) {
     .style("display", "none")
     .style("z-index", "1000")
     .style("opacity", "1");
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
 
   var stack = d3.stack().keys(keys)
     .order(d3.stackOrderNone)
@@ -621,6 +680,37 @@ plotFunctions[2] = function(data) {
     .style("z-index", "1000")
     .style("opacity", "1");
 
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
 
   // Add the Y Axis
   svg.append("g")
@@ -764,6 +854,37 @@ plotFunctions[3] = function(data) {
     .style("display", "none")
     .style("z-index", "1000")
     .style("opacity", "1");
+
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
 
 
   // Add the Y Axis
