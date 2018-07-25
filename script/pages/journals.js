@@ -223,7 +223,7 @@ function updateList(dataF) {
     })(dJournalsC[i]["id"])));
     j.append(" ");
     j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
-    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
+    j.append(" <br/><b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
     list.append(j);
   }
 
@@ -235,6 +235,17 @@ function updateList(dataF) {
 
 $(window).resize(plot);
 
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
 plotFunctions[0] = function(data) {
     var margin = {
     top: 25,
@@ -242,8 +253,13 @@ plotFunctions[0] = function(data) {
     bottom: 80,
     left: 55
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();

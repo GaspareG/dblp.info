@@ -76,7 +76,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -104,7 +104,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
@@ -112,17 +112,30 @@
         <h3><i class="fas fa-book"></i> Journals visualization</h3>
 
         <!-- Informations -->
-        <div class="filter" id="c_info"></div>
-        <!-- Sort slider -->
-        <div class="filter" id="c_sort"></div>
-        <!-- Years slider -->
-        <div class="filter" id="c_slider_years"></div>
-        <!-- Venues --> 
-        <div class="filter" id="c_journals"></div>
-        <!-- Chart type -->
-        <div class="filter" id="c_chart"></div>
-        <!-- Plot container -->
-        <div class="filter" id="c_plot"></div>
+        <div class="filter row" id="c_info"></div>
+
+        <div class="row">
+
+          <!-- Left column -->
+          <div class="col-lg-8">
+            <!-- Plot container -->
+            <div class="filter row" id="c_plot"></div>
+          </div>
+
+          <!-- Right column -->
+          <div class="col-lg-4">
+            <!-- Sort slider -->
+            <div class="filter" id="c_sort"></div>
+            <!-- Years slider -->
+            <div class="filter" id="c_slider_years"></div>
+            <!-- Venues --> 
+            <div class="filter" id="c_journals"></div>
+            <!-- Chart type -->
+            <div class="filter" id="c_chart"></div>
+          </div>
+
+        </div>
+
 
       </header>
       <!-- /.row -->
