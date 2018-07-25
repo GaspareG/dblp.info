@@ -153,7 +153,7 @@ function loadSearch() {
   $("#c_search").html("");
   addCollapse();
   var label = $("<label for='authors'>Search author: </label>");
-  var input = $("<input id='author'>");
+  var input = $("<input id='author' style='width:100%'>");
 
   var names = [];
   for (var k in name2id) names.push(k);

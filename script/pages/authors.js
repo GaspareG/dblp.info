@@ -8,6 +8,7 @@ var minCitations = 0;
 var maxCitations = 0;
 var plotType = 0;
 var selectedId = getQueryVariable("ids");
+var selectedColor = d3.schemeDark2.slice().concat(d3.schemeCategory10);
 if( selectedId == undefined ) selectedId = [];
 else selectedId = selectedId.split(",").map( x => +x);
 
@@ -118,19 +119,18 @@ function updateAuthors()
 {
   if( selectedId.length > 0 ) updateQueryStringParam("ids", selectedId.join(","));
   var ol = $("<ol>").css("padding-left", "50px");
-  ol.css({
-    
-  });
+
   for(var i=0; i<selectedId.length; i++)
   {
-    var li = $("<li>")
-    li.append( $("<a>").text( data[selectedId[i]]["name"] ).attr("href", "author?id=" + selectedId[i]) )
+    var li = $("<li>");
+    li.append( $("<a>").text( data[selectedId[i]]["name"] ).attr("href", "author?id=" + selectedId[i]).css("color", selectedColor[i] + " !important") )
       .append(" - ")
       .append( $("<i class='fas fa-times'></i>").css({"color":"red","cursor": "pointer"}).on("click", (function(id){
         return function(){
           var pos = selectedId.indexOf(id);
           selectedId = selectedId.slice(0, pos).concat(selectedId.slice(pos+1));
           updateAuthors();
+          plot();
         }
       })(selectedId[i])))
     ol.append(li);
@@ -521,6 +521,18 @@ function draw(data){
   });
   citNum.sort();
 
+  mapPapers = data.map( x => x["pubs"].length );
+  mapCitations = data.map(function(x){
+    return d3.sum(x["pubs"], y => (dCitations[y["id"]] || []).length );
+  });
+
+  mapPapers = mapPapers.filter(function(item, pos) {
+    return mapPapers.indexOf(item) == pos;
+  }).sort( (a,b) => a-b );
+
+  mapCitations = mapCitations.filter(function(item, pos) {
+    return mapCitations.indexOf(item) == pos;
+  }).sort( (a,b) => a-b);
 
   // Data plot
   for (var i = 0; i < data.length; i++) {
@@ -548,9 +560,9 @@ function draw(data){
       }
     }
 
-    var pathCitationsRealA = [];
-    var pathCitationsA = [];
-    var pathPapersA = [];
+    pathCitationsRealA = [];
+    pathCitationsA = [];
+    pathPapersA = [];
 
     if( pathCitationsReal[ data[i]["minYear"] ] == undefined )
       pathCitationsReal[ data[i]["minYear"] ] = 0;
@@ -558,7 +570,6 @@ function draw(data){
     if( pathCitations[ data[i]["minYear"] ] == undefined )
       pathCitations[ data[i]["minYear"] ] = 0;
 
-    if( i > 100 ) break;
     for(var year in pathCitationsReal)
       pathCitationsRealA.push( [+year, pathCitationsReal[year], +data[i]["id"]] );
     pathCitationsRealA.sort( (a,b) => a[0] - b[0]);
@@ -584,13 +595,63 @@ function draw(data){
     var dots = [pathCitationsA, pathCitationsRealA, pathPapersA];
     var dataSet = dots[window["props"]["Y-Axis"]];
 
-    svg.append("path")
+    var color = "steelblue";
+
+    if( selectedId.indexOf(+data[i]["id"]) != -1 )
+      color = selectedColor[ selectedId.indexOf(+data[i]["id"]) ];
+    else if( window["props"]["Colors"] == 2 )
+    {
+      color = "steelblue";
+    }
+    else if( window["props"]["Colors"] == 1 )
+    {
+      var maxC = pathCitationsA[pathCitationsA.length - 1][1];
+      var idx = mapCitations.indexOf( maxC );
+      color = idx*1. / mapCitations.length ;
+    }
+    else if( window["props"]["Colors"] == 0 )
+    {
+      var maxP = pathPapersA[pathPapersA.length - 1][1];
+      var idx = mapPapers.indexOf( maxP );
+      color = idx*1. / mapPapers.length ;
+    }
+
+      var linearGradient = svg.append("defs")
+            .append("linearGradient")
+            .attr("id", "linear-gradient-" + data[i]["id"])
+            .attr("gradientTransform", "rotate(0)");
+
+      if( selectedId.indexOf(+data[i]["id"]) == -1 && window["props"]["Path-Style"] == 1 && window["props"]["Colors"] != 2 )
+      {
+        for(var p=0; p<=color; p +=.05)
+          linearGradient.append("stop")
+            .attr("offset", parseInt(p*100)+"%")
+            .attr("stop-color", d3.interpolateRdYlGn(p) );
+        color = d3.interpolateRdYlGn(color);
+      }
+      else
+      {
+
+        if( typeof color == "number") color = d3.interpolateRdYlGn(color);
+
+        linearGradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", color);
+        linearGradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", color);
+      }
+
+
+
+      svg.append("path")
       .attr("d", line(dataSet) )
       .attr("class", "path-" + data[i]["id"])
-      .attr("stroke", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : "steelblue")
+      .attr("stroke", "url(#linear-gradient-"+data[i]["id"]+")")
       .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
       .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
-      .attr("fill", "none");
+      .attr("fill", "none")
+      .attr("z-index", selectedId.indexOf(+data[i]["id"]) == -1 ? 1 : 100);
 
     svg.selectAll("dot")
       .data( [ dataSet[dataSet.length-1] ]  )
@@ -602,112 +663,51 @@ function draw(data){
       .attr("cy", function(d) {
         return y(d[1]);
       })
-      .attr("stroke", "steelblue")
-      .style("z-index", 10)
-      .attr("fill", "steelblue")
+      .attr("stroke", color )
+      .attr("z-index", selectedId.indexOf(+data[i]["id"]) == -1 ? 1 : 100)
+      .attr("fill", color)
       .attr("stroke-width", 2)
       .attr("stroke-opacity", 1)
       .attr("fill-opacity", .3)
       .style("cursor", "pointer")
-      .attr("real-color", "red")
+      .attr("real-color", color )
       .on("click", function(d){ location.href = "author?id="+d[2]; })
       .on("mouseover", function(d) {
-          d3.select(this).attr("fill", "red").attr("fill-opacity", 1);
-          d3.select(".path-" + d[3]).attr("stroke", "red").attr("stroke-opacity", 1)
+
           tooltip.style("display", "block");
-          tooltip.html(d[2] )
+          tooltip.html( window.data[ d[2] ]["name"] + "<br/>" + d[1] )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
+
+          d3.select(this).attr("fill", "red").attr("fill-opacity", 1).attr("stroke", "red");
+          var path = d3.select(".path-" + d[2])
+          path.attr("stroke", "red");
+          path.attr("stroke-opacity", 1);
+          path.attr("stroke-width", 2);
+
       })
       .on("mouseout", function(d) {
           tooltip.style("display", "none");
+          var t = d3.select(this);
+          var c = t.attr("real-color");
+          t.attr("fill", c).attr("fill-opacity", .3).attr("stroke", c)
+          var path = d3.select(".path-" + d[2])
+          path.attr("stroke", c);
 
+          if( window["props"]["Path-Style"] == 1)
+          {
+            draw(filterData);
+            return;
+          }
           if( selectedId.indexOf( +d[2] ) != -1 ) return;
 
-          d3.select(this).attr("fill", d3.select(this).attr("real-color")).attr("fill-opacity", .3);
-          var path = d3.select(".path-" + d[2])
+          path.attr("stroke-opacity", .25);
+          path.attr("stroke-width", 1);
 
-          path.attr("stroke", d3.select(this).attr("real-color"))
-          path.attr("stroke-opacity", .25)
+
       });
 
 
-/*    var years = [];
-    var nCitations = 0;
-
-    for (var k = 0; k < data[i]["pubs"].length; k++)
-    {
-      years.push(parseInt(data[i]["pubs"][k]["year"]));
-      nCitations += (dCitations[ data[i]["pubs"][k]["id"] ] || []).length;
-    }
-    years.sort();
-
-    for (var k = 1; k < years.length; k++)
-      years[k] -= years[0];
-    years[0] = 0;
-
-    var contYear = {};
-    for (var k = 0; k < years.length; k++)
-      contYear[years[k]] = 0;
-    for (var k = 0; k < years.length; k++)
-      contYear[years[k]]++;
-
-    var points = [];
-    for (var k in contYear)
-      points.push([k + ( window["props"]["X-Axis"] == 0 ? +data[i]["minYear"] : 0) , contYear[k], data[i]["name"], data[i]["pubs"].length, data[i]["id"], nCitations]);
-    points.sort((a, b) => a[0] - b[0]);
-
-    for (var k = 1; k < points.length; k++)
-      points[k][1] += points[k - 1][1];
-
-    var line = d3.line()
-      .x(d => x(d[0]))
-      .y(d => y(d[1]))
-
-    var color = d3.interpolateRdYlGn( citNum.indexOf(nCitations) / citNum.length );
-
-    svg.append("path")
-      .attr("d", line(points))
-      .attr("class", "path-" + data[i]["id"])
-      .attr("stroke", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : color)
-      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
-      .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
-      .attr("fill", "none");
-
-    svg.selectAll("dot")
-      .data([points[points.length - 1]])
-      .enter().append("circle")
-      .attr("r", 4)
-      .attr("cx", function(d) {
-        return x(d[0]);
-      })
-      .attr("cy", function(d) {
-        return y(d[1]);
-      })
-      .attr("stroke", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : color)
-      .style("z-index", selectedId.indexOf(+data[i]["id"]) != -1 ? "1000" : "1")
-      .attr("fill", selectedId.indexOf(+data[i]["id"]) != -1 ? "red" : color)
-      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
-      .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
-      .attr("fill-opacity", .3)
-      .style("cursor", "pointer")
-      .attr("real-color", color)
-      .on("click", function(d){ location.href = "author?id="+d[4]; })
-      .on("mouseover", function(d) {
-          d3.select(this).attr("fill", "red").attr("fill-opacity", 1);
-          d3.select(".path-" + d[4]).attr("stroke", "red").attr("stroke-opacity", 1)
-          tooltip.style("display", "block");
-          tooltip.html(d[2] + "<br>" + d[3] + " papers in " + d[0] + " years <br> Cited "+d[5]+" times"  )
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-          tooltip.style("display", "none");
-          if( selectedId.indexOf( +d[4] ) != -1 ) return;
-          d3.select(this).attr("fill", d3.select(this).attr("real-color")).attr("fill-opacity", .3);
-          d3.select(".path-" + d[4]).attr("stroke", d3.select(this).attr("real-color")).attr("stroke-opacity", .25)
-      });
-    */
   }
 
 };
