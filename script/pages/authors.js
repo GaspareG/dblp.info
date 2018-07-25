@@ -92,7 +92,7 @@ function loadControls() {
 function loadSearch() {
   $("#c_search").html("");
   addCollapse();
-  var input = $("<input id='author'>");
+  var input = $("<input style='width: 90%' id='author'>");
 
   var names = [];
   for (var k in name2id) names.push(k);
@@ -109,15 +109,18 @@ function loadSearch() {
     }
   });
 
-  $("#c_search").append('<b><i class="fas fa-search"></i> Search author:</b>');
+  $("#c_search").append('<b><i class="fas fa-search"></i> Search author:</b><br>');
   $("#c_search").append("<span> </span>");
-  $("#c_search").append(input);
+  $("#c_search").append($("<div>").css("width", "100%").append(input));
 }
 
 function updateAuthors()
 {
   if( selectedId.length > 0 ) updateQueryStringParam("ids", selectedId.join(","));
   var ol = $("<ol>").css("padding-left", "50px");
+  ol.css({
+    
+  });
   for(var i=0; i<selectedId.length; i++)
   {
     var li = $("<li>")
@@ -135,7 +138,7 @@ function updateAuthors()
   $("#c_selected").html("");
   addCollapse();
   $("#c_selected").append('<b><i class="fas fa-user"></i> Selected authors:</b>');
-  $("#c_selected").append(ol);
+  $("#c_selected").append($("<div>").css("width","100%").append(ol));
 }
 
 function loadSort() {
@@ -143,7 +146,6 @@ function loadSort() {
   $("#c_sort").html("");
   addCollapse();
 
-  var label = $("<label for='sort'>Sort by: </label>");
   var fields = $("<form></form>");
   for (var i = 0; i < sortLabel.length; i++) {
     var id = "sort-" + i;
@@ -159,7 +161,7 @@ function loadSort() {
     fields.append("<br>");
   }
   $("#c_sort").append('<b><i class="fas fa-sort-amount-up"></i> Sort by:</b>');
-  $("#c_sort").append(fields);
+  $("#c_sort").append($("<div>").css("width","100%").append(fields));
 }
 
 function loadSliderPub() {
@@ -170,7 +172,7 @@ function loadSliderPub() {
   var sliderPubText = $("<span></span>");
   var sliderPubSlider = $("<div id='slider_pub'></div>");
 
-  sliderPubText.html("<b>Number of publications: 10 - 128</b>");
+  sliderPubText.html("<b><i class='fas fa-list-ol'> </i> Number of publications: 10 - 128</b>");
   sliderPubSlider.slider({
     range: true,
     min: minPub,
@@ -179,20 +181,19 @@ function loadSliderPub() {
     slide: function(event, ui) {
       minPub = ui.values[0];
       maxPub = ui.values[1];
-      sliderPubText.html("<b>Number of publications: " + minPub + " - " + maxPub + "</b>");
+      sliderPubText.html("<b><i class='fas fa-list-ol'> </i> Number of publications: " + minPub + " - " + maxPub + "</b>");
       plot();
     }
   });
 
   addCollapse();
-  $("#c_slider_pub").append('<i class="fas fa-list-ol"></i> ');
   $("#c_slider_pub").append(sliderPubText);
   $("#c_slider_pub").append("<div></div>");
-  $("#c_slider_pub").append(sliderPubSlider);
+  $("#c_slider_pub").append($("<div>").css("width","100%").append(sliderPubSlider));
 }
 
 function loadSliderYear() {
-  minYear = 3000;
+  minYear = 1985;
   maxYear = 1000;
   for (var i = 0; i < data.length; i++)
     minYear = Math.min(minYear, data[i]["minYear"]);
@@ -201,24 +202,23 @@ function loadSliderYear() {
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
-  sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
+  sliderYearText.html("<b><i class='fas fa-calendar-alt'> </i> Years of publications: "+minYear+" - " + maxYear + "</b>");
   sliderYearSlider.slider({
     range: true,
-    min: minYear,
+    min: d3.min(data, x => x["minYear"]),
     max: maxYear,
-    values: [minYear, maxYear],
+    values: [1985, maxYear],
     slide: function(event, ui) {
       minYear = ui.values[0];
       maxYear = ui.values[1];
-      sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
+      sliderYearText.html("<b><i class='fas fa-calendar-alt'> </i> Years of publications: " + minYear + " - " + maxYear + "</b>");
       plot();
     }
   });
 
   addCollapse();
-  $("#c_slider_years").append('<i class="fas fa-calendar-alt"></i> ');
   $("#c_slider_years").append(sliderYearText);
-  $("#c_slider_years").append(sliderYearSlider);
+  $("#c_slider_years").append($("<div>").css("width","100%").append(sliderYearSlider));
 
 }
 function loadSliderCitations() {
@@ -230,7 +230,7 @@ function loadSliderCitations() {
   var sliderCitationsText = $("<span></span>");
   var sliderCitationsSlider = $("<div id='slider_citations'></div>");
 
-  sliderCitationsText.html("<b>Number of citations: " + minCitations + " - " + maxCitations + "</b>");
+  sliderCitationsText.html("<b><i class='fas fa-quote-right'> </i> Number of citations: " + minCitations + " - " + maxCitations + "</b>");
   sliderCitationsSlider.slider({
     range: true,
     min: minCitations,
@@ -239,16 +239,15 @@ function loadSliderCitations() {
     slide: function(event, ui) {
       minCitations = ui.values[0];
       maxCitations = ui.values[1];
-      sliderCitationsText.html("<b>Number of citations: " + minCitations + " - " + maxCitations + "</b>");
+      sliderCitationsText.html("<b><i class='fas fa-quote-right'> </i> Number of citations: " + minCitations + " - " + maxCitations + "</b>");
       plot();
     }
   });
 
   $("#c_slider_citations").html("");
   addCollapse();
-  $("#c_slider_citations").append('<i class="fas fa-quote-right"></i> ');
   $("#c_slider_citations").append(sliderCitationsText);
-  $("#c_slider_citations").append(sliderCitationsSlider);
+  $("#c_slider_citations").append($("<div>").css("width","100%").append(sliderCitationsSlider));
 
 }
 
@@ -268,47 +267,18 @@ function loadPlotType() {
       plotType = parseInt(this.value);
       plot();
     });
-    var optimalView = $("<span>(optimal filters)</span>");
-    optimalView.css("color", "#007bff");
-    optimalView.css("cursor", "pointer");
-    optimalView.on("click", (function(i) {
-      return function() {
-        filterFunctions[i]();
-      }
-    })(i));
     fields.append(el);
     fields.append("<span> </span>");
     fields.append("<label for='" + id + "'>" + plotLabel[i] + "</label>");
     fields.append("<span> </span>");
-    fields.append(optimalView);
     fields.append("<br>");
   }
   $("#c_chart").append('<b><i class="fas fa-chart-bar"></i> Plot type: </b>');
-  $("#c_chart").append(fields);
+  $("#c_chart").append($("<div>").css("width","100%").append(fields));
 
 }
 
 var journalsBanned = {};
-
-function loadJournalsCheck() {
-  var list = $("<div>");
-  for (var i = 0; i < dJournals.length; i++) {
-    journalsBanned[+dJournals[i]["id"]] = false;
-    var j = $("<div></div>");
-    j.append($("<input type=checkbox checked id='check-" + dJournals[i]["id"] + "' />"))
-    j.append($("<label for='check-" + dJournals[i]["id"] + "'>").html(" " + dJournals[i]["name"]).css("cursor", "pointer").on("click", (function(id) {
-      return function() {
-        journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
-        plot();
-      };
-    })(dJournals[i]["id"])));
-    list.append(j);
-  }
-  $("#c_journals").html("");
-  addCollapse();
-  $("#c_journals").append('<b><i class="fas fa-book"></i> Journals: </b>');
-  $("#c_journals").append(list);
-}
 
 var sortF = [];
 sortF[0] = (a, b) => (a["name"] < b["name"] ? -1 : 1);
@@ -392,7 +362,7 @@ function updateInfo(dataF) {
   $("#c_info").html("");
   addCollapse();
   $("#c_info").append("<div><i class='fas fa-info-circle'></i> <b>" + data.length + "</b> total authors in dataset</div>");
-  $("#c_info").append("<div>Selected <b>" + dataF.length + "</b> authors with number of publications between <b>" + minPub + "</b> and <b>" + maxPub + "</b> in the years <b>" + minYear + "</b> - <b>" + maxYear + "</b>  </div>");
+  $("#c_info").append("<div style='width: 100%'>Selected <b>" + dataF.length + "</b> authors with number of publications between <b>" + minPub + "</b> and <b>" + maxPub + "</b> in the years <b>" + minYear + "</b> - <b>" + maxYear + "</b>  </div>");
 }
 
 function updateList(data) {
@@ -499,6 +469,17 @@ plotDescr[5] += "and in the y-axis we have the number of citations so far.<br>";
 plotDescr[5] += "Each path is an author career, its point correspond to the years in which the author has made af least one publications<br>";
 plotDescr[5] += "<b>Mouse over a dot to highlight its path!</b>";
 
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
 /****************************************************************************************/
 plotFunctions[0] = function(data) {
   // Chart 1
@@ -508,8 +489,13 @@ plotFunctions[0] = function(data) {
     bottom: 55,
     left: 55
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();
@@ -521,7 +507,7 @@ plotFunctions[0] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = 0;
@@ -678,7 +664,7 @@ plotFunctions[1] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = minYear;
@@ -816,7 +802,7 @@ plotFunctions[2] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = 0;
@@ -913,7 +899,7 @@ plotFunctions[3] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = 0;
@@ -1059,7 +1045,7 @@ plotFunctions[4] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = minYear;
@@ -1204,7 +1190,7 @@ plotFunctions[5] = function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
+  // $("#c_plot").append("<div>" + plotDescr[plotType] + "</div>");
 
 
   var minX = minYear;

@@ -75,7 +75,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -103,7 +103,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
@@ -111,30 +111,49 @@
         <h3><i class="fas fa-user"></i> Authors visualization</h3>
 
         <!-- Informations -->
-        <div class="filter" id="c_info"></div>
-        <!-- Search -->
-        <div class="filter" id="c_search"></div>
-        <!-- Search -->
-        <div class="filter" id="c_selected"></div>
-        <!-- Sort -->
-        <div class="filter" id="c_sort"></div>
-        <!-- Publications slider -->
-        <div class="filter" id="c_slider_pub"></div>
-        <!-- Years slider -->
-        <div class="filter" id="c_slider_years"></div>
-        <!-- Citations slider -->
-        <div class="filter" id="c_slider_citations"></div>
-        <!-- Venues 
-        <div class="filter" id="c_journals"></div>-->
-        <!-- Chart type -->
-        <div class="filter" id="c_chart"></div>
-        <!-- Plot container -->
-        <div class="filter" id="c_plot"></div>
-        <!-- Authors List -->
-        <div class="filter" id="c_authors"></div>
-        <!-- Cited List -->
-        <div class="filter" id="c_cited"></div>
+        <div class="filter row" id="c_info"></div>
 
+        <div class="row">
+
+          <!-- Left column -->
+          <div class="col-lg-8">
+            <!-- Plot container -->
+            <div class="filter row" id="c_plot"></div>
+          </div>
+
+          <!-- Right column -->
+          <div class="col-lg-4">
+            <!-- Search -->
+            <div class="filter row controller" id="c_search"></div>
+            <!-- Search -->
+            <div class="filter row controller" id="c_selected"></div>
+            <!-- Chart type -->
+            <div class="filter row controller" id="c_chart"></div>
+            <!-- Publications slider -->
+            <div class="filter row controller" id="c_slider_pub"></div>
+            <!-- Years slider -->
+            <div class="filter row controller" id="c_slider_years"></div>
+            <!-- Citations slider -->
+            <div class="filter row controller" id="c_slider_citations"></div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <!-- Authors List -->
+          <div class="col-lg-6">
+            <div class="filter" id="c_authors"></div>
+
+            <!-- Sort -->
+            <div class="filter row controller" id="c_sort"></div>
+
+          </div>
+          <!-- Cited List -->
+          <div class="col-lg-6">
+            <div class="filter" id="c_cited"></div>
+          </div>
+        </div>
+       
       </header>
       <!-- /.row -->
 
@@ -158,7 +177,7 @@
     <script type="text/javascript" src="script/libs/d3.v5.min.js"></script>
     <script type="text/javascript" src="script/libs/jquery-ui.js"></script>
     <script type="text/javascript "src="script/pages/common.js"></script>
-    <script type="text/javascript" src="script/pages/index.js"></script>
+    <script type="text/javascript" src="script/pages/authors.js"></script>
     <script type="text/javascript" src="//cookieinfoscript.com/js/cookieinfo.min.js" id="cookieinfo"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
