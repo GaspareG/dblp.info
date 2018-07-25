@@ -405,8 +405,13 @@ plotFunctions[1] = function(data) {
     bottom: 80,
     left: 55
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   console.log(data);
   $("#c_plot").html("");
@@ -531,8 +536,13 @@ plotFunctions[2] = function(data) {
     bottom: 80,
     left: 80
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();
@@ -670,8 +680,13 @@ plotFunctions[3] = function(data) {
     bottom: 80,
     left: 80
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();

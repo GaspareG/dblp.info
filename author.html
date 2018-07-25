@@ -75,7 +75,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -103,7 +103,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
@@ -114,24 +114,52 @@
 
         <!-- Informations -->
         <div class="filter" id="c_info"></div>
-        <!-- Years slider -->
-        <div class="filter" id="c_slider_years"></div>
-        <!-- Sort slider -->
-        <div class="filter" id="c_sort"></div>
-        <!-- Venues --> 
-        <div class="filter" id="c_journals"></div>
-        <!-- Chart type -->
-        <div class="filter" id="c_chart"></div>
-        <!-- Plot container -->
-        <div class="filter" id="c_plot"></div>
-        <!-- Papers List -->
-        <div class="filter" id="c_papers"></div>
-        <!-- Coauth List -->
-        <div class="filter" id="c_coauthors"></div>
-        <!-- Degree List -->
-        <div class="filter" id="c_degree"></div>
-        <!-- Influenced List -->
-        <div class="filter" id="c_influenced"></div>
+
+
+        <div class="row">
+
+          <!-- Left column -->
+          <div class="col-12 col-xl-8">
+            <!-- Plot container -->
+            <div class="filter" id="c_plot"></div>
+          </div>
+
+          <!-- Right column -->
+          <div class="col-12 col-xl-4">
+            <!-- Years slider -->
+            <div class="filter" id="c_slider_years"></div>
+            <!-- Sort slider -->
+            <div class="filter" id="c_sort"></div>
+            <!-- Venues --> 
+            <div class="filter" id="c_journals"></div>
+            <!-- Chart type -->
+            <div class="filter" id="c_chart"></div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- Papers List -->
+            <div class="filter" id="c_papers"></div>
+          </div>
+          <div class="col-lg-6">
+            <!-- Coauth List -->
+            <div class="filter" id="c_coauthors"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- Degree List -->
+            <div class="filter" id="c_degree"></div>
+          </div>
+          <div class="col-lg-6">
+            <!-- Influenced List -->
+            <div class="filter" id="c_influenced"></div>
+          </div>
+        </div>
+
 
       </header>
       <!-- /.row -->
@@ -142,6 +170,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
+          <p class="m-0 text-center text-white"><i class="fas fa-exclamation-circle"> Site not affiliated with</i> <a href="http://dblp.org/">dblp.org  <i class="fas fa-exclamation-circle"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-user-tie"> Gaspare Ferraro </i> <a href="https://gaspa.re">gaspa.re <i class="fas fa-id-card-alt"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-file-code"> Source code </i> <a href="https://github.com/GaspareG/dblp.info">github.com <i class="fab fa-github"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-database"> Dataset </i> <a href="https://dblp.uni-trier.de">dblp.uni-trier.de <i class="fas fa-university"></i></a> </p>

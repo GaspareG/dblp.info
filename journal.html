@@ -75,7 +75,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -103,7 +103,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
@@ -121,11 +121,16 @@
         <!-- Years slider -->
         <div class="filter" id="c_slider_years"></div>
 
-        <!-- Papers List -->
-        <div class="filter" id="c_papers"></div>
-
-        <!-- Authors List -->
-        <div class="filter" id="c_authors"></div>
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- Papers List -->
+            <div class="filter" id="c_papers"></div>
+          </div>
+          <div class="col-lg-6">
+            <!-- Authors List -->
+            <div class="filter" id="c_authors"></div>
+          </div>
+        </div>
 
       </header>
       <!-- /.row -->
@@ -136,6 +141,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
+          <p class="m-0 text-center text-white"><i class="fas fa-exclamation-circle"> Site not affiliated with</i> <a href="http://dblp.org/">dblp.org  <i class="fas fa-exclamation-circle"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-user-tie"> Gaspare Ferraro </i> <a href="https://gaspa.re">gaspa.re <i class="fas fa-id-card-alt"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-file-code"> Source code </i> <a href="https://github.com/GaspareG/dblp.info">github.com <i class="fab fa-github"></i></a> </p>
           <p class="m-0 text-center text-white"><i class="fas fa-database"> Dataset </i> <a href="https://dblp.uni-trier.de">dblp.uni-trier.de <i class="fas fa-university"></i></a> </p>

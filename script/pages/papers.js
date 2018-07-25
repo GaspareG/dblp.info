@@ -261,7 +261,7 @@ function updateList(dataF) {
     })(dJournalsC[i]["id"])));
     j.append(" ");
     j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
-    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]);
+    j.append(" <br><b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]);
     list.append(j);
   }
 
