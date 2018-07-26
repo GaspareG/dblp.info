@@ -267,24 +267,25 @@ function loadPlotType()
     window["props"][props] = 0;
     var fieldsSet = $('<form class="custom-controls-stacked">');
     fieldsSet.append("<label><b>" +props+ ":</b></label><br/>");
+    var select = $("<select>").attr("name", props).css("width", "100%");
     for(var i=0; i<proprs[props].length; i++)
     {
-      var field = $('<label>').css("cursor", "pointer");
       var name = proprs[props][i];
-      var radioButton = $('<input name="' +props+ '" type="radio" value='+i+' ' +(i == 0 ? "checked" : "")+ '>');
-      field.append(radioButton);
-      field.append('<span class="custom-control-description"> ' +name + '</span>');
 
-      radioButton.on("change", function(){
-        var name = $(this).attr("name")
-        var value =  $(this).attr("value")
-        window["props"][name] = +value;
-        plot();
-      });
+      var field = $("<option>").text(name).attr("value", i);
 
-      fieldsSet.append(field);
-      fieldsSet.append("<br/>");
+      select.append(field);
     }
+
+    select.on("change", function(){
+      var name = $(this).attr("name");
+      var value =  this.value;
+      console.log(name, value);
+      window["props"][name] = +value;
+      plot();
+    });
+
+    fieldsSet.append(select);
     fields.append(fieldsSet);
   }
 
@@ -513,7 +514,8 @@ function draw(data){
   tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("display", "none")
-    .style("opacity", "1");
+    .style("opacity", 1)
+    .style("text-size", "10px");
 
   var citNum = data.map(a => d3.sum(a["pubs"], p => (dCitations[p["id"]]||[]).length));
   citNum = citNum.filter(function(item, pos) {
@@ -533,6 +535,73 @@ function draw(data){
   mapCitations = mapCitations.filter(function(item, pos) {
     return mapCitations.indexOf(item) == pos;
   }).sort( (a,b) => a-b);
+
+  // Color bar
+    var legend = svg.append("defs")
+      .append("svg:linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "0%")
+      .attr("y1", "100%")
+      .attr("x2", "100%")
+      .attr("y2", "100%")
+      .attr("spreadMethod", "pad");
+
+    for(var i=0; i<= 10; i+=.1)
+    legend.append("stop")
+      .attr("offset", (i*100)+"%")
+      .attr("stop-color", d3.interpolateRdYlGn(i))
+      .attr("stop-opacity", 1);
+
+  if( window["props"]["Colors"] <= 1 )
+  {
+
+    svg.append("rect")
+      .attr("width", Math.min( width/2,  150) )
+      .attr("height", 20)
+      .style("fill", "url(#gradient)")
+      .attr("transform", "translate(10, 30)");
+
+    var yColor;
+    if( window["props"]["Colors"] == 0 )
+    {
+
+    yColor = d3.scaleLinear()
+      .range([0,  Math.min( width/2,  150) ])
+      .domain( [mapPapers[0], mapPapers[mapPapers.length-1] ] ).nice();
+
+    }
+    else
+    {
+      yColor = d3.scaleLinear()
+      .range([0,  Math.min( width/2,  150) ])
+      .domain( [mapCitations[0], mapCitations[mapCitations.length-1] ] ).nice();
+
+
+    }
+    var yAxis = d3.axisBottom()
+      .scale(yColor)
+      .ticks(5);
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(10, 50)")
+      .call(yAxis)
+
+    svg.append("text")
+    .attr("transform",
+      "translate("+(10+Math.min( width/2,  150)/2) +", 20)")
+    .style("text-anchor", "middle")
+    .attr("size", "10px")
+    .text( proprs["Colors"][ window["props"]["Colors"] ] );
+
+
+  }
+
+  var selected = [];
+  for(var i=0; i<data.length; i++)
+  {
+
+  }
 
   // Data plot
   for (var i = 0; i < data.length; i++) {
@@ -643,17 +712,16 @@ function draw(data){
       }
 
 
-
       svg.append("path")
       .attr("d", line(dataSet) )
       .attr("class", "path-" + data[i]["id"])
       .attr("stroke", "url(#linear-gradient-"+data[i]["id"]+")")
-      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 2 : 1)
+      .attr("stroke-width", selectedId.indexOf(+data[i]["id"]) != -1 ? 3 : 1)
       .attr("stroke-opacity", selectedId.indexOf(+data[i]["id"]) != -1 ? 1 : .25)
       .attr("fill", "none")
       .attr("z-index", selectedId.indexOf(+data[i]["id"]) == -1 ? 1 : 100);
 
-    svg.selectAll("dot")
+    var dot = svg.selectAll("dot")
       .data( [ dataSet[dataSet.length-1] ]  )
       .enter().append("circle")
       .attr("r", 4)
@@ -671,11 +739,15 @@ function draw(data){
       .attr("fill-opacity", .3)
       .style("cursor", "pointer")
       .attr("real-color", color )
+      .attr("tooltip-text", data[i]["name"] + " " + pathPapersA[pathPapersA.length - 1][1] + "p " + pathCitationsA[pathCitationsA.length - 1][1] + "c")
       .on("click", function(d){ location.href = "author?id="+d[2]; })
-      .on("mouseover", function(d) {
+
+    if(  selectedId.indexOf(+data[i]["id"]) == -1 )
+    {
+      dot.on("mouseover", function(d) {
 
           tooltip.style("display", "block");
-          tooltip.html( window.data[ d[2] ]["name"] + "<br/>" + d[1] )
+          tooltip.html( d3.select(this).attr("tooltip-text") )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
 
@@ -704,9 +776,23 @@ function draw(data){
           path.attr("stroke-opacity", .25);
           path.attr("stroke-width", 1);
 
-
       });
 
+    }
+    else
+    {
+      var d = dataSet[dataSet.length-1];
+      d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("display", "block")
+      .style("opacity", 1)
+      .style("text-size", "10px")
+      .html(  data[i]["name"] + " " + pathPapersA[pathPapersA.length - 1][1] + "p " + pathCitationsA[pathCitationsA.length - 1][1] + "c" )
+      .style("left", (25+margin.left + getOffset( $("#c_plot")[0] ).left + x(d[0] - ((window["props"]["X-Axis"]) * window.data[d[2]]["minYear"]) ) ) + "px" )
+      .style("top", (15+margin.top + getOffset( $("#c_plot")[0] ).top + y(d[1]) ) + "px")
+
+
+    }
 
   }
 

@@ -101,7 +101,14 @@ function loadCollab() {
 function loadCouple() {
   var cid = [];
   for (var k in coauth)
+  {
+    var kids = k.split("-");
+    kids[0] = +kids[0];
+    kids[1] = +kids[1];
+//    cid.push([ ( data[kids[0]]["pubs"].length + data[kids[1]]["pubs"].length) / ( 2.*coauth[k] ) , kids]);
     cid.push([coauth[k], k.split("-")]);
+  }
+//    cid.push([coauth[k], k.split("-")]);
   cid.sort((a, b) => b[0] - a[0]);
 
   $("#c_couple").html("");
@@ -285,7 +292,7 @@ function draw() {
   for (var k in common) commons.push([+k, common[k]]);
   commons.sort((a, b) => b[1] - a[1]);
   for (var k = 0; k < commons.length; k++) {
-    var li = $("<li><a href='author?id=" +data[commons[k][0]]["id"]+ "'>" + data[commons[k][0]]["name"] + "</a> (" + commons[k][1] + " common papers) </li>");
+    var li = $("<li></li>");
     li.append($("<i class='fas fa-plus text-success'></i>").css({
       cursor: "pointer"
     }).on("click", (function(id) {
@@ -294,7 +301,7 @@ function draw() {
         plot();
       };
     })(commons[k][0])));
-
+    li.append(" <a href='author?id=" +data[commons[k][0]]["id"]+ "'>" + data[commons[k][0]]["name"] + "</a> (" + commons[k][1] + " papers)");
     ul.append(li);
   }
 

@@ -77,6 +77,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
+        <span class="navbar-text">
+          Coauthorship visualization
+        </span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -108,15 +111,11 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <h3><i class="fas fa-share-alt"></i> Coauthorship visualization</h3>
-
-        <!-- Informations -->
-        <div class="filter row" id="c_info"></div>
-
         <div class="row">
-
           <!-- Left column -->
-          <div class="col-xs-12 col-lg-6 col-xl-4">
+          <div class="col-xs-12 col-lg-6 col-xl-3">
+            <!-- Informations -->
+            <div class="filter row" id="c_info"></div>
             <!-- Search -->
             <div class="filter" id="c_search"></div>
             <!-- Authors List -->
@@ -125,7 +124,8 @@
             <div class="filter" id="c_plot"></div>
           </div>
 
-          <div class="col-xs-12 col-lg-6 col-xl-4">
+          <!-- Center column -->
+          <div class="col-xs-12 col-lg-6 col-xl-5">
             <!-- Plot container -->
             <div class="filter" id="c_plot_edge"></div>
           </div>
@@ -137,8 +137,6 @@
             <!-- Plot type -->
             <div class="filter" id="c_plot_type"></div>
           </div>
-
-
         </div>
 
         <div class="row">

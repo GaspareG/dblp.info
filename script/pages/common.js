@@ -115,6 +115,8 @@ function addCollapse(){
   var el = $(".filter");
   $(el).each(function(e){
     e = $(this);
+    if( e.attr("id") == "c_plot" ) return;
+
     e.css("position", "relative");
     $(".collapse-button", e).remove();
     e.append(

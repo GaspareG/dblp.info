@@ -35,7 +35,8 @@ svg {
   margin: auto;
 }
 .tooltip {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 8px !important;
   padding: 4px;
   border-radius: 4px;
 }
