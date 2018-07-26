@@ -77,6 +77,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">dblp.info</a>
+        <span class="navbar-text">
+          Journal visualization
+        </span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -108,18 +111,25 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <div style="float: right;"><a href="journals"><i class="fas fa-undo-alt"></i> return to journals list</a></div>
+        <div class="row">
 
-        <h3><i class="fas fa-book"></i> Journal visualization</h3>
+          <!-- Left column -->
+          <div class="col-12 col-xl-8">
+            <!-- Plot container -->
+            <div class="filter row" id="c_plot"></div>
+          </div>
 
-        <!-- Informations -->
-        <div class="filter" id="c_info"></div>
+          <!-- Right column -->
+          <div class="col-12 col-xl-4">
+            <!-- Informations -->
+            <div class="filter" id="c_info"></div>
+            <!-- Years slider -->
+            <div class="filter" id="c_slider_years"></div>
+            <!-- Sort -->
+            <div class="filter" id="c_sort"></div>
+          </div>
 
-        <!-- Sort -->
-        <div class="filter" id="c_sort"></div>
-
-        <!-- Years slider -->
-        <div class="filter" id="c_slider_years"></div>
+        </div>
 
         <div class="row">
           <div class="col-lg-6">

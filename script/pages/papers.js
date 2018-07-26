@@ -1,10 +1,14 @@
-var plotFunctions = [];
 var sort = 0;
 var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
 var journalsBanned = {};
 var plotTypeChart = 0;
+var selectedId = getQueryVariable("ids");
+var selectedColor = d3.schemeDark2.slice().concat(d3.schemeCategory10);
+if( selectedId == undefined ) selectedId = [];
+else selectedId = selectedId.split(",").map( x => +x);
+
 
 $(function() {
   loadAuthors(function(authors) {
@@ -31,6 +35,8 @@ var wrotePJ = {};
 var dCitations = {};
 var pData = []
 
+var title2id = {};
+
 function parseData(authors, wrote, papers, publish, journals, citations) {
   dJournals = journals;
 
@@ -53,7 +59,10 @@ function parseData(authors, wrote, papers, publish, journals, citations) {
     data[parseInt(authors[i]["id"])]["maxYear"] = 1000;
   }
   for (var i = 0; i < papers.length; i++)
+  {
     pData[parseInt(papers[i]["id"])] = papers[i];
+    title2id[ papers[i]["title"] ] = papers[i]["id"];
+  }
 
   for(var i=0; i<publish.length; i++)
     pData[ +publish[i]["idP"] ]["journals"] = [+publish[i]["idJ"]];
@@ -76,10 +85,63 @@ function parseData(authors, wrote, papers, publish, journals, citations) {
 }
 
 function loadControls() {
+  loadSearch();
+  updatePapers();
   loadSort();
   loadSliderYear();
   loadPlotType();
   loadScaleType();
+}
+
+function loadSearch() {
+  $("#c_search").html("");
+  addCollapse();
+  var input = $("<input style='width: 100%' id='papers'>");
+
+  var names = [];
+  for (var k in title2id) names.push(k);
+  input.autocomplete({
+    source: names,
+    minLength: 3,
+    autoFocus: true,
+    select: function(event, ui) {
+      var id = +title2id[ui.item.value];
+      if( selectedId.indexOf(id) != -1 ) return;
+      selectedId.push(id);
+      updatePapers();
+      plot();
+    }
+  });
+
+  $("#c_search").append('<b><i class="fas fa-search"></i> Search paper:</b><br>');
+  $("#c_search").append("<span> </span>");
+  $("#c_search").append($("<div>").css("width", "100%").append(input));
+}
+
+function updatePapers()
+{
+  if( selectedId.length > 0 ) updateQueryStringParam("ids", selectedId.join(","));
+  var ol = $("<ol>").css("padding-left", "50px");
+
+  for(var i=0; i<selectedId.length; i++)
+  {
+    var li = $("<li>");
+    li.append( $("<a>").text( pData[selectedId[i]]["title"] ).attr("href", "paper?id=" + selectedId[i]).css("color", selectedColor[i] + " !important") )
+      .append(" - ")
+      .append( $("<i class='fas fa-times'></i>").css({"color":"red","cursor": "pointer"}).on("click", (function(id){
+        return function(){
+          var pos = selectedId.indexOf(id);
+          selectedId = selectedId.slice(0, pos).concat(selectedId.slice(pos+1));
+          updateAuthors();
+          plot();
+        }
+      })(selectedId[i])))
+    ol.append(li);
+  }
+  $("#c_selected").html("");
+  addCollapse();
+  $("#c_selected").append('<b><i class="fas fa-file"></i> Selected papers:</b>');
+  $("#c_selected").append($("<div>").css("width","100%").append(ol));
 }
 
 function loadSort() {
@@ -225,12 +287,12 @@ function plot() {
   filterData = filter();
   updateInfo(filterData);
   updateList(filterData);
-  plotFunctions[plotTypeChart](filterData);
+//  plotFunctions[plotTypeChart](filterData);
   drawDegree(filterData);
 
-  console.log("UPDATE PAPERS 0", (new Date()));
-  async(function(filterData){ updatePapers(filterData); }, null, filterData);
-  console.log("UPDATE PAPERS 1", (new Date()));
+//  console.log("UPDATE PAPERS 0", (new Date()));
+//  async(function(filterData){ updatePapers(filterData); }, null, filterData);
+//  console.log("UPDATE PAPERS 1", (new Date()));
 }
 
 function updateInfo(dataF) {
@@ -272,7 +334,7 @@ function updateList(dataF) {
 }
 
 $(window).resize(plot);
-
+/*
 function updatePapers(dataF) {
 
   var sortF = [];
@@ -320,7 +382,17 @@ function updatePapers(dataF) {
   console.log("\tAPPEND LIST 1", (new Date()));
 
 }
-
+*/
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
 
 function drawDegree(dataP) {
   var margin = {
@@ -329,12 +401,17 @@ function drawDegree(dataP) {
     bottom: 60,
     left: 60
   };
-  var width = $("#c_plot_degree").width() - margin.left - margin.right,
-    height = $("#c_plot_degree").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot_degree")[0] ).top;
+  var width = $("#c_plot_degree").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot_degree").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot_degree").html("");
   addCollapse();
-  $("#c_plot_degree").append('<b><i class="fas fa-chart-line"></i> Network degree distribution:</b>');
+  $("#c_plot_degree").append('<b><i class="fas fa-chart-line"></i> Plot:</b>');
 
   var svg = d3.select("#c_plot_degree")
     .append("svg")
@@ -361,9 +438,7 @@ function drawDegree(dataP) {
   for (var deg in degreeCount)
     points.push([parseInt(deg), degreeCount[deg]]);
 
-  console.log("POINTS SORT 0", (new Date()));
   points.sort((a, b) => a[0] - b[0]);
-  console.log("POINTS SORT 1", (new Date()));
 
   var x, y;
 
@@ -428,39 +503,42 @@ function drawDegree(dataP) {
     .text("#citations");
 
   // Prep the tooltip bits, initial display is hidden
-  tooltip = g.append("g")
+
+/*  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("display", "none")
-    .style("opacity", 1)
-    .style("z-index", 1000);
+    .style("opacity", "1");
 
-  tooltip.append("rect")
-    .attr("width", 160)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("text-align", "center")
-    .style("opacity", .5)
-    .style("z-index", 1000);
-
-  tooltip.append("text")
-    .attr("x", 80)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .style("text-align", "center")
-    .attr("font-size", "12px")
-    .attr("font-weight", "bold");
-
+  svg.selectAll("dot")
+    .data(selectedId)
+    .enter().append("circle")
+    .attr("r", 5)
+    .attr("cx", function(d) {
+      return x(Object.keys(graph[d]).length);
+    })
+    .attr("cy", function(d) {
+      return y(degreeCount[Object.keys(graph[d]).length]);
+    })
+    .attr("fill", "red")
+    .attr("stroke", "red")
+    .attr("fill-opacity", "0.5")
+    .style("cursor", "pointer")
+    .on("click", function(d) {
+      location.href = "author?id=" + d;
+    })
+    .on("mouseover", function() {
+      tooltip.style("display", "block");
+    })
+    .on("mouseout", function() {
+      tooltip.style("display", "none");
+    })
+    .on("mousemove", function(d, i) {
+      tooltip.style("left", (d3.event.pageX + 10) + "px")
+             .style("top", (d3.event.pageY - 45) + "px");
+      tooltip.html(data[d]["name"] + "<br>" + Object.keys(graph[d]).length + " coauthors");
+    });
+*/
 }
 
 
-plotFunctions[0] = function(){
-
-}
-plotFunctions[1] = function(){
-
-}
-plotFunctions[2] = function(){
-
-}
-plotFunctions[3] = function(){
-
-}

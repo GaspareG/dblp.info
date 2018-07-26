@@ -128,6 +128,7 @@ function addCollapse(){
     e = $(this);
     if( e.attr("id") == "c_plot" ) return;
     if( e.attr("id") == "c_plot_edge" ) return;
+    if( e.attr("id") == "c_plot_degree" ) return;
 
     e.css("position", "relative");
     $(".collapse-button", e).remove();
