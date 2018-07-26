@@ -105,20 +105,17 @@ function loadSort() {
 }
 
 function loadSliderYear() {
-  minYear = 3000;
-  maxYear = 1000;
-  for (var i = 0; i < data.length; i++)
-    minYear = Math.min(minYear, data[i]["minYear"]);
-  for (var i = 0; i < data.length; i++)
-    maxYear = Math.max(maxYear, data[i]["maxYear"]);
+  minYear = 1985;
+  maxYear = 2018;
+
   var sliderYearText = $("<span></span>");
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
   sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
   sliderYearSlider.slider({
     range: true,
-    min: minYear,
-    max: maxYear,
+    min: d3.min(data, x => x["minYear"]),
+    max: d3.max(data, x => x["maxYear"]),
     values: [minYear, maxYear],
     slide: function(event, ui) {
       minYear = ui.values[0];
@@ -223,7 +220,7 @@ function updateList(dataF) {
     })(dJournalsC[i]["id"])));
     j.append(" ");
     j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
-    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
+    j.append(" <br/><b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]+", cited <b>"+dJournalsC[i]["citations"]+"</b> times");
     list.append(j);
   }
 
@@ -235,6 +232,17 @@ function updateList(dataF) {
 
 $(window).resize(plot);
 
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
 plotFunctions[0] = function(data) {
     var margin = {
     top: 25,
@@ -242,8 +250,13 @@ plotFunctions[0] = function(data) {
     bottom: 80,
     left: 55
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();
@@ -326,6 +339,37 @@ plotFunctions[0] = function(data) {
     .style("opacity", "1");
 
 
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
   svg.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(dataP))
@@ -389,8 +433,13 @@ plotFunctions[1] = function(data) {
     bottom: 80,
     left: 55
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   console.log(data);
   $("#c_plot").html("");
@@ -453,6 +502,37 @@ plotFunctions[1] = function(data) {
     .style("display", "none")
     .style("z-index", "1000")
     .style("opacity", "1");
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
 
   var stack = d3.stack().keys(keys)
     .order(d3.stackOrderNone)
@@ -515,8 +595,13 @@ plotFunctions[2] = function(data) {
     bottom: 80,
     left: 80
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();
@@ -595,6 +680,37 @@ plotFunctions[2] = function(data) {
     .style("z-index", "1000")
     .style("opacity", "1");
 
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
+
 
   // Add the Y Axis
   svg.append("g")
@@ -654,8 +770,13 @@ plotFunctions[3] = function(data) {
     bottom: 80,
     left: 80
   };
-  var width = $("#c_plot").width() - margin.left - margin.right,
-    height = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+
+  var wH = window.innerHeight;
+  var innerH = getOffset( $("#c_plot")[0] ).top;
+  var width = $("#c_plot").width() - margin.left - margin.right;
+  var height1 = (wH - innerH-100) - margin.top - margin.bottom;
+  var height2 = $("#c_plot").width()*3/4 - margin.top - margin.bottom;
+  var height = Math.min(height1, height2);
 
   $("#c_plot").html("");
   addCollapse();
@@ -733,6 +854,37 @@ plotFunctions[3] = function(data) {
     .style("display", "none")
     .style("z-index", "1000")
     .style("opacity", "1");
+
+        //D3 Vertical Legend//////////////////////////
+        var legend3 = svg.selectAll('.legend3')
+            .data(z.domain())
+            .enter().append('g')
+            .attr("class", "legends3")
+            .attr("transform", function (d, i) {
+            {
+                return "translate(5," + i * 20 + ")"
+            }
+        })
+
+        legend3.append('rect')
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .style("fill", function (d, i) {
+            return z(d)
+        })
+
+        legend3.append('text')
+            .attr("x", 20)
+            .attr("y", 13)
+        .text(function (d, i) {
+            return "[" + d.toUpperCase() + "]";
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            .style("font-size", 15)
+      //////////////////////////////
 
 
   // Add the Y Axis

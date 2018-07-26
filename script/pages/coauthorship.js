@@ -101,7 +101,14 @@ function loadCollab() {
 function loadCouple() {
   var cid = [];
   for (var k in coauth)
+  {
+    var kids = k.split("-");
+    kids[0] = +kids[0];
+    kids[1] = +kids[1];
+//    cid.push([ ( data[kids[0]]["pubs"].length + data[kids[1]]["pubs"].length) / ( 2.*coauth[k] ) , kids]);
     cid.push([coauth[k], k.split("-")]);
+  }
+//    cid.push([coauth[k], k.split("-")]);
   cid.sort((a, b) => b[0] - a[0]);
 
   $("#c_couple").html("");
@@ -153,7 +160,7 @@ function loadSearch() {
   $("#c_search").html("");
   addCollapse();
   var label = $("<label for='authors'>Search author: </label>");
-  var input = $("<input id='author'>");
+  var input = $("<input id='author' style='width:100%'>");
 
   var names = [];
   for (var k in name2id) names.push(k);
@@ -285,7 +292,7 @@ function draw() {
   for (var k in common) commons.push([+k, common[k]]);
   commons.sort((a, b) => b[1] - a[1]);
   for (var k = 0; k < commons.length; k++) {
-    var li = $("<li><a href='author?id=" +data[commons[k][0]]["id"]+ "'>" + data[commons[k][0]]["name"] + "</a> (" + commons[k][1] + " common papers) </li>");
+    var li = $("<li></li>");
     li.append($("<i class='fas fa-plus text-success'></i>").css({
       cursor: "pointer"
     }).on("click", (function(id) {
@@ -294,7 +301,7 @@ function draw() {
         plot();
       };
     })(commons[k][0])));
-
+    li.append(" <a href='author?id=" +data[commons[k][0]]["id"]+ "'>" + data[commons[k][0]]["name"] + "</a> (" + commons[k][1] + " papers)");
     ul.append(li);
   }
 
@@ -812,26 +819,11 @@ function drawDegree() {
     .text("#coauthors");
 
   // Prep the tooltip bits, initial display is hidden
-  tooltip = g.append("g")
+  d3.selectAll(".tooltip").remove();
+  tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("display", "none")
-    .style("opacity", 1)
-    .style("z-index", 1000);
-
-  tooltip.append("rect")
-    .attr("width", 160)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("text-align", "center")
-    .style("opacity", .5)
-    .style("z-index", 1000);
-
-  tooltip.append("text")
-    .attr("x", 80)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .style("text-align", "center")
-    .attr("font-size", "12px")
-    .attr("font-weight", "bold");
+    .style("opacity", "1");
 
   svg.selectAll("dot")
     .data(authIds)
@@ -857,10 +849,9 @@ function drawDegree() {
       tooltip.style("display", "none");
     })
     .on("mousemove", function(d, i) {
-      var xPosition = d3.mouse(this)[0];
-      var yPosition = d3.mouse(this)[1] - 25;
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(data[d]["name"] + " - " + Object.keys(graph[d]).length);
+      tooltip.style("left", (d3.event.pageX + 10) + "px")
+             .style("top", (d3.event.pageY - 45) + "px");
+      tooltip.html(data[d]["name"] + "<br>" + Object.keys(graph[d]).length + " coauthors");
     });
 
 }

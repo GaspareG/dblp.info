@@ -214,13 +214,23 @@ function filter() {
 
 var filterData = [];
 
+function async(your_function, callback, argument) {
+    setTimeout(function() {
+        your_function(argument);
+        if (callback) {callback();}
+    }, 0);
+}
+
 function plot() {
   filterData = filter();
   updateInfo(filterData);
   updateList(filterData);
   plotFunctions[plotTypeChart](filterData);
   drawDegree(filterData);
-  updatePapers(filterData);
+
+  console.log("UPDATE PAPERS 0", (new Date()));
+  async(function(filterData){ updatePapers(filterData); }, null, filterData);
+  console.log("UPDATE PAPERS 1", (new Date()));
 }
 
 function updateInfo(dataF) {
@@ -235,7 +245,9 @@ function updateList(dataF) {
   var sortF = [];
   sortF[0] = (a,b) => a["tag"] < b["tag"] ? -1 : 1;
 
+  console.log("DJOURNAL SORT 0 ", (new Date()));
   var dJournalsC = dJournals.slice().sort( sortF[0] );
+  console.log("DJOURNAL SORT 1", (new Date()));
 
   var list = $("<div>");
   for (var i = 0; i < dJournalsC.length; i++)
@@ -249,7 +261,7 @@ function updateList(dataF) {
     })(dJournalsC[i]["id"])));
     j.append(" ");
     j.append("<a href='journal?id=" + dJournalsC[i]["id"] + "'>[" +dJournalsC[i]["tag"].toUpperCase()+ "] " +dJournalsC[i]["name"]+ "</a>");
-    j.append(" <b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]);
+    j.append(" <br><b>" + dJournalsC[i]["pubs"].length + "</b> papers between "+dJournalsC[i]["minYear"]+" and "+dJournalsC[i]["maxYear"]);
     list.append(j);
   }
 
@@ -260,6 +272,7 @@ function updateList(dataF) {
 }
 
 $(window).resize(plot);
+
 function updatePapers(dataF) {
 
   var sortF = [];
@@ -271,31 +284,41 @@ function updatePapers(dataF) {
   sortF[1] = (a,b) => a["title"] < b["title"] ? -1 : 1;
   sortF[2] = ((a,b) => (dCitations[b["id"]]||[]).length - (dCitations[a["id"]]||[]).length);
 
+  console.log("\tPAPERS SORT 0", (new Date()));
   dataF = dataF.slice().sort( sortF[ sort ] );
+  console.log("\tPAPERS SORT 1", (new Date()));
 
-  var list = $("<ol>");
-  list.css({
+  var list = document.createElement("ol"); // $("<ol>");
+  $(list).css({
     "max-height": "300px",
     "overflow-y": "scroll"
   });
 
+  console.log("\tCREATE LIST 0", (new Date()));
+  var htmlContent = "";
   for (var i = 0; i < dataF.length; i++)
   {
-    var li = $("<li>");
-    li.append(dataF[i]["year"]);
-    li.append(" ");
-    li.append( "<a href='journal?id="+dJournals[ dataF[i]["journals"][0] ]["id"]+"'>[" + dJournals[ dataF[i]["journals"][0] ]["tag"].toUpperCase() + "]</a>");
-    li.append(" ");
-    li.append("<a href='paper?id="+dataF[i]["id"]+"'>" + dataF[i]["title"] + "</a>");
-    li.append(" ");
-    li.append( (dCitations[dataF[i]["id"]]||[]).length + " citations");
-    list.append(li);
+    htmlContent += "<li>";
+    htmlContent += (dataF[i]["year"]);
+    htmlContent += (" ");
+    htmlContent += ("<a href='journal?id="+dJournals[ dataF[i]["journals"][0] ]["id"]+"'>[" + dJournals[ dataF[i]["journals"][0] ]["tag"].toUpperCase() + "]</a>");
+    htmlContent += (" ");
+    htmlContent += ("<a href='paper?id="+dataF[i]["id"]+"'>" + dataF[i]["title"] + "</a>");
+    htmlContent += (" ");
+    htmlContent += ( (dCitations[dataF[i]["id"]]||[]).length + " citations");
+    htmlContent += "</li>";
   }
 
+  list.innerHTML = htmlContent;
+  console.log("\tCREATE LIST 1", (new Date()));
+
+  console.log("\tAPPEND LIST 0", (new Date()));
   $("#c_papers").html("");
   addCollapse();
   $("#c_papers").append('<b><i class="fas fa-file"></i> Papers: </b>');
-  $("#c_papers").append(list);
+  $("#c_papers")[0].appendChild(list);
+  console.log("\tAPPEND LIST 1", (new Date()));
+
 }
 
 
@@ -338,7 +361,9 @@ function drawDegree(dataP) {
   for (var deg in degreeCount)
     points.push([parseInt(deg), degreeCount[deg]]);
 
+  console.log("POINTS SORT 0", (new Date()));
   points.sort((a, b) => a[0] - b[0]);
+  console.log("POINTS SORT 1", (new Date()));
 
   var x, y;
 

@@ -19,7 +19,7 @@ body {
 }
 
 .m-0 {
-  max-width: 300px;
+  max-width: 330px;
   margin: auto !important;
   text-align: justify !important;
   justify-content: space-between;
@@ -35,7 +35,70 @@ svg {
   margin: auto;
 }
 .tooltip {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 8px !important;
   padding: 4px;
   border-radius: 4px;
 }
+
+.filter {
+  margin: 8px;
+  padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: .3rem;
+  background: #e0e0e0;
+}      
+
+.jumbotron {
+  padding: 2rem !important;
+}
+
+.ui-slider {
+  margin-top: 8px !important;
+}
+
+
+.node {
+  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.node:hover {
+  fill: #000;
+}
+
+.link {
+  stroke: steelblue;
+  stroke-opacity: 0.4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+  font-weight: 700;
+}
+
+.node--source {
+  fill: #2ca02c;
+}
+
+.node--target {
+  fill: #d62728;
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link--source {
+  stroke: #d62728;
+}
+
+.link--target {
+  stroke: #d62728;
+}
+

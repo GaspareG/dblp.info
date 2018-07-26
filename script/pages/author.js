@@ -176,14 +176,32 @@ function loadCheckJournals() {
   for (var i = 0; i < dJournals.length; i++) {
     journalsBanned[+dJournals[i]["id"]] = false;
     var j = $("<div></div>");
-    j.append($("<input type=checkbox checked id='check-" + dJournals[i]["id"] + "' />"))
-    j.append(" ");
-    j.append($("<label for='check-" + dJournals[i]["id"] + "'>").html(" [" + dJournals[i]["tag"].toUpperCase() + "] " + dJournals[i]["name"]).css("cursor", "pointer").on("click", (function(id) {
-      return function() {
-        journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
-        plot();
-      };
-    })(dJournals[i]["id"])));
+    j.append(
+      $("<div>")
+      .css("cursor", "pointer")
+        .append( 
+          $("<input type=checkbox checked id='check-" + dJournals[i]["id"] + "' />") 
+          .on("click", (function(id) {
+            return function() {
+              console.log(this);
+              journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
+              $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]] );
+              plot();
+            };
+          })(dJournals[i]["id"]))
+        )
+        .append(
+          $("<span> [" + dJournals[i]["tag"].toUpperCase() + "] " + dJournals[i]["name"] + "</span>")
+          .on("click", (function(id) {
+            return function() {
+              console.log(this);
+              journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
+              $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]] );
+              plot();
+            };
+          })(dJournals[i]["id"]))
+        )
+    );
     list.append(j);
   }
   $("#c_journals").html("");
@@ -243,8 +261,6 @@ function filterData() {
     if (journalsBanned[dPapers[id]["journals"][0]]) return false;
     return true;
   }).sort( sortF[sort] );
-
-// ["name", "year", "venue", "citations"]
 
 }
 
