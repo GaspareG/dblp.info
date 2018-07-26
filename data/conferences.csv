@@ -1,9 +1,9 @@
-id,tag,name
-0,"siggraph","Conference on Computer Graphics and Interactive Techniques"
-1,"eurographics","Eurographics"
-2,"sgp","Symposium on Geometry Processing"
-3,"rt","Eurographics Symposium on Rendering"
-4,"pg","Pacific Conference on Computer Graphics and Applications"
-5,"vissym","IEEE TCVG Symposium on Visualization"
-6,"visualization","Visualization"
-7,"infovis","IEEE Symposium on Information Visualization"
+id,tag,name,idJ
+0,"siggraph","Conference on Computer Graphics and Interactive Techniques",4
+1,"eurographics","Eurographics",3
+2,"sgp","Symposium on Geometry Processing",3
+3,"rt","Eurographics Symposium on Rendering",3
+4,"pg","Pacific Conference on Computer Graphics and Applications",3
+5,"vissym","IEEE TCVG Symposium on Visualization",3
+6,"visualization","Visualization",5
+7,"infovis","IEEE Symposium on Information Visualization",5

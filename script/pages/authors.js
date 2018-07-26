@@ -580,7 +580,7 @@ function draw(data){
     }
     var yAxis = d3.axisBottom()
       .scale(yColor)
-      .ticks(5);
+      .tickValues( yColor.domain() );
 
     svg.append("g")
       .attr("class", "y axis")
@@ -688,7 +688,11 @@ function draw(data){
       var linearGradient = svg.append("defs")
             .append("linearGradient")
             .attr("id", "linear-gradient-" + data[i]["id"])
-            .attr("gradientTransform", "rotate(0)");
+            .attr("gradientTransform", "rotate(0)")
+            .attr("y1", "0%")
+            .attr("x1", "100%")
+            .attr("y2", "100%")
+            .attr("x2", "100%")
 
       if( selectedId.indexOf(+data[i]["id"]) == -1 && window["props"]["Path-Style"] == 1 && window["props"]["Colors"] != 2 )
       {

@@ -41,6 +41,17 @@ function loadCitations(callback) {
     .then(data => callback(data));
 }
 
+function loadConferences(callback) {
+  d3.csv(baseUrl + "/conferences.csv")
+    .then(data => callback(data));
+}
+
+function loadProceedings(callback) {
+  d3.csv(baseUrl + "/proceedings.csv")
+    .then(data => callback(data));
+}
+
+
 // Query string functions
 function updateQueryStringParam(key, value) {
   baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
@@ -116,6 +127,7 @@ function addCollapse(){
   $(el).each(function(e){
     e = $(this);
     if( e.attr("id") == "c_plot" ) return;
+    if( e.attr("id") == "c_plot_edge" ) return;
 
     e.css("position", "relative");
     $(".collapse-button", e).remove();

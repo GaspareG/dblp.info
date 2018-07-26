@@ -4,6 +4,8 @@ var minYear = 0;
 var maxYear = 0;
 var plotType = 0;
 var journalsBanned = {};
+var proceedingBanned = false;
+var proceedingsIds = {};
 
 $(function() {
   loadAuthors(function(authors) {
@@ -12,7 +14,9 @@ $(function() {
         loadPublish(function(publish) {
           loadJournals(function(journals) {
             loadCitations(function(citations) {
-              parseData(authors, wrote, papers, publish, journals, citations);
+              loadProceedings(function(proceedings) {
+                parseData(authors, wrote, papers, publish, journals, citations, proceedings);
+              });
             });
           });
         });
@@ -30,8 +34,11 @@ var wrotePJ = {};
 var dCitations = {};
 var pData = []
 
-function parseData(authors, wrote, papers, publish, journals, citations) {
+function parseData(authors, wrote, papers, publish, journals, citations, proceedings) {
   dJournals = journals;
+
+  for(var i=0; i<proceedings.length; i++)
+    proceedingsIds[ +proceedings[i]["idP"] ] = +proceedings[i]["idC"];
 
   for(var i=0; i<journals.length; i++)
     journalsBanned[+journals[i]["id"]] = false;
@@ -152,8 +159,20 @@ function loadPlotType() {
     fields.append("<span> </span>");
     fields.append("<br>");
   }
+
+  var checkbox = $("<div></div>");
+
+  checkbox.append( $("<input type='checkbox' id='check-conf' checked/>").on("change", function(){
+    proceedingBanned = !this.checked;
+    plot();
+    console.log(this.checked);
+  }));
+  checkbox.append("<span> </span>");
+  checkbox.append( $("<label for='check-conf'> <b>Count conference proceedings</b></label>") );
+
   $("#c_chart").append('<b><i class="fas fa-chart-bar"></i> Plot type: </b>');
   $("#c_chart").append(fields);
+  $("#c_chart").append(checkbox);
 
 }
 
@@ -163,6 +182,7 @@ function filter() {
     if( pp["year"] < minYear ) return false;
     if( pp["year"] > maxYear ) return false;
     if( journalsBanned[ pp["journals"][0] ] ) return false;
+    if( proceedingBanned && proceedingsIds[+pp["id"]] != undefined ) return false;
     return true;
   });
 
@@ -170,7 +190,7 @@ function filter() {
     dJournals[i]["pubs"] = [];
 
   for(var i=0; i<ret.length; i++)
-  { 
+  {
     dJournals[ ret[i]["journals"][0] ]["pubs"].push(ret[i]["id"]);
   }
 

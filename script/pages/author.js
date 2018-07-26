@@ -349,7 +349,7 @@ function draw(filter) {
 
 drawFunctions[0] = function(filter){
   $("#c_plot").html("").css({
-    "max-height": "600px",
+    "max-height": "700px",
     "overflow-y": "scroll"
   });
   addCollapse();
@@ -362,7 +362,7 @@ drawFunctions[0] = function(filter){
     left: 150
   };
   var width = ((4 + filter.length) * 30) - margin.left - margin.right,
-    height = ((4 + coauths.length) * 20) - margin.top - margin.bottom;
+      height = ((4 + coauths.length) * 20) - margin.top - margin.bottom;
 
   filter = filter.slice().sort( sortF[0] );
 
@@ -379,9 +379,23 @@ drawFunctions[0] = function(filter){
     return dAuthors[d[0]]["name"]
   })).range([20, height]);
 
-  var x = d3.scalePoint().domain(filter.map(function(d) {
+  var idJ = filter.map(function(d) {
     return d;
-  })).range([width, 20]);
+  }).sort((a,b) => dPapers[a]["year"] - dPapers[b]["year"]);
+
+  var idJ2 = [ -dPapers[ idJ[0] ]["year"] , idJ[0] ];
+
+  for(var i=1; i<idJ.length; i++)
+  {
+    if( dPapers[ idJ[i] ]["year"] != dPapers[ idJ[i-1] ]["year"] )
+      idJ2.push(  -dPapers[ idJ[i] ]["year"] );
+    idJ2.push( idJ[i] );
+  }
+
+  idJ = idJ2;;
+  console.log(idJ);
+
+  var x = d3.scalePoint().domain(idJ).range([20, width]);
 
   var yAxis = d3.axisLeft(y);
   var xAxis = d3.axisTop(x);
@@ -424,10 +438,11 @@ drawFunctions[0] = function(filter){
 
 
   svg.append("g").call(xAxis).selectAll("text")
-    .attr("stroke", "#999")
+    .attr("stroke", d => ( d < 0 ? "#000" : "#999" ))
     .style("cursor", "pointer")
     .style("font-size", "14px")
     .attr("transform", "rotate(45)")
+    .text(d => Math.abs(d) )
     .attr("y", -20)
     .attr("x", -30)
     .attr("dy", "1em")
@@ -435,22 +450,37 @@ drawFunctions[0] = function(filter){
        location.href = "paper?id="+d;
     })
     .on("mouseover", function(d) {
-       d3.select(this).attr("stroke", "red");
+       d3.select(this).attr("stroke", d => ( d < 0 ? "#000" : "red" ));
+       if( d < 0 ) return;
           tooltip.style("display", "block");
           tooltip.html( dPapers[d]["title"] + "<br>["+dJournals[dPapers[d]["journals"][0]]["tag"].toUpperCase()+"] " + dPapers[d]["year"])
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
       .on("mousemove", function(d){
-        tooltip               .style("left", (d3.event.pageX + 5) + "px")
+        tooltip.style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
 
       })
       .on("mouseout", function(d) {
-          d3.select(this).attr("stroke", "#999");
+          d3.select(this).attr("stroke", d => ( d < 0 ? "#000" : "#999" ));
+          if( d < 0 ) return;
           tooltip.style("display", "none");
       });
 
+
+  for(var k=0; k<idJ.length; k++)
+  {
+    var year = idJ[k];
+    if( year > 0 ) continue;
+    svg.append("line")
+       .attr("x1", x(year))
+       .attr("y1", 0)
+       .attr("x2", x(year))
+       .attr("y2", height)
+       .attr("stroke", "black")
+       .attr("stroke-opacity", "0.3")
+  }
 
   coauths.push([id, dAuthors[id]["pubs"].filter(function(x){
     if( !(minYear <= dPapers[x]["year"] && dPapers[x]["year"] <= maxYear) ) return false;
