@@ -1,0 +1,27 @@
+Motion Deblurring from a Single Image using Circular Sensor Motion.
+Edge-Optimized À-Trous Wavelets for Local Contrast Enhancement with Robust Denoising.
+Exposure Fusion for Time-Of-Flight Imaging.
+Rephotography Using Image Collections.
+Improving Performance and Accuracy of Local PCA.
+Toward Optimal Space Partitioning for Unbiased, Adaptive Free Path Sampling of Inhomogeneous Participating Media.
+Interactive Indirect Illumination Using Voxel Cone Tracing.
+A Graph-based Approach to Continuous Line Illustrations with Variable Levels of Detail.
+An Illustrative Visualization Framework for 3D Vector Fields.
+Motion Retrieval Using Low-Rank Subspace Decomposition of Motion Volume.
+Flexible Splicing of Upper-Body Motion Spaces on Locomotion.
+Creating Fluid Animation from a Single Image using Video Database.
+Asynchronous Evolution for Fully-Implicit and Semi-Implicit Time Integration.
+SSD: Smooth Signed Distance Surface Reconstruction.
+Bipartite Polar Classification for Surface Reconstruction.
+Discriminative Sketch-based 3D Model Retrieval via Robust Shape Matching.
+Authoring Hierarchical Road Networks.
+River Networks for Instant Procedural Planets.
+Real Time Edit Propagation by Efficient Sampling.
+Video Brush: A Novel Interface for Efficient Video Cutout.
+RepSnapping: Efficient Image Cutout for Repeated Scene Elements.
+A Single Image Representation Model for Efficient Stereoscopic Image Creation.
+Optimized Topological Surgery for Unfolding 3D Meshes.
+Computing 3D Shape Guarding and Star Decomposition.
+Heat Walk: Robust Salient Segmentation of Non-rigid Shapes.
+Intelligent GPGPU Classification in Volume Visualization: A framework based on Error-Correcting Output Codes.
+Efficient opacity specification based on feature visibilities in direct volume rendering.
