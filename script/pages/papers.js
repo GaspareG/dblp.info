@@ -7,8 +7,7 @@ var plotTypeChart = 0;
 var selectedId = getQueryVariable("ids");
 var selectedColor = d3.schemeDark2.slice().concat(d3.schemeCategory10);
 if( selectedId == undefined ) selectedId = [];
-else selectedId = selectedId.split(",").map( x => +x);
-
+else selectedId = selectedId.split(",").map(x => +x);
 
 $(function() {
   loadAuthors(function(authors) {
@@ -504,7 +503,7 @@ function drawDegree(dataP) {
 
   // Prep the tooltip bits, initial display is hidden
 
-/*  d3.selectAll(".tooltip").remove();
+  d3.selectAll(".tooltip").remove();
   tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("display", "none")
@@ -515,30 +514,40 @@ function drawDegree(dataP) {
     .enter().append("circle")
     .attr("r", 5)
     .attr("cx", function(d) {
-      return x(Object.keys(graph[d]).length);
+      if( (dCitations[d]||[]).length == 0 ) return -10000;
+      console.log("X", d, (dCitations[d]||[]).length, x( (dCitations[d]||[]).length) );
+      return x( (dCitations[d]||[]).length);
     })
     .attr("cy", function(d) {
-      return y(degreeCount[Object.keys(graph[d]).length]);
+      if( (dCitations[d]||[]).length == 0 ) return -10000;
+      return y(degreeCount[ (dCitations[d]||[]).length ]);
     })
-    .attr("fill", "red")
-    .attr("stroke", "red")
+    .attr("fill", x => selectedColor[ selectedId.indexOf(x) ])
+    .attr("stroke", x => selectedColor[ selectedId.indexOf(x) ])
     .attr("fill-opacity", "0.5")
     .style("cursor", "pointer")
     .on("click", function(d) {
-      location.href = "author?id=" + d;
+      location.href = "paper?id=" + d;
     })
-    .on("mouseover", function() {
-      tooltip.style("display", "block");
+
+  d3.select("body").selectAll("div.tooltip")
+    .data(selectedId)
+    .enter().append("div")
+    .attr("class", "tooltip")
+    .style("display", "block")
+    .style("opacity", 1)
+    .style("text-size", "10px")
+    .html( id => pData[id]["title"]  )
+    .style("left", function(d) {
+      if( (dCitations[d]||[]).length == 0 ) return -10000;
+      console.log("X", d, (dCitations[d]||[]).length, x( (dCitations[d]||[]).length) );
+      return (25+margin.left + getOffset( $("#c_plot_degree")[0] ).left + x( (dCitations[d]||[]).length)) + "px";
     })
-    .on("mouseout", function() {
-      tooltip.style("display", "none");
+    .style("top", function(d) {
+      if( (dCitations[d]||[]).length == 0 ) return -10000;
+      return (-3+margin.top + getOffset( $("#c_plot_degree")[0] ).top + y(degreeCount[ (dCitations[d]||[]).length ])) + "px";
     })
-    .on("mousemove", function(d, i) {
-      tooltip.style("left", (d3.event.pageX + 10) + "px")
-             .style("top", (d3.event.pageY - 45) + "px");
-      tooltip.html(data[d]["name"] + "<br>" + Object.keys(graph[d]).length + " coauthors");
-    });
-*/
+
 }
 
 

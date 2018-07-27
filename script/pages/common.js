@@ -1,18 +1,28 @@
 // Dataset loading function
-var baseUrl = "data/";
+var baseUrlCsv = "/data";
+
+function loadAlias(callback){
+  d3.csv(baseUrlCsv + "/alias.csv")
+    .then(function(data){
+      var dataM = {};
+      for(var i=0; i<data.length; i++)
+        dataM[ +data[i]["idA2"] ] = +data[i]["idA1"] ;
+      callback(dataM);
+    });
+}
 
 function loadAuthors(callback) {
-  d3.csv(baseUrl + "/authors.csv")
+  d3.csv(baseUrlCsv + "/authors.csv")
     .then(data => callback(data));
 }
 
 function loadJournals(callback) {
-  d3.csv(baseUrl + "/journals.csv")
+  d3.csv(baseUrlCsv + "/journals.csv")
     .then(data => callback(data));
 }
 
 function loadPapers(callback) {
-  d3.csv(baseUrl + "/papers.csv", function(d) {
+  d3.csv(baseUrlCsv + "/papers.csv", function(d) {
       d.id = parseInt(d.id)
       if (d.year == undefined) console.log(d);
       d.year = parseInt(d.year)
@@ -22,40 +32,60 @@ function loadPapers(callback) {
 }
 
 function loadCoauthorship(callback) {
-  d3.csv(baseUrl + "/coauthorship.csv")
-    .then(data => callback(data));
+
+  loadAlias(function(alias){
+    d3.csv(baseUrlCsv + "/coauthorship.csv")
+      .then(function(data){
+        for(var i=0; i<data.length; i++)
+        {
+          if( alias[data[i]["idA1"]] != undefined )
+            data[i]["idA1"] = alias[data[i]["idA1"]];
+          if( alias[data[i]["idA2"]] != undefined )
+            data[i]["idA2"] = alias[data[i]["idA2"]];
+        }
+        callback(data);
+      });
+  });
+
 }
 
 function loadPublish(callback) {
-  d3.csv(baseUrl + "/publish.csv")
+  d3.csv(baseUrlCsv + "/publish.csv")
     .then(data => callback(data));
 }
 
 function loadWrote(callback) {
-  d3.csv(baseUrl + "/wrote.csv")
-    .then(data => callback(data));
+  loadAlias(function(alias){
+    d3.csv(baseUrlCsv + "/wrote.csv")
+      .then(function(data){
+        for(var i=0; i<data.length; i++)
+          if( alias[data[i]["idA"]] != undefined )
+            data[i]["idA"] = alias[data[i]["idA"]];
+        callback(data);
+      });
+  });
 }
 
 function loadCitations(callback) {
-  d3.csv(baseUrl + "/citations.csv")
+  d3.csv(baseUrlCsv + "/citations.csv")
     .then(data => callback(data));
 }
 
 function loadConferences(callback) {
-  d3.csv(baseUrl + "/conferences.csv")
+  d3.csv(baseUrlCsv + "/conferences.csv")
     .then(data => callback(data));
 }
 
 function loadProceedings(callback) {
-  d3.csv(baseUrl + "/proceedings.csv")
+  d3.csv(baseUrlCsv + "/proceedings.csv")
     .then(data => callback(data));
 }
 
 
 // Query string functions
 function updateQueryStringParam(key, value) {
-  baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
-  urlQueryString = document.location.search;
+  var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
+  var urlQueryString = document.location.search;
   var newParam = key + '=' + value,
     params = '?' + newParam;
 
