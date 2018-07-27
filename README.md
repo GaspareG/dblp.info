@@ -1,6 +1,6 @@
 # dblp.info
 
-Author: [**Gaspare Ferraro**](https://semanticscholar.org) - [**email**](mailto:ferraro@gaspa.re)
+Author: [**Gaspare Ferraro**](https://gaspa.re/) - [**email**](mailto:ferraro@gaspa.re)
 
 Exam project for [Scientific Visualization @ Unipi](http://vcg.isti.cnr.it/~cignoni/SciViz1718/index.html)
 
