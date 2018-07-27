@@ -542,6 +542,8 @@ function draw(data){
     return mapCitations.indexOf(item) == pos;
   }).sort( (a,b) => a-b);
 
+  var colorScale = d3.scaleLinear().domain([0, 1]).range(['red', "blue"]);
+
   // Color bar
     var legend = svg.append("defs")
       .append("svg:linearGradient")
@@ -555,7 +557,7 @@ function draw(data){
     for(var i=0; i<= 10; i+=.1)
     legend.append("stop")
       .attr("offset", (i*100)+"%")
-      .attr("stop-color", d3.interpolateRdYlGn(i))
+      .attr("stop-color", colorScale(i))
       .attr("stop-opacity", 1);
 
   if( window["props"]["Colors"] <= 1 )
@@ -600,12 +602,6 @@ function draw(data){
     .attr("size", "10px")
     .text( proprs["Colors"][ window["props"]["Colors"] ] );
 
-
-  }
-
-  var selected = [];
-  for(var i=0; i<data.length; i++)
-  {
 
   }
 
@@ -713,13 +709,13 @@ function draw(data){
         for(var p=0; p<=color; p +=.05)
           linearGradient.append("stop")
             .attr("offset", parseInt(p*100)+"%")
-            .attr("stop-color", d3.interpolateRdYlGn(p) );
-        color = d3.interpolateRdYlGn(color);
+            .attr("stop-color", colorScale(p) );
+        color = colorScale(color);
       }
       else
       {
 
-        if( typeof color == "number") color = d3.interpolateRdYlGn(color);
+        if( typeof color == "number") color = colorScale(color);
 
         linearGradient.append("stop")
             .attr("offset", "0%")
@@ -769,11 +765,11 @@ function draw(data){
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
 
-          d3.select(this).attr("fill", "red").attr("fill-opacity", 1).attr("stroke", "red");
+          d3.select(this).attr("fill", "green").attr("fill-opacity", 1).attr("stroke", "green");
           var path = d3.select(".path-" + d[2])
-          path.attr("stroke", "red");
+          path.attr("stroke", "green");
           path.attr("stroke-opacity", 1);
-          path.attr("stroke-width", 2);
+          path.attr("stroke-width", 3);
 
       })
       .on("mouseout", function(d) {
