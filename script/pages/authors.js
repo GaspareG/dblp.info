@@ -256,6 +256,8 @@ var proprs = {
   "Path-Style": ["Color per path", "Color per segment"]
 };
 
+
+
 function loadPlotType()
 {
 

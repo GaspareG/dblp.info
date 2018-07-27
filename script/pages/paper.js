@@ -1,4 +1,4 @@
-var id = parseInt(getQueryVariable("id"));
+var id = getQueryVariable("id");
 var sort = 0;
 var plotType = 0;
 
@@ -25,6 +25,7 @@ var dWrote = [];
 var dAuthors = [];
 var dCitations = [];
 var dCited = [];
+var name2id = {};
 
 function parseData(journals, publish, papers, wrote, authors, citations) {
 
@@ -33,6 +34,7 @@ function parseData(journals, publish, papers, wrote, authors, citations) {
     dJournals[parseInt(journals[i]["id"])]["pubs"] = [];
   }
   for (var i = 0; i < papers.length; i++) {
+    name2id[ papers[i]["title"] ] = papers[i]["id"];
     dPapers[parseInt(papers[i]["id"])] = papers[i];
     dPapers[parseInt(papers[i]["id"])]["journals"] = [];
     dPapers[parseInt(papers[i]["id"])]["authors"] = [];
@@ -67,8 +69,42 @@ function parseData(journals, publish, papers, wrote, authors, citations) {
     dPapers[idP]["journals"].push(idJ);
   }
 
-  loadControls();
-  plot();
+  id = parseInt(id);
+  if( !isFinite(id) || id < 0 || id > dAuthors.length )
+  {
+    $("#no").css("display", "block");
+    $("#yes").css("display", "none");
+    loadSearch();
+  }
+  else
+  {
+    $("#no").css("display", "none");
+    $("#yes").css("display", "block");
+    loadControls();
+    plot();
+  }
+}
+
+function loadSearch() {
+  $("#c_search").html("");
+  addCollapse();
+  var input = $("<input style='width: 100%' id='author'>");
+
+  var names = [];
+  for (var k in name2id) names.push(k);
+  input.autocomplete({
+    source: names,
+    minLength: 3,
+    autoFocus: true,
+    select: function(event, ui) {
+      var id = +name2id[ui.item.value];
+      location.href = "paper?id="+id;
+    }
+  });
+
+  $("#c_search").append('<b><i class="fas fa-search"></i> Search paper:</b><br>');
+  $("#c_search").append("<span> </span>");
+  $("#c_search").append($("<div>").css("width", "100%").append(input));
 }
 
 function loadControls() {

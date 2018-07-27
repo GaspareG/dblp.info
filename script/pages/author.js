@@ -1,4 +1,4 @@
-var id = +getQueryVariable("id");
+var id = getQueryVariable("id");
 var sort = 0;
 
 $(function() {
@@ -66,8 +66,42 @@ function parseData(journals, publish, papers, wrote, authors, citations) {
     dPapers[idP]["journals"].push(idJ);
   }
 
-  loadControls();
-  plot();
+  id = parseInt(id);
+  if( !isFinite(id) || id < 0 || id > dAuthors.length )
+  {
+    $("#no").css("display", "block");
+    $("#yes").css("display", "none");
+    loadSearch();
+  }
+  else
+  {
+    $("#no").css("display", "none");
+    $("#yes").css("display", "block");
+    loadControls();
+    plot();
+  }
+}
+
+function loadSearch() {
+  $("#c_search").html("");
+  addCollapse();
+  var input = $("<input style='width: 100%' id='author'>");
+
+  var names = [];
+  for (var k in name2id) names.push(k);
+  input.autocomplete({
+    source: names,
+    minLength: 3,
+    autoFocus: true,
+    select: function(event, ui) {
+      var id = +name2id[ui.item.value];
+      location.href = "author?id="+id;
+    }
+  });
+
+  $("#c_search").append('<b><i class="fas fa-search"></i> Search author:</b><br>');
+  $("#c_search").append("<span> </span>");
+  $("#c_search").append($("<div>").css("width", "100%").append(input));
 }
 
 function loadControls() {

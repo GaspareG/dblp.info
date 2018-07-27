@@ -135,13 +135,13 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
 
-        <div style="float: right;"><a href="papers"><i class="fas fa-undo-alt"></i> return to papers list</a></div>
+        <!--<div style="float: right;"><a href="papers"><i class="fas fa-undo-alt"></i> return to papers list</a></div>-->
 
-        <h3><i class="fas fa-user"></i> Paper visualization</h3>
-  
+        <div class="row" id="no">
+            <div class="filter col-12 col-md-6 offset-md-3" id="c_search" style="margin: auto !important;"></div>
+        </div>
 
-        <!-- Informations -->
-        <div class="filter" id="c_info">Loading...</div>
+        <div id="yes">
 
         <div class="row">
           
@@ -152,6 +152,8 @@
           </div>
           <!-- Right column -->
           <div class="col-lg-4">
+            <!-- Informations -->
+            <div class="filter" id="c_info">Loading...</div>
             <!-- Coauth List -->
             <div class="filter" id="c_coauthors">Loading...</div>
             <!-- Chart type -->
@@ -174,6 +176,8 @@
             <!-- Influenced List -->
             <div class="filter" id="c_cited">Loading...</div>
           </div>
+        </div>
+
         </div>
 
       </header>
