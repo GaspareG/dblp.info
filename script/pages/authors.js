@@ -8,7 +8,7 @@ var minCitations = 0;
 var maxCitations = 0;
 var plotType = 0;
 var selectedId = getQueryVariable("ids");
-var selectedColor = d3.schemeDark2.slice().concat(d3.schemeCategory10);
+//var selectedColor = d3.schemeDark2.slice().concat(d3.schemeCategory10);
 if( selectedId == undefined ) selectedId = [];
 else selectedId = selectedId.split(",").map( x => +x);
 
@@ -123,7 +123,7 @@ function updateAuthors()
   for(var i=0; i<selectedId.length; i++)
   {
     var li = $("<li>");
-    li.append( $("<a>").text( data[selectedId[i]]["name"] ).attr("href", "author?id=" + selectedId[i]).css("color", selectedColor[i] + " !important") )
+    li.append( $("<a>").text( data[selectedId[i]]["name"] ).attr("href", "author?id=" + selectedId[i])/*.css("color", selectedColor[i] + " !important")*/ )
       .append(" - ")
       .append( $("<i class='fas fa-times'></i>").css({"color":"red","cursor": "pointer"}).on("click", (function(id){
         return function(){
@@ -484,7 +484,7 @@ function draw(data){
 
   // X AXIS - year
   var x = d3.scaleLinear().range([0, width]);
-  x.domain([minX, maxX + 1]).nice();
+  x.domain([minX, maxX]).nice();
 
   svg.append("text")
     .attr("transform",
@@ -500,7 +500,13 @@ function draw(data){
   svg.append("g").call(d3.axisLeft(y).ticks(20));
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(16));
+    .call(d3.axisBottom(x).ticks(16))
+    .selectAll("text")
+    .attr("y", 10)
+    .attr("x", 10)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(45)")
+    .style("text-anchor", "start");
 
   svg.append("text")
     .attr("transform", "rotate(-90)")
@@ -603,6 +609,14 @@ function draw(data){
 
   }
 
+  data.sort( function(a,b){
+    var idA = selectedId.indexOf(a["id"]);
+    var idB = selectedId.indexOf(b["id"]);
+    if( idA == -1 && idB == 1 ) return -1;
+    if( idA == 1 && idB == -1 ) return 1;
+    return a["id"]-b["id"];
+  });
+
   // Data plot
   for (var i = 0; i < data.length; i++) {
 
@@ -666,9 +680,9 @@ function draw(data){
 
     var color = "steelblue";
 
-    if( selectedId.indexOf(+data[i]["id"]) != -1 )
+/*    if( selectedId.indexOf(+data[i]["id"]) != -1 )
       color = selectedColor[ selectedId.indexOf(+data[i]["id"]) ];
-    else if( window["props"]["Colors"] == 2 )
+    else */ if( window["props"]["Colors"] == 2 )
     {
       color = "steelblue";
     }
