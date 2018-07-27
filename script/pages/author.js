@@ -538,7 +538,23 @@ drawFunctions[0] = function(filter){
         .attr("stroke", d3.interpolateRdYlGn(1 - y(idA) / height))
         .attr("fill", d3.interpolateRdYlGn(1 - y(idA) / height))
         .attr("fill-opacity", ".5")
+        .style("cursor", "pointer")
+        .on("mouseover", (function(idA, idP){ return function(d) {
+          tooltip.style("display", "block");
+          tooltip.html( idA + " - " + dPapers[idP]["title"] )
+           .style("left", (d3.event.pageX + 5) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+        }})(idA, idP))
+        .on("mousemove", function(d){
+            tooltip.style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+          })
+        .on("mouseout", function(d) {
+            tooltip.style("display", "none");
+       });
+
     }
+
     svg.append("g").append("line")
       .attr("x1", minX)
       .attr("x2", maxX)
@@ -550,7 +566,7 @@ drawFunctions[0] = function(filter){
 
   }
 }
-
+/*
 drawFunctions[1] = function(filter){
   $("#c_plot").html("").css({
     "max-height": "600px",
@@ -733,6 +749,7 @@ drawFunctions[1] = function(filter){
   }
 }
 
+*/
 
 function loadDegree() {
 
