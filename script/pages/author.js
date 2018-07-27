@@ -1,13 +1,20 @@
 var id = getQueryVariable("id");
 var sort = 0;
 
-$(function() {
-  loadJournals(function(journals) {
-    loadPublish(function(publish) {
-      loadPapers(function(papers) {
-        loadWrote(function(wrote) {
-          loadAuthors(function(authors) {
-            loadCitations(function(citations) {
+$(function()
+{
+  loadJournals(function(journals)
+  {
+    loadPublish(function(publish)
+    {
+      loadPapers(function(papers)
+      {
+        loadWrote(function(wrote)
+        {
+          loadAuthors(function(authors)
+          {
+            loadCitations(function(citations)
+            {
               parseData(journals, publish, papers, wrote, authors, citations);
             });
           });
@@ -26,40 +33,46 @@ var paper2id = {};
 var dCitations = {};
 var name2id = {};
 
-function parseData(journals, publish, papers, wrote, authors, citations) {
+function parseData(journals, publish, papers, wrote, authors, citations)
+{
 
-  for (var i = 0; i < journals.length; i++) {
+  for (var i = 0; i < journals.length; i++)
+  {
     dJournals[parseInt(journals[i]["id"])] = journals[i];
     dJournals[parseInt(journals[i]["id"])]["pubs"] = [];
   }
-  for (var i = 0; i < papers.length; i++) {
+  for (var i = 0; i < papers.length; i++)
+  {
     dPapers[parseInt(papers[i]["id"])] = papers[i];
     dPapers[parseInt(papers[i]["id"])]["journals"] = [];
     dPapers[parseInt(papers[i]["id"])]["authors"] = [];
     paper2id[papers[i]["title"]] = parseInt(papers[i]["id"]);
-    dCitations[ +papers[i]["id"] ] = [];
+    dCitations[+papers[i]["id"]] = [];
   }
-  for(var i=0; i<citations.length; i++)
+  for (var i = 0; i < citations.length; i++)
   {
     var idP1 = +citations[i]["idP1"];
     var idP2 = +citations[i]["idP2"];
     dCitations[idP1].push(idP2);
   }
 
-  for (var i = 0; i < authors.length; i++) {
+  for (var i = 0; i < authors.length; i++)
+  {
     dAuthors[parseInt(authors[i]["id"])] = authors[i];
     dAuthors[parseInt(authors[i]["id"])]["pubs"] = [];
-    name2id[ authors[i]["name"] ] = +authors[i]["id"];
+    name2id[authors[i]["name"]] = +authors[i]["id"];
   }
 
-  for (var i = 0; i < wrote.length; i++) {
+  for (var i = 0; i < wrote.length; i++)
+  {
     var idA = parseInt(wrote[i]["idA"]);
     var idP = parseInt(wrote[i]["idP"]);
     dAuthors[idA]["pubs"].push(idP);
     dPapers[idP]["authors"].push(idA);
   }
 
-  for (var i = 0; i < publish.length; i++) {
+  for (var i = 0; i < publish.length; i++)
+  {
     var idJ = parseInt(publish[i]["idJ"]);
     var idP = parseInt(publish[i]["idP"]);
     dJournals[idJ]["pubs"].push(idP);
@@ -67,7 +80,7 @@ function parseData(journals, publish, papers, wrote, authors, citations) {
   }
 
   id = parseInt(id);
-  if( !isFinite(id) || id < 0 || id > dAuthors.length )
+  if (!isFinite(id) || id < 0 || id > dAuthors.length)
   {
     $("#no").css("display", "block");
     $("#yes").css("display", "none");
@@ -82,20 +95,23 @@ function parseData(journals, publish, papers, wrote, authors, citations) {
   }
 }
 
-function loadSearch() {
+function loadSearch()
+{
   $("#c_search").html("");
   addCollapse();
   var input = $("<input style='width: 100%' id='author'>");
 
   var names = [];
   for (var k in name2id) names.push(k);
-  input.autocomplete({
+  input.autocomplete(
+  {
     source: names,
     minLength: 3,
     autoFocus: true,
-    select: function(event, ui) {
+    select: function(event, ui)
+    {
       var id = +name2id[ui.item.value];
-      location.href = "author?id="+id;
+      location.href = "author?id=" + id;
     }
   });
 
@@ -104,7 +120,8 @@ function loadSearch() {
   $("#c_search").append($("<div>").css("width", "100%").append(input));
 }
 
-function loadControls() {
+function loadControls()
+{
   loadSliderYear();
   loadCheckJournals();
   loadSort();
@@ -116,28 +133,33 @@ function loadControls() {
 function loadInfluences()
 {
   var authInfl = {};
-  dAuthors[id]["pubs"].map( x => dCitations[x] )
-  .forEach(function(pp){
-    pp.map( p => dPapers[p]["authors"] ).forEach(function(as){
-      as.forEach(function(aas){
-        if( authInfl[aas] == undefined ) authInfl[aas] = 1;
-        else authInfl[aas]++;
+  dAuthors[id]["pubs"].map(x => dCitations[x])
+    .forEach(function(pp)
+    {
+      pp.map(p => dPapers[p]["authors"]).forEach(function(as)
+      {
+        as.forEach(function(aas)
+        {
+          if (authInfl[aas] == undefined) authInfl[aas] = 1;
+          else authInfl[aas]++;
+        });
       });
     });
-   });
   var auths = [];
-  for(var ida in authInfl) auths.push( [+ida, authInfl[ida]] );
-  auths.sort( (a,b) => b[1] - a[1] );
+  for (var ida in authInfl) auths.push([+ida, authInfl[ida]]);
+  auths.sort((a, b) => b[1] - a[1]);
 
   console.log(auths);
   var ul = $("<ol>");
-  ul.css({
+  ul.css(
+  {
     "max-height": "300px",
     "overflow-y": "scroll"
   });
-  for (var i = 0; i < Math.min(128, auths.length); i++) {
+  for (var i = 0; i < Math.min(128, auths.length); i++)
+  {
     var li = $("<li>");
-    li.html( "<a href='author?id="+ auths[i][0] + "'>" + dAuthors[ +auths[i][0] ]["name"] + "</a> ("+auths[i][1]+" citations of "+dAuthors[id]["name"]+" papers)");
+    li.html("<a href='author?id=" + auths[i][0] + "'>" + dAuthors[+auths[i][0]]["name"] + "</a> (" + auths[i][1] + " citations of " + dAuthors[id]["name"] + " papers)");
     ul.append(li);
   }
   $("#c_influenced").html("");
@@ -150,7 +172,8 @@ function loadInfluences()
 var minYear = 0;
 var maxYear = 0;
 
-function loadSliderYear() {
+function loadSliderYear()
+{
 
   minYear = d3.min(dAuthors[id]["pubs"], x => dPapers[x]["year"]);
   maxYear = d3.max(dAuthors[id]["pubs"], x => dPapers[x]["year"]);
@@ -159,12 +182,14 @@ function loadSliderYear() {
   var sliderYearSlider = $("<div id='slider_year'></div>");
 
   sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
-  sliderYearSlider.slider({
+  sliderYearSlider.slider(
+  {
     range: true,
     min: minYear,
     max: maxYear,
     values: [minYear, maxYear],
-    slide: function(event, ui) {
+    slide: function(event, ui)
+    {
       minYear = ui.values[0];
       maxYear = ui.values[1];
       sliderYearText.html("<b>Years of publications: " + minYear + " - " + maxYear + "</b>");
@@ -179,18 +204,21 @@ function loadSliderYear() {
 
 }
 
-function loadSort() {
+function loadSort()
+{
   var sortLabel = ["Year", "Name", "Venue", "Citations"];
   $("#c_sort").html("");
   addCollapse();
 
   var label = $("<label for='sort'>Sort by: </label>");
   var fields = $("<form></form>");
-  for (var i = 0; i < sortLabel.length; i++) {
+  for (var i = 0; i < sortLabel.length; i++)
+  {
     var id = "sort-" + i;
     var el = $("<input type='radio' name='sort' id='" + id + "' value='" + i + "'>");
     el.attr("checked", i == 0);
-    el.on("change", function() {
+    el.on("change", function()
+    {
       sort = parseInt(this.value);
       plot();
     });
@@ -205,36 +233,42 @@ function loadSort() {
 
 var journalsBanned = {};
 
-function loadCheckJournals() {
+function loadCheckJournals()
+{
   var list = $("<div>");
-  for (var i = 0; i < dJournals.length; i++) {
+  for (var i = 0; i < dJournals.length; i++)
+  {
     journalsBanned[+dJournals[i]["id"]] = false;
     var j = $("<div></div>");
     j.append(
       $("<div>")
       .css("cursor", "pointer")
-        .append( 
-          $("<input type=checkbox checked id='check-" + dJournals[i]["id"] + "' />") 
-          .on("click", (function(id) {
-            return function() {
-              console.log(this);
-              journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
-              $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]] );
-              plot();
-            };
-          })(dJournals[i]["id"]))
-        )
-        .append(
-          $("<span> [" + dJournals[i]["tag"].toUpperCase() + "] " + dJournals[i]["name"] + "</span>")
-          .on("click", (function(id) {
-            return function() {
-              console.log(this);
-              journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
-              $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]] );
-              plot();
-            };
-          })(dJournals[i]["id"]))
-        )
+      .append(
+        $("<input type=checkbox checked id='check-" + dJournals[i]["id"] + "' />")
+        .on("click", (function(id)
+        {
+          return function()
+          {
+            console.log(this);
+            journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
+            $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]]);
+            plot();
+          };
+        })(dJournals[i]["id"]))
+      )
+      .append(
+        $("<span> [" + dJournals[i]["tag"].toUpperCase() + "] " + dJournals[i]["name"] + "</span>")
+        .on("click", (function(id)
+        {
+          return function()
+          {
+            console.log(this);
+            journalsBanned[+dJournals[id]["id"]] = !journalsBanned[+dJournals[id]["id"]];
+            $("#check-" + id).attr("checked", !journalsBanned[+dJournals[id]["id"]]);
+            plot();
+          };
+        })(dJournals[i]["id"]))
+      )
     );
     list.append(j);
   }
@@ -246,17 +280,20 @@ function loadCheckJournals() {
 
 var plotType = 0;
 
-function loadChart() {
+function loadChart()
+{
   var plotLabel = ["Career timeline per paper", "Career timeline per year"]; // TODO, "Bar graph", "Stream graph" ];
   $("#c_chart").html("");
   addCollapse();
 
   var fields = $("<form></form>");
-  for (var i = 0; i < plotLabel.length; i++) {
+  for (var i = 0; i < plotLabel.length; i++)
+  {
     var id = "plot-" + i;
     var el = $("<input type='radio' id='" + id + "' name='plot' value='" + i + "'>");
     el.attr("checked", i == 0);
-    el.on("change", function() {
+    el.on("change", function()
+    {
       plotType = parseInt(this.value);
       plot();
     });
@@ -273,32 +310,38 @@ function loadChart() {
 
 var sortF = [];
 
-function filterData() {
-  sortF[0] = function(a,b){
+function filterData()
+{
+  sortF[0] = function(a, b)
+  {
     var res = dPapers[b]["year"] - dPapers[a]["year"];
-    return res == 0 ? sortF[1](a,b) : res;
+    return res == 0 ? sortF[1](a, b) : res;
   };
   sortF[1] = (a, b) => dPapers[a]["title"] < dPapers[b]["title"] ? -1 : 1;
-  sortF[2] = function(a,b){
+  sortF[2] = function(a, b)
+  {
     var venA = dJournals[dPapers[a]["journals"][0]]["tag"]
     var venB = dJournals[dPapers[b]["journals"][0]]["tag"]
-    return venA == venB ? sortF[1](a,b) : ( venA < venB ? -1 : 1 );
+    return venA == venB ? sortF[1](a, b) : (venA < venB ? -1 : 1);
   };
-  sortF[3] = function(a,b){
+  sortF[3] = function(a, b)
+  {
     var res = dCitations[b].length - dCitations[a].length;
-    return res == 0 ? sortF[1](a,b) : res;
+    return res == 0 ? sortF[1](a, b) : res;
   };
 
-  return dAuthors[id]["pubs"].filter(function(id) {
+  return dAuthors[id]["pubs"].filter(function(id)
+  {
     if (dPapers[id]["year"] < minYear) return false;
     if (dPapers[id]["year"] > maxYear) return false;
     if (journalsBanned[dPapers[id]["journals"][0]]) return false;
     return true;
-  }).sort( sortF[sort] );
+  }).sort(sortF[sort]);
 
 }
 
-function plot() {
+function plot()
+{
   var filter = filterData();
   loadInfo(filter);
   loadFPapers(filter);
@@ -306,26 +349,30 @@ function plot() {
   draw(filter);
 }
 
-function loadInfo(filter) {
-  var totCit = d3.sum( filterData().map(x => dCitations[x].length));
+function loadInfo(filter)
+{
+  var totCit = d3.sum(filterData().map(x => dCitations[x].length));
   $("#c_info").html("");
   addCollapse();
   $("#c_info").append("<b><i class='fas fa-info-circle'></i> " + dAuthors[id]["name"] + "</b>");
-  $("#c_info").append("<div>Found <b>" + filter.length + "</b> papers, cited <b>"+totCit+"</b> times, between <b>" + minYear + "</b> and <b>" + maxYear + "</b> in selected journals</div>");
+  $("#c_info").append("<div>Found <b>" + filter.length + "</b> papers, cited <b>" + totCit + "</b> times, between <b>" + minYear + "</b> and <b>" + maxYear + "</b> in selected journals</div>");
 }
 
-function loadFPapers(filter) {
-  var ul = $("<ol>").css("padding-left","50px").append(filter.map(function(idP) {
+function loadFPapers(filter)
+{
+  var ul = $("<ol>").css("padding-left", "50px").append(filter.map(function(idP)
+  {
     var li = $("<li>");
     var paper = dPapers[idP];
-    li.append( paper["year"] );
+    li.append(paper["year"]);
     li.append(" ");
-    li.append( " <a href='journal?id="+ paper["journals"][0] +"'>[" + dJournals[paper["journals"][0]]["tag"].toUpperCase() + "]</a> ");
+    li.append(" <a href='journal?id=" + paper["journals"][0] + "'>[" + dJournals[paper["journals"][0]]["tag"].toUpperCase() + "]</a> ");
     li.append(" - ");
     li.append($("<a>").attr("href", "paper?id=" + paper["id"]).text(paper["title"]));
     li.append(" (" + dCitations[idP].length + " citations)");
     return li;
-  })).css({
+  })).css(
+  {
     "max-height": "300px",
     "overflow-y": "scroll"
   });
@@ -337,11 +384,14 @@ function loadFPapers(filter) {
 
 var coauths = [];
 
-function loadCoauthors(filter) {
+function loadCoauthors(filter)
+{
 
   var coauth = {};
-  filter.forEach(function(idP) {
-    dPapers[idP]["authors"].forEach(function(idA) {
+  filter.forEach(function(idP)
+  {
+    dPapers[idP]["authors"].forEach(function(idA)
+    {
       if (coauth[idA] == undefined) coauth[idA] = [];
       coauth[idA].push(idP);
     });
@@ -349,7 +399,8 @@ function loadCoauthors(filter) {
   delete coauth[id];
 
   var ul = $("<ol>");
-  ul.css({
+  ul.css(
+  {
     "max-height": "300px",
     "overflow-y": "scroll",
     "padding-left": "50px"
@@ -359,12 +410,12 @@ function loadCoauthors(filter) {
   for (var k in coauth) coauths.push([+k, coauth[k]]);
   coauths.sort((a, b) => b[1].length - a[1].length);
 
-  for (var k = 0; k < coauths.length; k++) {
+  for (var k = 0; k < coauths.length; k++)
+  {
     ul.append(
       $("<li></li>").append(
         $("<a>").attr("href", "author?id" + coauths[k][0]).text(
-          dAuthors[coauths[k][0]]["name"])).append( " (" + coauths[k][1].length + " common papers)"
-       )
+          dAuthors[coauths[k][0]]["name"])).append(" (" + coauths[k][1].length + " common papers)")
     );
   }
 
@@ -377,12 +428,15 @@ function loadCoauthors(filter) {
 
 var drawFunctions = [];
 
-function draw(filter) {
+function draw(filter)
+{
   drawFunctions[plotType](filter);
 }
 
-drawFunctions[0] = function(filter){
-  $("#c_plot").html("").css({
+drawFunctions[0] = function(filter)
+{
+  $("#c_plot").html("").css(
+  {
     "max-height": "700px",
     "overflow-y": "scroll"
   });
@@ -396,9 +450,9 @@ drawFunctions[0] = function(filter){
     left: 150
   };
   var width = ((4 + filter.length) * 30) - margin.left - margin.right,
-      height = ((4 + coauths.length) * 20) - margin.top - margin.bottom;
+    height = ((4 + coauths.length) * 20) - margin.top - margin.bottom;
 
-  filter = filter.slice().sort( sortF[0] );
+  filter = filter.slice().sort(sortF[0]);
 
   var svg = d3.select("#c_plot")
     .append("svg")
@@ -409,21 +463,23 @@ drawFunctions[0] = function(filter){
 
   var y = d3.scalePoint().domain([
     [id, filter.length]
-  ].concat(coauths).map(function(d) {
+  ].concat(coauths).map(function(d)
+  {
     return dAuthors[d[0]]["name"]
   })).range([20, height]);
 
-  var idJ = filter.map(function(d) {
-    return d;
-  }).sort((a,b) => dPapers[a]["year"] - dPapers[b]["year"]);
-
-  var idJ2 = [ -dPapers[ idJ[0] ]["year"] , idJ[0] ];
-
-  for(var i=1; i<idJ.length; i++)
+  var idJ = filter.map(function(d)
   {
-    if( dPapers[ idJ[i] ]["year"] != dPapers[ idJ[i-1] ]["year"] )
-      idJ2.push(  -dPapers[ idJ[i] ]["year"] );
-    idJ2.push( idJ[i] );
+    return d;
+  }).sort((a, b) => dPapers[a]["year"] - dPapers[b]["year"]);
+
+  var idJ2 = [-dPapers[idJ[0]]["year"], idJ[0]];
+
+  for (var i = 1; i < idJ.length; i++)
+  {
+    if (dPapers[idJ[i]]["year"] != dPapers[idJ[i - 1]]["year"])
+      idJ2.push(-dPapers[idJ[i]]["year"]);
+    idJ2.push(idJ[i]);
   }
 
   idJ = idJ2;;
@@ -445,89 +501,97 @@ drawFunctions[0] = function(filter){
     .attr("stroke", "#999")
     .style("cursor", "pointer")
     .style("font-size", "14px")
-    .on("click", function(d){
-       location.href = "author?id="+name2id[d];
+    .on("click", function(d)
+    {
+      location.href = "author?id=" + name2id[d];
     })
-    .on("mouseover", function(d) {
+    .on("mouseover", function(d)
+    {
       var id = name2id[d];
       var num = 0;
-      for(var i=0; i<coauths.length; i++)
-        if( coauths[i][0] == id )
+      for (var i = 0; i < coauths.length; i++)
+        if (coauths[i][0] == id)
           num = coauths[i][1].length;
-       d3.select(this).attr("stroke", "red");
-          tooltip.style("display", "block");
-          tooltip.html( num + " common papers")
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-          d3.select(this).attr("stroke", "#999");
-          tooltip.style("display", "none");
-      })
-      .on("mousemove", function(d){
-        tooltip               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
+      d3.select(this).attr("stroke", "red");
+      tooltip.style("display", "block");
+      tooltip.html(num + " common papers")
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mouseout", function(d)
+    {
+      d3.select(this).attr("stroke", "#999");
+      tooltip.style("display", "none");
+    })
+    .on("mousemove", function(d)
+    {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
 
-      })
-
+    })
 
   svg.append("g").call(xAxis).selectAll("text")
-    .attr("stroke", d => ( d < 0 ? "#000" : "#999" ))
+    .attr("stroke", d => (d < 0 ? "#000" : "#999"))
     .style("cursor", "pointer")
     .style("font-size", "14px")
     .attr("transform", "rotate(45)")
-    .text(d => Math.abs(d) )
+    .text(d => Math.abs(d))
     .attr("y", -20)
     .attr("x", -30)
     .attr("dy", "1em")
-    .on("click", function(d){
-       location.href = "paper?id="+d;
+    .on("click", function(d)
+    {
+      location.href = "paper?id=" + d;
     })
-    .on("mouseover", function(d) {
-       d3.select(this).attr("stroke", d => ( d < 0 ? "#000" : "red" ));
-       if( d < 0 ) return;
-          tooltip.style("display", "block");
-          tooltip.html( dPapers[d]["title"] + "<br>["+dJournals[dPapers[d]["journals"][0]]["tag"].toUpperCase()+"] " + dPapers[d]["year"])
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mousemove", function(d){
-        tooltip.style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
+    .on("mouseover", function(d)
+    {
+      d3.select(this).attr("stroke", d => (d < 0 ? "#000" : "red"));
+      if (d < 0) return;
+      tooltip.style("display", "block");
+      tooltip.html(dPapers[d]["title"] + "<br>[" + dJournals[dPapers[d]["journals"][0]]["tag"].toUpperCase() + "] " + dPapers[d]["year"])
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mousemove", function(d)
+    {
+      tooltip.style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
 
-      })
-      .on("mouseout", function(d) {
-          d3.select(this).attr("stroke", d => ( d < 0 ? "#000" : "#999" ));
-          if( d < 0 ) return;
-          tooltip.style("display", "none");
-      });
+    })
+    .on("mouseout", function(d)
+    {
+      d3.select(this).attr("stroke", d => (d < 0 ? "#000" : "#999"));
+      if (d < 0) return;
+      tooltip.style("display", "none");
+    });
 
-
-  for(var k=0; k<idJ.length; k++)
+  for (var k = 0; k < idJ.length; k++)
   {
     var year = idJ[k];
-    if( year > 0 ) continue;
+    if (year > 0) continue;
     svg.append("line")
-       .attr("x1", x(year))
-       .attr("y1", 0)
-       .attr("x2", x(year))
-       .attr("y2", height)
-       .attr("stroke", "black")
-       .attr("stroke-opacity", "0.3")
+      .attr("x1", x(year))
+      .attr("y1", 0)
+      .attr("x2", x(year))
+      .attr("y2", height)
+      .attr("stroke", "black")
+      .attr("stroke-opacity", "0.3")
   }
 
-  coauths.push([id, dAuthors[id]["pubs"].filter(function(x){
-    if( !(minYear <= dPapers[x]["year"] && dPapers[x]["year"] <= maxYear) ) return false;
-    if( journalsBanned[ dPapers[x]["journals"] ] ) return false;
+  coauths.push([id, dAuthors[id]["pubs"].filter(function(x)
+  {
+    if (!(minYear <= dPapers[x]["year"] && dPapers[x]["year"] <= maxYear)) return false;
+    if (journalsBanned[dPapers[x]["journals"]]) return false;
     return true;
   })])
 
-  
-  for (var i = 0; i < coauths.length; i++) {
+  for (var i = 0; i < coauths.length; i++)
+  {
     var idA = dAuthors[coauths[i][0]]["name"];
     var minX = 100000;
     var maxX = 0;
-    for (var j = 0; j < coauths[i][1].length; j++) {
+    for (var j = 0; j < coauths[i][1].length; j++)
+    {
       var idP = coauths[i][1][j];
       minX = Math.min(x(idP), minX);
       maxX = Math.max(x(idP), maxX);
@@ -539,19 +603,25 @@ drawFunctions[0] = function(filter){
         .attr("fill", d3.interpolateRdYlGn(1 - y(idA) / height))
         .attr("fill-opacity", ".5")
         .style("cursor", "pointer")
-        .on("mouseover", (function(idA, idP){ return function(d) {
-          tooltip.style("display", "block");
-          tooltip.html( idA + " - " + dPapers[idP]["title"] )
-           .style("left", (d3.event.pageX + 5) + "px")
-           .style("top", (d3.event.pageY - 28) + "px");
-        }})(idA, idP))
-        .on("mousemove", function(d){
-            tooltip.style("left", (d3.event.pageX + 5) + "px")
-             .style("top", (d3.event.pageY - 28) + "px");
-          })
-        .on("mouseout", function(d) {
-            tooltip.style("display", "none");
-       });
+        .on("mouseover", (function(idA, idP)
+        {
+          return function(d)
+          {
+            tooltip.style("display", "block");
+            tooltip.html(idA + " - " + dPapers[idP]["title"])
+              .style("left", (d3.event.pageX + 5) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+          }
+        })(idA, idP))
+        .on("mousemove", function(d)
+        {
+          tooltip.style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d)
+        {
+          tooltip.style("display", "none");
+        });
 
     }
 
@@ -751,7 +821,8 @@ drawFunctions[1] = function(filter){
 
 */
 
-function loadDegree() {
+function loadDegree()
+{
 
   var seen = {};
   var degrees = [];
@@ -759,12 +830,16 @@ function loadDegree() {
 
   var nd = 8;
 
-  for (var i = 1; i <= nd; i++) {
+  for (var i = 1; i <= nd; i++)
+  {
     degrees[i] = [];
-    for (var j = 0; j < degrees[i - 1].length; j++) {
-      for (var k = 0; k < dAuthors[degrees[i - 1][j]]["pubs"].length; k++) {
+    for (var j = 0; j < degrees[i - 1].length; j++)
+    {
+      for (var k = 0; k < dAuthors[degrees[i - 1][j]]["pubs"].length; k++)
+      {
         var idPub = dAuthors[degrees[i - 1][j]]["pubs"][k];
-        for (var l = 0; l < dPapers[idPub]["authors"].length; l++) {
+        for (var l = 0; l < dPapers[idPub]["authors"].length; l++)
+        {
           var idA = dPapers[idPub]["authors"][l];
           if (seen[idA] != undefined) continue;
           seen[idA] = true;
@@ -776,12 +851,13 @@ function loadDegree() {
 
   var ul = $("<ul>");
   var tot = 0;
-  for (var i = 0; i <= nd; i++) {
+  for (var i = 0; i <= nd; i++)
+  {
     var per = (parseInt(10000 * degrees[i].length / dAuthors.length) / 100.);
     tot += degrees[i].length;
     var pertot = (parseInt(10000 * tot / dAuthors.length) / 100.);
     var li = $("<li>");
-    li.html("<b>" + degrees[i].length + " authors</b> (" + per + "%) at distance <b>" + i + "</b>, total of <b>"+tot+" authors</b> at distance &#8804; <b>" + i + "</b> ("+pertot+"%)");
+    li.html("<b>" + degrees[i].length + " authors</b> (" + per + "%) at distance <b>" + i + "</b>, total of <b>" + tot + " authors</b> at distance &#8804; <b>" + i + "</b> (" + pertot + "%)");
     ul.append(li);
   }
   $("#c_degree").html();
