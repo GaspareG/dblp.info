@@ -1,0 +1,481 @@
+Particle Level Set Advection for the Interactive Visualization of Unsteady 3D Flow.
+Physically-based Dye Advection for Flow Visualization.
+Extraction Of Feature Lines On Surface Meshes Based On Discrete Morse Theory.
+Generating Color Palettes using Intuitive Parameters.
+Animating Causal Overlays.
+Visual Comparison of Hierarchically Organized Data.
+Automatic Detection and Visualization of Distinctive Structures in 3D Unsteady Multi-fields.
+A Four-level Focus+Context Approach to Interactive Visual Analysis of Temporal Features in Large Scientific Data.
+Concurrent Viewing of Multiple Attribute-Specific Subspaces.
+Quality Isosurface Mesh Generation Using an Extended Marching Cubes Lookup Table.
+Computing Local Signed Distance Fields for Large Polygonal Models.
+GPU Local Triangulation: an interpolating surface reconstruction algorithm.
+Interactive Visualization for Memory Reference Traces.
+TimeRadarTrees: Visualizing Dynamic Compound Digraphs.
+Code Flows: Visualizing Structural Evolution of Source Code.
+Raycasting of Light Field Galleries from Volumetric Data.
+Interaction-Dependent Semantics for Illustrative Volume Rendering.
+Illustrative Hybrid Visualization and Exploration of Anatomical and Functional Brain Data.
+Exploratory Visualization of Animal Kinematics Using Instantaneous Helical Axes.
+Geometry-driven Visualization of Microscopic Structures in Biology.
+Classification and Uncertainty Visualization of Dendritic Spines from Optical Microscopy Imaging.
+Visualizing Genome Expression and Regulatory Network Dynamics in Genomic and Metabolic Context.
+Density Displays for Data Stream Monitoring.
+Visual Analysis and Semantic Exploration of Urban LIDAR Change Detection.
+Towards closing the analysis gap: Visual generation of decision supporting schemes from raw data.
+Investigative Visual Analysis of Global Terrorism.
+COPERNICUS: Context-Preserving Engine for Route Navigation with Interactive User-modifiable Scaling.
+Visual Abstractions of Solvent Pathlines near Protein Cavities.
+Sound Tracing: Rendering Listener Specific Acoustic Room Properties.
+Navigation and Exploration of Interconnected Pathways.
+From Web Data to Visualization via Ontology Mapping.
+Visual Inspection of Multivariate Graphs.
+Centrality Based Visualization of Small World Graphs.
+Interactive Exploratory Visualization of 2D Vector Fields.
+Results of a User Study on 2D Hurricane Visualization.
+Evaluation of illustration-inspired techniques for time-varying data visualization.
+Lagrangian Visualization of Flow-Embedded Surface Structures.
+Discrete Multi-Material Interface Reconstruction for Volume Fraction Data.
+Topology-Preserving lambda2-based Vortex Core Line Detection for Flow Visualization.
+Illustrative Parallel Coordinates.
+A Screen Space Quality Method for Data Abstraction.
+Visual Clustering in Parallel Coordinates.
+Interactive Visualization of Multimodal Volume Data for Neurosurgical Tumor Treatment.
+Virtual Klingler Dissection: Putting Fibers into Context.
+Abstractive Representation and Exploration of Hierarchically Clustered Diffusion Tensor Fiber Tracts.
+Interactive Visualization of Function Fields by Range-Space Segmentation.
+Lifted Domain Coloring.
+Efficient and Adaptive Rendering of 2-D Continuous Scatterplots.
+Illuminated 3D Scatterplots.
+Splatting the Lines in Parallel Coordinates.
+iPCA: An Interactive System for PCA-based Visual Analytics.
+Instant Volume Visualization using Maximum Intensity Difference Accumulation.
+Bivariate Transfer Functions on Unstructured Grids.
+Semi-Automatic Time-Series Transfer Functions via Temporal Clustering and Sequencing.
+Direct Visualization of Deformation in Volumes.
+The Gödel Engine - An interactive approach to visualization in general relativity.
+Visualisation of Sensor Data from Animal Movement.
+MultiClusterTree: Interactive Visual Exploration of Hierarchical Clusters in Multidimensional Multivariate Data.
+Selecting good views of high-dimensional data using class consistency.
+Accelerating Volume Raycasting using Proxy Spheres.
+Fused Multi-Volume DVR using Binary Space Partitioning.
+A Directional Occlusion Shading Model for Interactive Direct Volume Rendering.
+Hierarchical Vortex Regions in Swirling Flow.
+Smooth Stream Surfaces of Fourth Order Precision.
+Volume Deformations in Grid-Less Flow Simulations.
+Context-aware Volume Modeling of Skeletal Muscles.
+Map Displays for the Analysis of Scalar Data on Cerebral Aneurysm Surfaces.
+Visual Analysis of Brain Activity from fMRI Data.
+Preconceptions and Individual Differences in Understanding Visual Metaphors.
+Comparing Parameter Manipulation with Mouse, Pen, and Slider User Interfaces.
+Extended Excentric Labeling.
+A Visualization Based Approach for Digital Signature Authentication.
+SDViz: A Context-Preserving Interactive Visualization System for Technical Diagrams.
+Visualization Techniques for Schedule Comparison.
+Visualization of vessel movements.
+Fully Automatic Visualisation of Overlapping Sets.
+Visualizing the Evolution of Compound Digraphs with TimeArcTrees.
+Force-Directed Edge Bundling for Graph Visualization.
+Scalable, Versatile and Simple Constrained Graph Layout.
+Enclosing Surfaces for Point Clusters Using 3D Discrete Voronoi Diagrams.
+On Visualization and Reconstruction from Non-Uniform Point Sets using B-splines.
+Quasi-interpolation on the Body Centered Cubic Lattice.
+High-Quality Volumetric Reconstruction on Optimal Lattices for Computed Tomography.
+Collaborative Brushing and Linking for Co-located Visual Analytics of Document Collections.
+DocuBurst: Visualizing Document Content using Language Structure.
+The Chinese Room: Visualization and Interaction to Understand and Correct Ambiguous Machine Translation.
+Isosurface Similarity Maps.
+An Exploratory Technique for Coherent Visualization of Time-varying Volume Data.
+Evaluation of Cluster Identification Performance for Different PCP Variants.
+Supporting Exploratory Analysis with the Select & Slice Table.
+Brushing Moments in Interactive Visual Analysis.
+Visualizing Summary Statistics and Uncertainty.
+SmallWorlds: Visualizing Social Recommendations.
+Image-Based Edge Bundles: Simplified Visualization of Large Graphs.
+Winding Roads: Routing edges into bundles.
+GraphDice: A System for Exploring Multivariate Social Networks.
+Out-of-Core Simplification and Crack-Free LOD Volume Rendering for Irregular Grids.
+A Multidirectional Occlusion Shading Model for Direct Volume Rendering.
+Estimation and Modeling of Actual Numerical Errors in Volume Rendering.
+Hardware-Assisted Projected Tetrahedra.
+Space-in-Time and Time-in-Space Self-Organizing Maps for Exploring Spatiotemporal Patterns.
+Alleviating the Modifiable Areal Unit Problem within Probe-Based Geospatial Analyses.
+Real-Time Temporal-Coherent Color Contrast Enhancement for Dichromats.
+Accelerated Visualization of Dynamic Molecular Surfaces.
+Coherent Culling and Shading for Large Molecular Dynamics Visualization.
+Matrix Trees.
+Dynamic Multi-View Exploration of Shape Spaces.
+HyperMoVal: Interactive Visual Validation of Regression Models for Real-Time Simulation.
+Topological Landscape Ensembles for Visualization of Scalar-Valued Functions.
+Effective Techniques to Visualize Filament-Surface Relationships.
+Illustrative White Matter Fiber Bundles.
+DTI in Context: Illustrating Brain Fiber Tracts In Situ.
+An Interactive Visual Analytics System for Bridge Management.
+Pathline: A Tool For Comparative Functional Genomics.
+Video Visualization for Snooker Skill Training.
+Scalable Multi-view Registration for Multi-Projector Displays on Vertically Extruded Surfaces.
+Streaming-Enabled Parallel Dataflow Architecture for Multicore Systems.
+Topographic Map Visualization from Adaptively Compressed Textures.
+Visual Support for Interactive Post-Interventional Assessment of Radiofrequency Ablation Therapy.
+Reusable Visualizations and Animations for Surgery Planning.
+ProbExplorer: Uncertainty-guided Exploration and Editing of Probabilistic Medical Image Segmentation.
+Visual Analysis of Multi-Joint Kinematic Data.
+An Evaluation of Glyph Perception for Real Symmetric Traceless Tensor Properties.
+A Maximum Enhancing Higher-Order Tensor Glyph.
+Topology Aware Stream Surfaces.
+Toward a Lagrangian Vector Field Topology.
+The Readability of Path-Preserving Clusterings of Graphs.
+A Salience-based Quality Metric for Visualization.
+Understanding Interactive Legends: a Comparative Evaluation with Standard Widgets.
+The Perception of Correlation in Scatterplots.
+Non-iterative Second-order Approximation of Signed Distance Functions for Any Isosurface Representation.
+Topology-based Smoothing of 2D Scalar Fields with C1-Continuity.
+Multi-layer Depth Peeling by Single-Pass Rasterisation for Faster Isosurface Raytracing on GPUs.
+Visualization and Analysis-Oriented Reconstruction of Material Interfaces.
+Eurographics Outstanding Technical Contribution Award.
+Eurographics Young Researcher Award.
+Eurographics Young Researcher Award.
+Projection and Parallax.
+Neuromatrix: The World is Embodied in our Brain.
+Data Visualization: Featuring Interactive Visual Analysis.
+The Natural 3D Spiral.
+Generalized Helicoids for Modeling Hair Geometry.
+Fruit Senescence and Decay Simulation.
+Learning Line Features in 3D Geometry.
+Shape Analysis with Subspace Symmetries.
+Symmetry Hierarchy of Man-Made Objects.
+RTSAH Traversal Order for Occlusion Rays.
+Two-Level Grids for Ray Tracing on GPUs.
+Combinatorial Bidirectional Path-Tracing for Efficient Hybrid CPU/GPU Rendering.
+Guided Procedural Modeling.
+Procedural Modeling of Interconnected Structures.
+Interactive Modeling of City Layouts using Layers of Procedural Content.
+SQuad: Compact Representation for Triangle Meshes.
+Discovery of Intrinsic Primitives on Triangle Meshes.
+Global Structure Optimization of Quadrilateral Meshes.
+Contouring Discrete Indicator Functions.
+Wavelet Rasterization.
+Freehand HDR Imaging of Moving Scenes with Simultaneous Resolution Enhancement.
+Scalable Remote Rendering with Depth and Motion-flow Augmented Streaming.
+Comprehensive Facial Performance Capture.
+Langevin Particle: A Self-Adaptive Lagrangian Primitive for Flow Simulation Enhancement.
+Deformable Motion: Squeezing into Cluttered Environments.
+BSSRDF Estimation from Single Images.
+A Sparse Parametric Mixture Model for BTF Compression, Editing and Rendering.
+Dynamic Display of BRDFs.
+Computer-Suggested Facial Makeup.
+Predicted Virtual Soft Shadow Maps with High Quality Filtering.
+Goal-based Caustics.
+Implicit Brushes for Stylized Line-based Rendering.
+Estimating Color and Texture Parameters for Vector Graphics.
+Hatching for Motion Picture Production.
+Intrinsic Shape Matching by Planned Landmark Sampling.
+Prior Knowledge for Part Correspondence.
+Component-wise Controllers for Structure-Preserving Shape Manipulation.
+Blur-Aware Image Downsampling.
+Image Retargeting Quality Assessment.
+Image and Video Abstraction by Coherence-Enhancing Filtering.
+Paint Mesh Cutting.
+GeoBrush: Interactive Mesh Geometry Cloning.
+Walking On Broken Mesh: Defect-Tolerant Geodesic Distances and Parameterizations.
+Eurographics Outstanding Technical Contribution Award.
+Eurographics Young Researcher Award.
+Eurographics Young Researcher Award.
+Projection and Parallax.
+Neuromatrix: The World is Embodied in our Brain.
+Data Visualization: Featuring Interactive Visual Analysis.
+The Natural 3D Spiral.
+Generalized Helicoids for Modeling Hair Geometry.
+Fruit Senescence and Decay Simulation.
+Learning Line Features in 3D Geometry.
+Shape Analysis with Subspace Symmetries.
+Symmetry Hierarchy of Man-Made Objects.
+RTSAH Traversal Order for Occlusion Rays.
+Two-Level Grids for Ray Tracing on GPUs.
+Combinatorial Bidirectional Path-Tracing for Efficient Hybrid CPU/GPU Rendering.
+Guided Procedural Modeling.
+Procedural Modeling of Interconnected Structures.
+Interactive Modeling of City Layouts using Layers of Procedural Content.
+SQuad: Compact Representation for Triangle Meshes.
+Discovery of Intrinsic Primitives on Triangle Meshes.
+Global Structure Optimization of Quadrilateral Meshes.
+Contouring Discrete Indicator Functions.
+Wavelet Rasterization.
+Freehand HDR Imaging of Moving Scenes with Simultaneous Resolution Enhancement.
+Scalable Remote Rendering with Depth and Motion-flow Augmented Streaming.
+Comprehensive Facial Performance Capture.
+Langevin Particle: A Self-Adaptive Lagrangian Primitive for Flow Simulation Enhancement.
+Deformable Motion: Squeezing into Cluttered Environments.
+BSSRDF Estimation from Single Images.
+A Sparse Parametric Mixture Model for BTF Compression, Editing and Rendering.
+Dynamic Display of BRDFs.
+Computer-Suggested Facial Makeup.
+Predicted Virtual Soft Shadow Maps with High Quality Filtering.
+Goal-based Caustics.
+Implicit Brushes for Stylized Line-based Rendering.
+Estimating Color and Texture Parameters for Vector Graphics.
+Hatching for Motion Picture Production.
+Intrinsic Shape Matching by Planned Landmark Sampling.
+Prior Knowledge for Part Correspondence.
+Component-wise Controllers for Structure-Preserving Shape Manipulation.
+Blur-Aware Image Downsampling.
+Image Retargeting Quality Assessment.
+Image and Video Abstraction by Coherence-Enhancing Filtering.
+Paint Mesh Cutting.
+GeoBrush: Interactive Mesh Geometry Cloning.
+Walking On Broken Mesh: Defect-Tolerant Geodesic Distances and Parameterizations.
+The Grassmannian Atlas: A General Framework for Exploring Linear Projections of High-Dimensional Data.
+Enhancing Scatterplots with Multi-Dimensional Focal Blur.
+Hierarchical Stochastic Neighbor Embedding.
+Exploring Items and Features with IF, FI-Tables.
+Comparing Node-Link and Node-Link-Group Visualizations From An Enjoyment Perspective.
+Interactive 3D Force-Directed Edge Bundling.
+TimeArcs: Visualizing Fluctuations in Dynamic Networks.
+Pathfinder: Visual Analysis of Paths in Graphs.
+Exploring and Comparing Clusterings of Multivariate Data Sets Using Persistent Homology.
+Space-Time Bifurcation Lines for Extraction of 2D Lagrangian Coherent Structures.
+Visualizing the Impact of Geographical Variations on Multivariate Clustering.
+Comparing Bar Chart Authoring with Microsoft Excel and Tangible Tiles.
+Arcs, Angles, or Areas: Individual Data Encodings in Pie and Donut Charts.
+How Ordered Is It? On the Perceptual Orderability of Visual Channels.
+Glyphs for Asymmetric Second-Order 2D Tensors.
+Visualizing Co-occurrence of Events in Populations of Viral Genome Sequences.
+Visibility Equalizer Cutaway Visualization of Mesoscopic Biological Models.
+Cytosplore: Interactive Immune Cell Phenotyping for Large Single-Cell Datasets.
+Evaluating Viewpoint Entropy for Ribbon Representation of Protein Structure.
+GEMSe: Visualization-Guided Exploration of Multi-channel Segmentation Algorithms.
+Visual Analysis of Defects in Glass Fiber Reinforced Polymers for 4DCT Interrupted In situ Tests.
+Parallel Marching Blocks: A Practical Isosurfacing Algorithm for Large Data on Many-Core Architectures.
+Visual Analysis of Spatial Variability and Global Correlations in Ensembles of Iso-Contours.
+Visual Analysis of Tumor Control Models for Prediction of Radiotherapy Response.
+Faceted Views of Varying Emphasis (FaVVEs): a framework for visualising multi-perspective small multiples.
+Towards Quantitative Visual Analytics with Structured Brushing and Linked Statistics.
+Designing Multiple Coordinated Visualizations for Tablets.
+Visual Debugging Techniques for Reactive Data Visualization.
+BubbleNet: A Cyber Security Dashboard for Visualizing Patterns.
+Using Visualization to Explore Original and Anonymized LBSN Data.
+Visual Analysis of Governing Topological Structures in Excitable Network Dynamics.
+Dynamic Change Arcs to Explore Model Forecasts.
+Time-Series Plots Integrated in Parallel-Coordinates Displays.
+PhysioEx: Visual Analysis of Physiological Event Streams.
+There is More to Streamgraphs than Movies: Better Aesthetics via Ordering and Lassoing.
+Semi-automatic Vortex Flow Classification in 4D PC-MRI Data of the Aorta.
+Critical Points of Gaussian-Distributed Scalar Fields on Simplicial Grids.
+Source Inversion by Forward Integration in Inertial Flows.
+MCFTLE: Monte Carlo Rendering of Finite-Time Lyapunov Exponent Fields.
+Similarity Voting based Viewpoint Selection for Volumes.
+Decoupled Shading for Real-time Heterogeneous Volume Illumination.
+Retailoring Box Splines to Lattices for Highly Isotropic Volume Representations.
+TextDNA: Visualizing Word Usage with Configurable Colorfields.
+ConToVi: Multi-Party Conversation Exploration using Topic-Space Views.
+A Visual Analytics Framework for Microblog Data Analysis at Multiple Scales of Aggregation.
+Location-dependent generalization of road networks based on equivalent destinations.
+Composite Flow Maps.
+Exploratory Visual Analysis for Animal Movement Ecology.
+AVOCADO: Visualization of Workflow-Derived Data Provenance for Reproducible Biomedical Research.
+From Visual Exploration to Storytelling and Back Again.
+A Survey of Perceptually Motivated 3D Visualization of Medical Image Data.
+Visual Analysis of Biomolecular Cavities: State of the Art.
+State-of-the-Art Report in Web-based Visualization.
+In Situ Methods, Infrastructures, and Applications on High Performance Computing Platforms.
+A Survey on Visual Analysis Approaches for Financial Data.
+The State of the Art in Cartograms.
+A Survey of Topology-based Methods in Visualization.
+State of the Art in Transfer Functions for Direct Volume Rendering.
+Matrix Reordering Methods for Table and Network Visualization.
+Formalizing Emphasis in Information Visualization.
+MoleCollar and Tunnel Heat Map Visualizations for Conveying Spatio-Temporo-Chemical Properties Across and Along Protein Voids.
+Visual Analytics for the Exploration of Tumor Tissue Characterization.
+Cell lineage visualisation.
+Small MultiPiles: Piling Time to Explore Temporal Patterns in Dynamic Networks.
+Adaptive Recommendations for Enhanced Non-linear Exploration of Annotated 3D Objects.
+Visual Analysis of Proximal Temporal Relationships of Social and Communicative Behaviors.
+Visual Assessment of Alleged Plagiarism Cases.
+Perfopticon: Visual Query Analysis for Distributed Databases.
+Efficient Local Histogram Searching via Bitmap Indexing.
+Guided Volume Editing based on Histogram Dissimilarity.
+Compressive Volume Rendering.
+Learning Probabilistic Transfer Functions: A Comparative Study of Classifiers.
+Rule-Enhanced Transfer Function Generation for Medical Volume Visualization.
+Edge-Aware Volume Smoothing Using L0 Gradient Minimization.
+Photoelasticity Raycasting.
+Visualization of Particle-based Data with Transparency and Ambient Occlusion.
+Exploring Traffic Dynamics in Urban Environments Using Vector-Valued Functions.
+Interactive Visual Analysis for Vehicle Detector Data.
+Visual Analytics for Exploring Local Impact of Air Traffic.
+Rationale Visualization for Safety and Security.
+Data-driven Evaluation of Visual Quality Measures.
+Efficient Contrast Effect Compensation with Personalized Perception Models.
+An Evaluation of the Impact of Visual Embellishments in Bar Charts.
+An Exploratory Study of Data Sketching for Visual Representation.
+Fiber Surfaces: Generalizing Isosurfaces to Bivariate Data.
+Interactive Fusion and Tracking For Multi-Modal Spatial Data Visualization.
+A Multi-task Comparative Study on Scatter Plots and Parallel Coordinates Plots.
+Visual Exploration of High-Dimensional Data through Subspace Analysis and Dynamic Projections.
+Uncovering Representative Groups in Multidimensional Projections.
+Visualnostics: Visual Guidance Pictograms for Analyzing Projections of High-dimensional Data.
+Refinery: Visual Exploration of Large, Heterogeneous Networks through Associative Browsing.
+Dual Adjacency Matrix: Exploring Link Groups in Dense Networks.
+Detangler: Visual Analytics for Multiplex Networks.
+Visualization of Object-Centered Vulnerability to Possible Flood Hazards.
+VIMTEX: A Visualization Interface for Multivariate, Time-Varying, Geological Data Exploration.
+Quantitative Measures for Cartogram Generation Techniques.
+Mosaic Drawings and Cartograms.
+Visualizing Time-Specific Hurricane Predictions, with Uncertainty, from Storm Path Ensembles.
+Visual Analysis of Spatio-Temporal Data: Applications in Weather Forecasting.
+A Shot at Visual Vulnerability Analysis.
+A Novel Framework for Visual Detection and Exploration of Performance Bottlenecks in Organic Photovoltaic Solar Cell Materials.
+Visual Analytics for Correlation-Based Comparison of Time Series Ensembles.
+Feature-Driven Visual Analytics of Chaotic Parameter-Dependent Movement.
+Persistent Homology for the Evaluation of Dimensionality Reduction Schemes.
+Map-based Visualizations Increase Recall Accuracy of Data.
+GraphUnit: Evaluating Interactive Graph Visualizations Using Crowdsourcing.
+Towards a smooth design process for static communicative node-link diagrams.
+Finite-Time Mass Separation for Comparative Visualizations of Inertial Particles.
+Vector Field Visualization of Advective-Diffusive Flows.
+Visualization of Coherent Structures of Light Transport.
+Evaluating 2D Flow Visualization Using Eye Tracking.
+Sets of Globally Optimal Stream Surfaces for Flow Visualization.
+Opacity Optimization for Surfaces.
+Extracting Features from Time-Dependent Vector Fields Using Internal Reference Frames.
+Mandatory Critical Points of 2D Uncertain Scalar Fields.
+Extended Branch Decomposition Graphs: Structural Comparison of Scalar Data.
+Stability of Dissipation Elements: A Case Study in Combustion.
+Parallel Irradiance Caching for Interactive Monte-Carlo Direct Volume Rendering.
+RBF Volume Ray Casting on Multicore and Manycore CPUs.
+Towards an Unbiased Comparison of CC, BCC, and FCC Lattices in Terms of Prealiasing.
+InSpectr: Multi-Modal Exploration, Visualization, and Analysis of Spectral Data.
+Distortion-Guided Structure-Driven Interactive Exploration of High-Dimensional Data.
+Volumetric Data Reduction in a Compressed Sensing Framework.
+4D MRI Flow Coupled to Physics-Based Fluid Simulation for Blood-Flow Visualization.
+Comparative Blood Flow Visualization for Cerebral Aneurysm Treatment Assessment.
+Illustrative Visualization of Molecular Reactions using Omniscient Intelligence and Passive Agents.
+GuideME: Slice-guided Semiautomatic Multivariate Exploration of Volumes.
+Visualization of Medicine Prescription Behavior.
+Visualizing Validation of Protein Surface Classifiers.
+Line Integral Convolution for Real-Time Illustration of Molecular Surface Shape and Salient Regions.
+Comparative Visualization of Molecular Surfaces Using Deformable Models.
+Comparative Exploration of Document Collections: a Visual Analytics Approach.
+Networks of Names: Visual Exploration and Semi-Automatic Tagging of Social Networks from Newspaper Articles.
+ConVis: A Visual Text Analytic System for Exploring Blog Conversations.
+Methods for Compensating Contrast Effects in Information Visualization.
+Visual Multiplexing.
+A Gaze-enabled Graph Visualization to Improve Graph Reading Tasks.
+Visualizing Proximity-Based Spatiotemporal Behavior of Museum Visitors using Tangram Diagrams.
+Metro Transit-Centric Visualization for City Tour Planning.
+Many Plans: Multidimensional Ensembles for Visual Decision Support in Flood Management.
+Visual-interactive Exploration of Interesting Multivariate Relations in Mixed Research Data Sets.
+Visualizing Multidimensional Data with Glyph SPLOMs.
+Glyphs for Exploring Crowd-sourced Subjective Survey Classification.
+Sparse Representation and Visualization for Direct Numerical Simulation of Premixed Combustion.
+LoVis: Local Pattern Visualization for Model Refinement.
+SimilarityExplorer: A Visual Inter-Comparison Tool for Multifaceted Climate Data.
+Lyra: An Interactive Visualization Design Environment.
+Authoring Narrative Visualizations with Ellipsis.
+Evaluating the Impact of User Characteristics and Different Layouts on an Interactive Visualization for Decision Making.
+Semi-Automatic Editing of Graphs with Customized Layouts.
+Papilio: Visualizing Android Application Permissions.
+Visual Analysis of Time-Series Similarities for Anomaly Detection in Sensor Networks.
+Visual Analysis of Sets of Heterogeneous Matrices Using Projection-Based Distance Functions and Semantic Zoom.
+Evaluating Isosurfaces with Level-set-based Information Maps.
+Constructing Isosurfaces with Sharp Edges and Corners using Cube Merging.
+Progressive High-Quality Response Surfaces for Visually Guided Sensitivity Analysis.
+Evolutionary Visual Exploration: Evaluation With Expert Users.
+EvalBench: A Software Library for Visualization Evaluation.
+Evaluation of Attention-Guiding Video Visualization.
+Visual Analysis of Set Relations in a Graph.
+Maximum Entropy Summary Trees.
+VisRuption: Intuitive and Efficient Visualization of Temporal Airline Disruption Data.
+An Interactive Analysis and Exploration Tool for Epigenomic Data.
+Towards High-dimensional Data Analysis in Air Quality Research.
+Complexity Plots.
+HiFiVE: A Hilbert Space Embedding of Fiber Variability Estimates for Uncertainty Modeling and Visualization.
+Nonparametric Models for Uncertainty Visualization.
+Visualizing Large-scale Parallel Communication Traces Using a Particle Animation Technique.
+TAMRESH - Tensor Approximation Multiresolution Hierarchy for Interactive Volume Visualization.
+A Visual Approach to Investigating Shared and Global Memory Behavior of CUDA Kernels.
+Gestaltlines.
+Scale-Stack Bar Charts.
+Small Multiples, Large Singles: A New Approach for Visual Data Exploration.
+Vector Field k-Means: Clustering Trajectories by Fitting Multiple Vector Fields.
+Mass-Dependent Integral Curves in Unsteady Vector Fields.
+Visualizing Robustness of Critical Points for 2D Time-Varying Vector Fields.
+Vessel Visualization using Curvicircular Feature Aggregation.
+Comparative Visualization of Tracer Uptake in In Vivo Small Animal PET/CT Imaging of the Carotid Arteries.
+AmniVis - A System for Qualitative Exploration of Near-Wall Hemodynamics in Cerebral Aneurysms.
+Spatially Efficient Design of Annotated Metro Maps.
+Visualizing Interchange Patterns in Massive Movement Data.
+AOI Rivers for Visualizing Dynamic Eye Gaze Frequencies.
+User-driven Feature Space Transformation.
+Continuous Representation of Projected Attribute Spaces of Multifields over Any Spatial Sampling.
+Visualizing Motional Correlations in Molecular Dynamics using Geometric Deformations.
+Streamlines for Illustrative Real-Time Rendering.
+Interactive Extraction and Tracking of Biomolecular Surface Features.
+Towards Multifield Scalar Topology Based on Pareto Optimality.
+dPSO-Vis: Topology-based Visualization of Discrete Particle Swarm Optimization.
+A primal/dual representation for discrete Morse complexes on tetrahedral meshes.
+Fingerprint Matrices: Uncovering the dynamics of social networks in prose literature.
+Rule-based Visual Mappings - with a Case Study on Poetry Visualization.
+Augmenting Visualization with Natural Language Translation of Interaction: A Usability Study.
+Selecting Semantically-Resonant Colors for Data Visualization.
+An Information-Theoretic Observation Channel for Volume Visualization.
+imMens: Real-time Visual Querying of Big Data.
+Visual Explanation of the Complexity in Julia Sets.
+ExPlates: Spatializing Interactive Analysis to Scaffold Visual Exploration.
+TrajectoryLenses - A Set-based Filtering and Exploration Technique for Long-term Trajectory Data.
+ViviSection: Skeleton-based Volume Editing.
+Synthetic Brainbows.
+Interactive Ray Casting of Geodesic Grids.
+Computing Voronoi Treemaps: Faster, Simpler, and Resolution-independent.
+Graph Bundling by Kernel Density Estimation.
+Kelp Diagrams: Point Set Membership Visualization.
+Interactive Visualization of Generalized Virtual 3D City Models using Level-of-Abstraction Transitions.
+Multi-layer illustrative dense flow visualization.
+Illustrative Membrane Clipping.
+Scalable Detection of Spatiotemporal Encounters in Historical Movement Data.
+Travel-Route-Centered Metro Map Layout and Annotation.
+The World's Languages Explorer: Visual Analysis of Language Features in Genealogical and Areal Contexts.
+A Quantized Boundary Representation of 2D Flows.
+Magnetic Flux Topology of 2D Point Dipoles.
+Parallel Computation of 3D Morse-Smale Complexes.
+Drawing Large Graphs by Low-Rank Stress Majorization.
+Using Signposts for Navigation in Large Graphs.
+Comparative Evaluation of an Interactive Time-Series Visualization that Combines Quantitative Data with Qualitative Abstractions.
+A Qualitative Study on the Exploration of Temporal Changes in Flow Maps with Animation and Small-Multiples.
+Conceptualizing Visual Uncertainty in Parallel Coordinates.
+Visualization of Global Correlation Structures in Uncertain 2D Scalar Fields.
+Vortex Analysis in Uncertain Vector Fields.
+Probabilistic Local Features in Uncertain Vector Fields with Spatial Correlation.
+Reliable Adaptive Modelling of Vascular Structures with Non-Circular Cross-Sections.
+Visualization of 4D Blood-Flow Fields by Spatiotemporal Hierarchical Clustering.
+Employing 2D Projections for Fast Visual Exploration of Large Fiber Tracking Data.
+Biopsy Planner - Visual Analysis for Needle Pathway Planning in Deep Seated Brain Tumor Biopsy.
+Automatic Stream Surface Seeding: A Feature Centered Approach.
+Visualization of Advection-Diffusion in Unsteady Fluid Flow.
+Nearly Recurrent Components in 3D Piecewise Constant Vector Fields.
+Interface Exchange as an Indicator for Eddy Heat Transport.
+Rolled-out Wordles: A Heuristic Method for Overlap Removal of 2D Data Representatives.
+Semantic Wordification of Document Collections.
+iVisClustering: An Interactive Visual Document Clustering via Topic Modeling.
+Document Thumbnails with Variable Text Scaling.
+StratomeX: Visual Analysis of Large-Scale Heterogeneous Genomics Data for Cancer Subtype Characterization.
+Porosity Maps - Interactive Exploration and Visual Analysis of Porosity in Carbon Fiber Reinforced Polymers.
+Comparative Visual Analysis of 2D Function Ensembles.
+Perception of Animated Node-Link Diagrams for Dynamic Graphs.
+Visualizing Motion Data in Virtual Reality: Understanding the Roles of Animation, Interaction, and Static Presentation.
+A Design Study of Direct-Touch Interaction for Exploratory 3D Scientific Visualization.
+Vismon: Facilitating Analysis of Trade-Offs, Uncertainty, and Sensitivity In Fisheries Management Decision Making.
+MarketAnalyzer: An Interactive Visual Analytics System for Analyzing Competitive Advantage Using Point of Sale Data.
+Visualization for Decision Support
+MatchPad: Interactive Glyph-Based Visualization for Real-Time Sports Performance Analysis.
+PORGY: A Visual Graph Rewriting Environment for Complex Systems.
+I-SI: Scalable Architecture for Analyzing Latent Topical-Level Information From Social Media Data.
+ConnectedCharts: Explicit Visualization of Relationships between Data Graphics.
+Automating Transfer Function Design with Valley Cell-Based Clustering of 2D Density Plots.
+Importance Driven Automatic Color Design for Direct Volume Rendering.
+COVRA: A compression-domain output-sensitive volume rendering architecture based on a sparse representation of voxel blocks.
+Interactive Rendering of Materials and Biological Structures on Atomic and Nanoscopic Scale.
+A Taxonomy of Visual Cluster Separation Factors.
+Semi-Supervised Dimensionality Reduction based on Partial Least Squares for Visual Analysis of High Dimensional Data.
+Procedural Texture Synthesis for Zoom-Independent Visualization of Multivariate Data.
+Tracing Tuples Across Dimensions: A Comparison of Scatterplots and Parallel Coordinate Plots.

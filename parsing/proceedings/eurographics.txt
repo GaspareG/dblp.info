@@ -1,0 +1,491 @@
+Surface Reconstruction From Non-parallel Curve Networks.
+High-Resolution Volumetric Computation of Offset Surfaces with Feature Preservation.
+Render2MPEG: A Perception-based Framework Towards Integrating Rendering and Video Compression.
+Apparent Greyscale: A Simple and Fast Conversion to Perceptually Accurate Images and Video.
+Lighting and Occlusion in a Wave-Based Framework.
+CHC++: Coherent Hierarchical Culling Revisited.
+Curvature-Domain Shape Processing.
+Spectral Geometry Processing with Manifold Harmonics.
+Fast Force Field Approximation and its Application to Skeletonization of Discrete 3D Objects.
+Video Relighting Using Infrared Illumination.
+Augmented Panoramic Video.
+Stereo Light Probe.
+Sketching and Composing Widgets for 3D Manipulation.
+Real-Time Rendering and Editing of Vector-based Terrains.
+Sketch-Based Procedural Surface Modeling and Compositing Using Surface Trees.
+Hardware-Accelerated, High-Quality Rendering Based on Trivariate Splines Approximating Volume Data.
+Zippy: A Framework for Computation and Visualization on a GPU Cluster.
+GPU-based Fast Ray Casting for a Large Number of Metaballs.
+Ray Casting Algebraic Surfaces using the Frustum Form.
+Simulation of Human Motion Data using Short-Horizon Model-Predictive Control.
+Expressive Facial Gestures From Motion Capture Data.
+Automatic Conversion of Mesh Animations into Skeleton-based Animations.
+Articulated Object Reconstruction and Markerless Motion Capture from Depth Video.
+Floating Textures.
+Texture Synthesis From Photographs.
+An Example-based Procedural System for Element Arrangement.
+Manifold-valued Thin-Plate Splines with Applications in Computer Graphics.
+Conformal Flattening by Curvature Prescription and Metric Scaling.
+Higher Order Barycentric Coordinates.
+A Semi-Lagrangian CIP Fluid Solver without Dimensional Splitting.
+A Fast Simulation Method Using Overlapping Grids for Interactions between Smoke and Rigid Objects.
+Fluid in Video: Augmenting Real Video with Simulated Fluids.
+An Adaptive Contact Model for the Robust Simulation of Knots.
+Single-pass Scalable Subsurface Rendering with Lightcuts.
+Real-Time Translucent Rendering Using GPU-based Texture Space Importance Sampling.
+Photo-realistic Rendering of Metallic Car Paint from Image-Based Measurements.
+Efficient and Dynamic Simplification of Line Drawings.
+Visualizing Underwater Ocean Optics.
+The Beam Radiance Estimate for Volumetric Photon Mapping.
+Interactive Volume Rendering with Dynamic Ambient Occlusion and Color Bleeding.
+The Shadow Meets the Mask: Pyramid-Based Shadow Removal.
+Detail-In-Context Visualization for Satellite Imagery.
+Viewfinder Alignment.
+Image-based Aging Using Evolutionary Computing.
+Image-based Material Weathering.
+Image-based Shaving.
+Distortion-Free Steganography for Polygonal Meshes.
+Sparse points matching by combining 3D mesh saliency with statistical descriptors.
+Dynamic Sampling and Rendering of Algebraic Point Set Surfaces.
+Accurate Shadows by Depth Complexity Sampling.
+Deep Opacity Maps.
+Practical Product Importance Sampling for Direct Illumination.
+Characterization for High Dynamic Range Imaging.
+Modeling a Generic Tone-mapping Operator.
+Agile Spectrum Imaging: Programmable Wavelength Modulation for Cameras and Projectors.
+Predicting Display Visibility Under Dynamically Changing Lighting Conditions.
+Temporal Glare: Real-Time Dynamic Simulation of the Scattering in the Human Eye.
+Color correction for tone mapping.
+Energy Aware Color Sets.
+Mixing Fluids and Granular Materials.
+Hydraulic Erosion Using Smoothed Particle Hydrodynamics.
+Simulation of two-phase flow with sub-scale droplet and bubble effects.
+Scalable real-time animation of rivers.
+Shadowing Dynamic Scenes with Arbitrary BRDFs.
+Anisotropic Radiance-Cache Splatting for Efficiently Computing High-Quality Global Illumination with Lightcuts.
+Bidirectional Importance Sampling for Unstructured Direct Illumination.
+Physics-driven Multi Dimensional Keyframe Animation for Artist-directable Interactive Character.
+Modal Locomotion: Animating Virtual Characters with Natural Vibrations.
+Character Motion Synthesis by Topology Coordinates.
+Adaptive Caustic Maps Using Deferred Shading.
+Into the Blue: Better Caustics through Photon Relaxation.
+An Analytical Solution to Single Scattering in Homogeneous Participating Media.
+A Statistical Model of Human Pose and Body Shape.
+Simplification of Articulated Meshes.
+Motion Compression using Principal Geodesics Analysis.
+Fast GPU-based Adaptive Tessellation with CUDA.
+Fast BVH Construction on GPUs.
+Out-of-core Data Management for Path Tracing on Hybrid Resources.
+A Part-aware Surface Metric for Shape Analysis.
+Shape Decomposition using Modal Analysis.
+Linear Time Super-Helices.
+Wrinkling Captured Garments Using Space-Time Data-Driven Deformation.
+Genuinity Signatures: Designing Signatures for Verifying 3D Object Genuinity.
+Range Scan Registration Using Reduced Deformable Models.
+Arches: a Framework for Modeling Complex Terrains.
+Structure-Preserving Reshape for Textured Architectural Scenes.
+Interactive Geometric Simulation of 4D Cities.
+Feature Preserving Point Set Surfaces based on Non-Linear Kernel Regression.
+Completion and Reconstruction with Primitive Shapes.
+Heightfield and spatially varying BRDF Reconstruction for Materials with Interreflections.
+Physically Guided Animation of Trees.
+Wind projection basis for real-time animation of trees.
+Structure from silhouettes: a new paradigm for fast sketch-based design of trees.
+Positional, Metric, and Curvature Control for Constraint-Based Surface Deformation.
+Implicit Contact Handling for Deformable Objects.
+Continuum-based Strain Limiting.
+Importance Sampling Spherical Harmonics.
+Complex Barycentric Coordinates with Applications to Planar Shape Deformation.
+LazyBrush: Flexible Painting Tool for Hand-drawn Cartoons.
+Compressive Dual Photography.
+Deblurring by Matching.
+Image Appearance Exploration by Model-Based Navigation.
+Spectral-Based Group Formation Control.
+TopoPlan: a topological path planner for real time human navigation under floor and ceiling constraints.
+Example-Based Rendering of Eye Movements.
+Dominant Texture and Diffusion Distance Manifolds.
+Animating Pictures of Fluid using Video Examples.
+Table-based Alpha Compression.
+Symmetry Detection Using Feature Lines.
+Detecting Symmetries and Curvilinear Arrangements in Vector Art.
+Learning good views through intelligent galleries.
+TouchTone: Interactive Local Image Adjustment Using Point-and-Swipe.
+User-Controllable Color Transfer.
+Contrast-aware Halftoning.
+Fitted BVH for Fast Raytracing of Metaballs.
+Fast Ray Sorting and Breadth-First Packet Traversal for GPU Ray Tracing.
+HCCMeshes: Hierarchical-Culling oriented Compact Meshes.
+Multi-Scale Geometry Interpolation.
+Deformation Transfer to Multi-Component Objects.
+Fast and Efficient Skinning of Animated Meshes.
+Interactive High-Quality Visualization of Higher-Order Finite Elements.
+Uncertain 2D Vector Field Topology.
+SoundRiver: Semantically-Rich Sound Illustration.
+Implicit Blending Revisited.
+Isosurfaces Over Simplicial Partitions of Multiresolution Grids.
+Global Illumination Compensation for Spatially Augmented Reality.
+Exact and Robust (Self-)Intersections for Polygonal Meshes.
+Practical quad mesh simplification.
+gProximity: Hierarchical GPU-based Operations for Collision and Distance Queries.
+Procedural Generation of Roads.
+Continuum Traffic Simulation.
+Heat Transfer Simulation for Modeling Realistic Winter Sceneries.
+Puzzle-like Collage.
+Optimizing Photo Composition.
+Seamless Montage for Texturing Models.
+Real-time Realistic Ocean Lighting using Seamless Transitions from Geometry to BRDF.
+Real-time Rendering of Heterogeneous Translucent Objects with Arbitrary Shapes.
+Rendering Wave Effects with Augmented Light Field.
+Mesh Snapping: Robust Interactive Mesh Cutting Using Fast Geodesic Curvature Flow.
+Mesh Decomposition with Cross-Boundary Brushes.
+A Data-driven Segmentation for the Shoulder Complex.
+Human Motion Synthesis with Optimization-based Graphs.
+Synthesis of Responsive Motion Using a Dynamic Model.
+Bidirectional Search for Interactive Motion Synthesis.
+Shared Sampling for Real-Time Alpha Matting.
+Articulated Billboards for Video-based Rendering.
+The Virtual Director: a Correlation-Based Online Viewing of Human Motion.
+BetweenIT: An Interactive Tool for Tight Inbetweening.
+Adding Depth to Cartoons Using Sparse Depth (In)equalities.
+Printed Patterns for Enhanced Shape Perception of Papercraft Models.
+Consensus Skeleton for Non-rigid Space-time Registration.
+Electors Voting for Fast Automatic Shape Correspondence.
+Sketching Clothoid Splines Using Shortest Paths.
+Inverse Procedural Modeling by Automatic Generation of L-systems.
+Hybrid Simulation of Miscible Mixing with Viscous Fingering.
+A Hybrid Approach to Multiple Fluid Simulation using Volume Fractions.
+Tetrahedral Embedded Boundary Methods for Accurate and Flexible Adaptive Fluids.
+Improved Variational Guiding of Smoke Animations.
+Perceptually-motivated Real-time Temporal Upsampling of 3D Content for High-refresh-rate Displays.
+Scalable Height Field Self-Shadowing.
+Motion Blur for EWA Surface Splatting.
+Two-Colored Pixels.
+Fast High-Dimensional Filtering Using the Permutohedral Lattice.
+Reinterpretable Imager: Towards Variable Post-Capture Space, Angle and Time Resolution in Photography.
+Eurographics Outstanding Technical Contribution Award.
+Eurographics Young Researcher Award.
+Eurographics Young Researcher Award.
+Projection and Parallax.
+Neuromatrix: The World is Embodied in our Brain.
+Data Visualization: Featuring Interactive Visual Analysis.
+The Natural 3D Spiral.
+Generalized Helicoids for Modeling Hair Geometry.
+Fruit Senescence and Decay Simulation.
+Learning Line Features in 3D Geometry.
+Shape Analysis with Subspace Symmetries.
+Symmetry Hierarchy of Man-Made Objects.
+RTSAH Traversal Order for Occlusion Rays.
+Two-Level Grids for Ray Tracing on GPUs.
+Combinatorial Bidirectional Path-Tracing for Efficient Hybrid CPU/GPU Rendering.
+Guided Procedural Modeling.
+Procedural Modeling of Interconnected Structures.
+Interactive Modeling of City Layouts using Layers of Procedural Content.
+SQuad: Compact Representation for Triangle Meshes.
+Discovery of Intrinsic Primitives on Triangle Meshes.
+Global Structure Optimization of Quadrilateral Meshes.
+Contouring Discrete Indicator Functions.
+Wavelet Rasterization.
+Freehand HDR Imaging of Moving Scenes with Simultaneous Resolution Enhancement.
+Scalable Remote Rendering with Depth and Motion-flow Augmented Streaming.
+Comprehensive Facial Performance Capture.
+Langevin Particle: A Self-Adaptive Lagrangian Primitive for Flow Simulation Enhancement.
+Deformable Motion: Squeezing into Cluttered Environments.
+BSSRDF Estimation from Single Images.
+A Sparse Parametric Mixture Model for BTF Compression, Editing and Rendering.
+Dynamic Display of BRDFs.
+Computer-Suggested Facial Makeup.
+Predicted Virtual Soft Shadow Maps with High Quality Filtering.
+Goal-based Caustics.
+Implicit Brushes for Stylized Line-based Rendering.
+Estimating Color and Texture Parameters for Vector Graphics.
+Hatching for Motion Picture Production.
+Intrinsic Shape Matching by Planned Landmark Sampling.
+Prior Knowledge for Part Correspondence.
+Component-wise Controllers for Structure-Preserving Shape Manipulation.
+Blur-Aware Image Downsampling.
+Image Retargeting Quality Assessment.
+Image and Video Abstraction by Coherence-Enhancing Filtering.
+Paint Mesh Cutting.
+GeoBrush: Interactive Mesh Geometry Cloning.
+Walking On Broken Mesh: Defect-Tolerant Geodesic Distances and Parameterizations.
+Circular Arc Snakes and Kinematic Surface Generation.
+Exploring Local Modifications for Constrained Meshes.
+Mutable elastic models for sculpting structured shapes.
+Finite Element Image Warping.
+Accurate Binary Image Selection from Inaccurate User Input.
+DuctTake: Spatiotemporal Video Compositing.
+Path Space Regularization for Holistic and Robust Light Transport.
+Locally Adaptive Products for All-Frequency Relighting.
+Photon Parameterisation for Robust Relaxation Constraints.
+Removing the Noise in Monte Carlo Rendering with General Image Denoising Algorithms.
+Stochastic Depth Buffer Compression using Generalized Plane Encoding.
+Global Selection of Stream Surfaces.
+Bilateral Hermite Radial Basis Functions for Contour-based Volume Segmentation.
+Physics Storyboards.
+Stylized and Performative Gaze for Character Animation.
+Animal Locomotion Controllers From Scratch.
+Gaze-driven Object Tracking for Real Time Rendering.
+Freeform Shadow Boundary Editing.
+Material Editing in Complex Scenes by Surface Light Field Manipulation and Reflectance Optimization.
+Smart Variations: Functional Substructures for Part Compatibility.
+A Correlated Parts Model for Object Detection in Large 3D Scans.
+Interactive Facades Analysis and Synthesis of Semi-Regular Facades.
+Surface Reconstruction through Point Set Structuring.
+ArtiSketch: A System for Articulated Sketch Modeling.
+Geosemantic Snapping for Sketch-Based Modeling.
+Stroke Parameterization.
+Pose Space Image Based Rendering.
+Capturing Relightable Human Performances under General Uncontrolled Illumination.
+Capture and Statistical Modeling of Arm-Muscle Deformations.
+Fleshing: Spine-driven Bending with Local Volume Preservation.
+Computing and Fabricating Multiplanar Models.
+Fabrication-aware Design with Intersecting Planar Pieces.
+Interactive Exploration and Flattening of Deformed Historical Documents.
+Measurement-Based Synthesis of Facial Microgeometry.
+Scalable Music: Automatic Music Retargeting and Synthesis.
+By-example synthesis of curvilinear structured patterns.
+Example-based Interpolation and Synthesis of Bidirectional Texture Functions.
+A Particle-Grid Method for Opaque Ice Formation.
+Geometry-Aware Volume-of-Fluid Method.
+A Novel Projection Technique with Detail Capture and Shape Correction for Smoke Simulation.
+Adaptive Quantization Visibility Caching.
+Analytic Visibility on the GPU.
+Primitive Trees for Precomputed Distance Queries.
+Landmark-Guided Elastic Shape Analysis of Spherically-Parameterized Surfaces.
+Coupled quasi-harmonic bases.
+A Data-Driven Approach to Realistic Shape Morphing.
+Sparse Modeling of Intrinsic Correspondences.
+Rendering Gigaray Light Fields.
+View-Dependent Realtime Rendering of Procedural Facades with High Geometric Detail.
+Sharpening Out of Focus Images using High-Frequency Transfer.
+Analytic Rasterization of Curves with Polynomial Filters.
+Sifted Disks.
+Spatio-temporal geometry fusion for multiple hybrid cameras using moving least squares surfaces.
+Object detection and classification from large-scale cluttered indoor scans.
+Detection and reconstruction of freeform sweeps.
+Coded exposure HDR light-field video recording.
+Panorama light-field imaging.
+Manipulating refractive and reflective binocular disparity.
+Optimizing stereo-to-multiview conversion for autostereoscopic displays.
+Parallel generation of architecture on the GPU.
+SAFE: Structure-aware facade editing.
+Game level layout from design specification.
+On-the-fly generation and rendering of infinite cities on the GPU.
+Recurring part arrangements in shape collections.
+ShapeSynth: Parameterizing model collections for coupled shape exploration and synthesis.
+3D Timeline: Reverse engineering of a part-based provenance from consecutive 3D models.
+Compressing dynamic meshes with geometric laplacians.
+Self-similarity for accurate compression of point sampled surfaces.
+SimSelect: Similarity-based selection for 3D surfaces.
+Analogy-driven 3D style transfer.
+Light montage for perceptual image enhancement.
+Perceptual depth compression for stereo applications.
+A randomized algorithm for natural object colorization.
+Laplacian colormaps: a framework for structure-preserving color transformations.
+Feedback control for rotational movements in feature space.
+Efficient enforcement of hard articulation constraints in the presence of closed loops and contacts.
+On-line real-time physics-based predictive motion control with balance recovery.
+IISPH-FLIP for incompressible fluids.
+Crack-free rendering of dynamically tesselated B-rep models.
+Interactive motion mapping for real-time character control.
+Rate-distortion optimized compression of motion capture data.
+Pose partitioning for multi-resolution segmentation of arbitrary mesh animations.
+Parameter estimation and comparative evaluation of crowd simulations.
+Optimizing BRDF orientations for the manipulation of anisotropic highlights.
+Efficient Monte Carlo rendering with realistic lenses.
+Interactive cloth rendering of microcylinder appearance model under environment lighting.
+Adaptive texture space shading for stochastic rendering.
+Crowd sculpting: A space-time sculpting method for populating virtual environments.
+Thumbnail galleries for procedural models.
+4D video textures for interactive character appearance.
+Temporally coherent and spatially accurate video matting.
+Art-photographic detail enhancement.
+Content-aware surface parameterization for interactive restoration of historical documents.
+Designing large-scale interactive traffic animations for urban modeling.
+Accurate and efficient lighting for skinned models.
+Deformation with enforced metrics on length, area and volume.
+Flower reconstruction from a single photo.
+Automatic generation of tourist brochures.
+ExploreMaps: Efficient construction and ubiquitous exploration of panoramic view graphs of complex 3D environments.
+Clean color: Improving multi-filament 3D prints.
+Dual-color mixing for fused deposition modeling printers.
+Multi-style paper pop-up designs from 3D models.
+Pathline glyphs.
+Hierarchical opacity optimization for sets of 3D line fields.
+Hallucinating Stereoscopy from a Single Image.
+Composition-Aware Scene Optimization for Product Images.
+Sample Elimination for Generating Poisson Disk Sample Sets.
+Compressive Image Reconstruction in Reduced Union of Subspaces.
+A Biophysically-Based Model of the Optical Properties of Skin Aging.
+Panoramic Video from Unstructured Camera Arrays.
+Designing Camera Networks by Convex Quadratic Programming.
+High-Order Recursive Filtering of Non-Uniformly Sampled Signals for Image and Video Processing.
+Jointly Optimized Regressors for Image Super-resolution.
+Parallel, Realistic and Controllable Terrain Synthesis.
+Interactive Dimensioning of Parametric Models.
+Distilled Collections from Textual Image Queries.
+Guiding Image Manipulations using Shape-appearance Subspaces from Co-alignment of Image Collections.
+IsoMatch: Creating Informative Grid Layouts.
+Comprehensible Video Thumbnails.
+Interactive Generation of Realistic Facial Wrinkles from Sketchy Drawings.
+VDub: Modifying Face Video of Actors for Plausible Visual Alignment to a Dubbed Audio Track.
+Layer-Based Procedural Design of Façades.
+Template Assembly for Detailed Urban Reconstruction.
+3D Fabrication of 2D Mechanisms.
+Approximating Free-form Geometry with Height Fields for Manufacturing.
+High Reliefs from 3D Scenes.
+Shape-from-Operator: Recovering Shapes from Intrinsic Operators.
+Skeleton-Intrinsic Symmetrization of Shapes.
+Interactive Disassembly Planning for Complex Objects.
+Approximating the Generalized Voronoi Diagram of Closely Spaced Objects.
+Hardware-Based Non-Photorealistic Rendering Using a Painting Robot.
+Light Chisel: 6DOF Pen Tracking.
+Content-Independent Multi-Spectral Display Using Superimposed Projections.
+Self Tuning Texture Optimization.
+Woodification: User-Controlled Cambial Growth Modeling.
+Color Sequence Preserving Decolorization.
+Paint and Click: Unified Interactions for Image Boundaries.
+Real-Time Subspace Integration for Example-Based Elastic Material.
+Scalable Partitioning for Parallel Position Based Dynamics.
+Improving Sampling-based Motion Control.
+Biologically-Inspired Visual Simulation of Insect Swarms.
+Database-Assisted Object Retrieval for Real-Time 3D Reconstruction.
+SmartAnnotator An Interactive Tool for Annotating Indoor RGBD Images.
+Adaptable Anatomical Models for Realistic Bone Motion Reconstruction.
+A Dimension-reduced Pressure Solver for Liquid Simulations.
+A Cut-Cell Geometric Multigrid Poisson Solver for Fluid Simulation.
+Implicit Formulation for SPH-based Viscous Fluids.
+Replaceable Substructures for Efficient Part-Based Modeling.
+Generating Design Suggestions under Tight Constraints with Gradient-based Probabilistic Programming.
+T-SAH: Animation Optimized Bounding Volume Hierarchies.
+CHC+RT: Coherent Hierarchical Culling for Ray Tracing.
+Partitioned Shadow Volumes.
+IlluminationCut.
+Rich-VPLs for Improving the Versatility of Many-Light Methods.
+Robust Statistical Pixel Estimation.
+General and Robust Error Estimation and Reconstruction for Monte Carlo Rendering.
+Selective Degree Elevation for Multi-Sided Bézier Patches.
+Optimal Spline Approximation via ℓ0-Minimization.
+Statics Aware Grid Shells.
+Photorealistic rendering of mixed reality scenes.
+Recent Advances in Adaptive Sampling and Reconstruction for Monte Carlo Rendering.
+The State of the Art in HDR Deghosting: A Survey and Evaluation.
+Recent Advances in Facial Appearance Capture.
+State of the Art in Hand and Finger Modeling and Animation.
+Morse complexes for shape segmentation and homological analysis: discrete models and algorithms.
+Feature Curve Co-Completion in Noisy Data.
+Wavejets: A Local Frequency Framework for Shape Details Amplification.
+Repairing Inconsistent Curve Networks on Non-parallel Cross-sections.
+ExpandNet: A Deep Convolutional Neural Network for High Dynamic Range Expansion from Low Dynamic Range Content.
+From Faces to Outdoor Light Probes.
+Multiple Scattering in Inhomogeneous Participating Media Using Rao-Blackwellization and Control Variates.
+PCPNet Learning Local Shape Properties from Raw Point Clouds.
+PointProNets: Consolidation of Point Clouds with Convolutional Neural Networks.
+Terrain Super-resolution through Aerial Imagery and Fully Convolutional Networks.
+A new microflake model with microscopic self-shadowing for accurate volume downsampling.
+Real-Time Rendering of Wave-Optical Effects on Scratched Surfaces.
+A Versatile Parameterization for Measured Material Manifolds.
+A Physically Consistent Implicit Viscosity Solver for SPH Fluids.
+Fast Fluid Simulations with Sparse Volumes on the GPU.
+Extended Narrow Band FLIP for Liquid Simulations.
+Improved Functional Mappings via Product Preservation.
+Visual Attention for Rendered 3D Shapes.
+Watch to Edit: Video Retargeting using Gaze.
+GazeDirector: Fully Articulated Eye Gaze Redirection in Video.
+Efficient BVH-based Collision Detection Scheme with Ordering and Restructuring.
+Fast Penetration Volume for Rigid Bodies.
+Packable Springs.
+String Art: Towards Computational Fabrication of String Images.
+Watercolor Woodblock Printing with Image Analysis.
+Real-time Locomotion Controller using an Inverted-Pendulum-based Abstract Model.
+Self-similarity Analysis for Motion Capture Cleaning.
+Aura Mesh: Motion Retargeting to Preserve the Spatial Relationships between Skinned Characters.
+Flexible Live-Wire: Image Segmentation with Floating Anchors.
+Semantic Segmentation for Line Drawing Vectorization Using Neural Networks.
+Sequences with Low-Discrepancy Blue-Noise 2-D Projections.
+Hair Modeling and Simulation by Style.
+Practical Radiometric Compensation for Projection Display on Textured Surfaces using a Multidimensional Model.
+Single-image Tomography: 3D Volumes from 2D Cranial X-Rays.
+Deep Joint Design of Color Filter Arrays and Demosaicing.
+Example-based Authoring of Procedural Modeling Programs with Structural and Continuous Variability.
+Procedural Modeling of a Building from a Single Image.
+Procedural Cloudscapes.
+Approximate Program Smoothing Using Mean-Variance Statistics, with Application to Procedural Shader Bandlimiting.
+Fast Catmull-Rom Spline Interpolation for High-Quality Texture Sampling.
+Parallel Reinsertion for Bounding Volume Hierarchy Optimization.
+Motion Sickness Simulation Based on Sensorimotor Control.
+Controllable Dendritic Crystal Simulation Using Orientation Field.
+Interactive Generation of Time-evolving, Snow-Covered Landscapes with Avalanches.
+MIQP-based Layout Design for Building Interiors.
+State of the Art on Monocular 3D Face Reconstruction, Tracking, and Applications.
+Monte Carlo Methods for Volumetric Light Transport Simulation.
+A Survey on Data-driven Dictionary-based Methods for 3D Modeling.
+Functionality Representations and Applications for Shape Analysis.
+State of the Art on 3D Reconstruction with RGB-D Cameras.
+Recent Advances in Projection Mapping Algorithms, Hardware and Applications.
+How Not to Be Seen - Object Removal from Videos of Crowded Scenes.
+Robust Image Retargeting via Axis-Aligned Deformation.
+Iterative Image Warping.
+Coherent Spatiotemporal Filtering, Upsampling and Rendering of RGBZ Videos.
+Creating Picture Legends for Group Photos.
+Data-Driven Object Manipulation in Images.
+Real-Time Disparity Map-Based Pictorial Depth Cue Enhancement.
+Interactive Multi-perspective Imagery from Photos and Videos.
+Light-Field Retargeting.
+Unstructured Light Fields.
+Data Driven Surface Reflectance from Sparse and Irregular Samples.
+Novel-View Synthesis of Outdoor Sport Events Using an Adaptive View-Dependent Geometry.
+Analytic Anti-Aliasing of Linear Functions on Polytopes.
+SimpleFlow: A Non-iterative, Sublinear Optical Flow Algorithm.
+SMAA: Enhanced Subpixel Morphological Antialiasing.
+Black is Green: Adaptive Color Transformation For Reduced Ink Usage.
+Real-time Realistic Rendering and Lighting of Forests.
+Interactive Editing of GigaSample Terrain Fields.
+A GPU-based Approach for Massive Model Rendering with Frame-to-Frame Coherence.
+Rasterized Bounding Volume Hierarchies.
+Procedural texture preview.
+Mesh Colorization.
+3D Material Style Transfer.
+Repetition Maximization based Texture Rectification.
+Practical Spectral Photography.
+Coding Depth through Mask Structure.
+Soft Stacking.
+Metering for Exposure Stacks.
+Realistic following behaviors for crowd simulation.
+Manipulation of Flexible Objects by Geodesic Control.
+Super-Clothoids.
+Data-Driven Estimation of Cloth Simulation Models.
+A Computational Model of Afterimages.
+Perceptually Linear Parameter Variations.
+NoRM: No-Reference Image Quality Metric for Realistic Image Synthesis.
+Unsharp Masking, Countershading and Halos: Enhancements or Artifacts?
+Crowd Light: Evaluating the Perceived Fidelity of Illuminated Dynamic Scenes.
+Pixel Art with Refracted Light by Rearrangeable Sticks.
+crdbrd: Shape Fabrication by Sliding Planar Slices.
+ShadowPix: Multiple Images from Self Shadowing.
+Manufacturing Layered Attenuators for Multiple Prescribed Shadow Images.
+Rationalization of Triangle-Based Point-Folding Structures.
+Interactive Self-Organizing Windows.
+Exploring Shape Variations by 3D-Model Decomposition and Part-based Recombination.
+Linear Analysis of Nonlinear Constraints for Interactive Geometric Modeling.
+Multitouch Gestures for Constrained Transformation of 3D Objects.
+Interactive Coherence-Based Façade Modeling.
+Factored Facade Acquisition using Symmetric Line Arrangements.
+Procedural Generation of Parcels in Urban Modeling.
+Procedural Interpolation of Historical City Maps.
+Importance Caching for Complex Illumination.
+Selective Inspection and Interactive Visualization of Light Transport in Virtual Scenes.
+Stochastic Progressive Photon Mapping for Dynamic Scenes.
+Real-time Rendering of Dynamic Scenes under All-frequency Lighting using Integral Spherical Gaussian.
+A continuous, editable representation for deforming mesh sequences with separate signals for time, pose and shape.
+Interaction Retrieval by Spacetime Proximity Graphs.
+Automatically Rigging Multi-component Characters.
+Fast Grasp Synthesis for Various Shaped Objects.
+Centroidal Voronoi Tessellation of Line Segments and Graphs.
+A Simple Algorithm for Maximal Poisson-Disk Sampling in High Dimensions.
+Medial Kernels.
+Generalized Swept Mid-structure for Polygonal Models.
+Explicit Mesh Surfaces for Particle Based Fluids.
+Advected Tangent Curves: A General Scheme for Characteristic Curves of Flow Fields.
+Computational Design of Rubber Balloons.
+A Cell-Based Light Interaction Model for Human Blood.

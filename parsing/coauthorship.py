@@ -3,7 +3,7 @@
 ## then run this script
 import gzip, json, os
 
-import DBLP2json
+import jsonDBLP
 
 # idA1, idA2, idP
 
@@ -34,12 +34,14 @@ def force ():
 
   out = gzip.GzipFile ('data/coauthorship.csv.gz', 'w')
   edgecount = 0
-  for p, paper in enumerate (DBLP2json.papers ()):
+  for p, paper in enumerate (jsonDBLP.papers ()):
     tag, title, authors, year = paper
     tags = tag.split("/")
-    if (tags[0] == 'journals') or (tags[0] == 'conf'):
+    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
       for i in range(0, len(authors)):
-        for j in range(i+1, len(authors)):
+        for j in range(0, len(authors)):
+          if i == j:
+            continue
           auth1 = authors[i].encode("utf-8");
           auth2 = authors[j].encode("utf-8");
           idA1 = idA[auth1]

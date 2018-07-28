@@ -1,0 +1,195 @@
+Precomputed Atmospheric Scattering.
+Irradiance Gradients in the Presence of Participating Media and Occlusions.
+Sequential Monte Carlo Adaptation in Low-Anisotropy Participating Media.
+Tensor Clustering for Rendering Many-Light Animations.
+Table-driven Adaptive Importance Sampling.
+Exploiting Visibility Correlation in Direct Illumination.
+An Analysis of the In-Out BRDF Factorization for View-Dependent Relighting.
+Real-time Shading with Filtered Importance Sampling.
+Ptex: Per-Face Texture Mapping for Production Rendering.
+Lazy Solid Texture Synthesis.
+Frame Sequential Interpolation for Discrete Level-of-Detail Rendering.
+Geometry-Aware Framebuffer Level of Detail.
+Rendering Trees with Indirect Lighting in Real Time.
+Stylized Vector Art from 3D Models with Region Support.
+Feature-guided Image Stippling.
+iCheat: A Representation for Artistic Control of Indirect Cinematic Lighting.
+Shallow Bounding Volume Hierarchies for Fast SIMD Ray Tracing of Incoherent Rays.
+Compact, Fast and Robust Grids for Ray Tracing.
+Combining Confocal Imaging and Descattering.
+ScribbleBoost: Adding Classification to Edge-Aware Interpolation of Local Image and Video Adjustments.
+Enhancement of Bright Video Features for HDR Displays.
+Fast Soft Self-Shadowing on Dynamic Height Fields.
+Sample Based Visibility for Soft Shadows using Alias-free Shadow Maps.
+Free Form Incident Light Fields.
+Accelerating Ray Tracing using Constrained Tetrahedralizations.
+ReduceM: Interactive and Memory Efficient Ray Tracing of Large Models.
+Deterministic Importance Sampling with Error Diffusion.
+Anomalous Dispersion in Predictive Rendering.
+Efficient and Accurate Rendering of Complex Light Sources.
+Locally Adapted Projections to Reduce Panorama Distortions.
+Texture Design and Draping in 2D Images.
+A Robust Illumination Estimate for Chromatic Adaptation in Rendered Images.
+Soft Textured Shadow Volume.
+Packet-based Hierarchal Soft Shadow Mapping.
+Fast Global Illumination on Dynamic Height Fields.
+Hierarchical Image-Space Radiosity for Interactive Global Illumination.
+Interactive Global Photon Mapping.
+Estimating Specular Roughness and Anisotropy from Second Order Spherical Gradient Illumination.
+Single Photo Estimation of Hair Appearance.
+BTF Compression via Sparse Tensor Decomposition.
+Spatial Directional Radiance Caching.
+The Use of Precomputed Triangle Clusters for Accelerated Ray Tracing in Dynamic Scenes.
+Motion based Painterly Rendering.
+Dart Throwing on Surfaces.
+Characteristic Point Maps.
+FastV: From-point Visibility Culling on Complex Models.
+GPU-Assisted High Quality Particle Rendering.
+Fragment-Parallel Composite and Filter.
+An Optimizing Compiler for Automatic Shader Bounding.
+SafeGI: Type Checking to Improve Correctness in Rendering System Implementation.
+Interactive, Multiresolution Image-Space Rendering for Dynamic Area Lighting.
+Adaptive Volumetric Shadow Maps.
+Real-Time Concurrent Linked List Construction on the GPU.
+Fast Estimation and Rendering of Indirect Highlights.
+Multi-Image Based Photon Tracing for Interactive Global Illumination of Dynamic Scenes.
+Two Methods for Fast Ray-Cast Ambient Occlusion.
+Sparsely Precomputing The Light Transport Matrix for Real-Time Rendering.
+Spectralization: Reconstructing spectra from sparse data.
+Compressive estimation for signal integration in rendering.
+A Closed-Form Solution to Single Scattering for General Phase Functions and Light Distributions.
+Interactive Rendering of Non-Constant, Refractive Media Using the Ray Equations of Gradient-Index Optics.
+A Layered Particle-Based Fluid Model for Real-Time Rendering of Water.
+A New Ward BRDF Model with Bounded Albedo.
+On the Effective Dimension of Light Transport.
+On Floating-Point Normal Vectors.
+An Image-Based Approach for Stochastic Volumetric and Procedural Details.
+Patch-based Texture Interpolation.
+Semi-Stochastic Tilings for Example-Based Texture Synthesis.
+Visibility Editing For All-Frequency Shadow Design.
+BendyLights: Artistic Control of Direct Illumination by Curving Light Rays.
+Interactive Editing of Lighting and Materials using a Bivariate BRDF Representation.
+A PCA Decomposition for Real-time BRDF Editing and Relighting with Global Illumination.
+Grammar-based Encoding of Facades.
+Invisible Seams.
+A Dynamic Noise Primitive for Coherent Stylization.
+Optimizing Environment Maps for Material Depiction.
+An Energy-Conserving Hair Reflectance Model.
+Stone Weathering in a Photograph.
+Stratified Sampling for Stochastic Transparency.
+Improved Stochastic Progressive Photon Mapping with Metropolis Sampling.
+Efficient Computation of Blue Noise Point Sets through Importance Sampling.
+Silhouette-Aware Warping for Image-Based Rendering.
+ManyLoDs: Parallel Many-View Level-of-Detail Selection for Real-Time Global Illumination.
+Perception of Visual Artifacts in Image-Based Rendering of Façades.
+Anaglyph Stereo Without Ghosting.
+Perceptual Global Illumination Cancellation in Complex Projection Environments.
+A Physically Plausible Model for Light Emission from Glowing Solid Objects.
+A Volumetric Approach to Predictive Rendering of Fabrics.
+Progressive Expectation-Maximization for Hierarchical Volumetric Photon Mapping.
+Variable Bit Rate GPU Texture Decompression.
+Efficient Packing of Arbitrary Shaped Charts for Automatic Texture Atlas Generation.
+Least Squares Vertex Baking.
+Importance Point Projection for GPU-based Final Gathering.
+Direct Ray Tracing of Phong Tessellation.
+A Ray Tracing Approach to Diffusion Curves.
+Coherent Out-of-Core Point-Based Global Illumination.
+Guided Image Filtering for Interactive High-quality Global Illumination.
+Polynomial Optics: A Construction Kit for Efficient Ray-Tracing of Lens Systems.
+Per-Vertex Defocus Blur for Stochastic Rasterization.
+Pre-convolved Radiance Caching.
+Quantized Point-Based Global Illumination.
+Progressive Virtual Beam Lights.
+Intrinsic Images by Clustering.
+Artistic Illumination Transfer for Portraits.
+Matting and Compositing for Fresnel Reflection on Wavy Surfaces.
+Geometry Presorting for Implicit Object Space Partitioning.
+Parameterization-Aware MIP-Mapping.
+Tessellation-Independent Smooth Shadow Boundaries.
+A Stylized Approach for Pencil Drawing from Photographs.
+Surface Relief Analysis for Illustrative Shading.
+A Statistical Method for SVBRDF Approximation from Video Sequences in General Lighting Conditions.
+Analytic Tangent Irradiance Environment Maps for Anisotropic Surfaces.
+Accurate fitting of measured reflectances using a Shifted Gamma micro-facet distribution.
+Importance Sampling Techniques for Path Tracing in Participating Media.
+Fast Generation of Approximate Blue Noise Point Sets.
+ISHair: Importance Sampling for Hair Scattering.
+Example-Based Fractured Appearance.
+Gamut Mapping Spatially Varying Reflectance with an Improved BRDF Similarity Metric.
+Practical Real-Time Lens-Flare Rendering.
+Computational Simulation of Alternative Photographic Processes.
+Automatic Cinemagraph Portraits.
+Photon Beam Diffusion: A Hybrid Monte Carlo Method for Subsurface Scattering.
+Probabilistic Visibility Evaluation for Direct Illumination.
+Spherical Visibility Sampling.
+An Area-Preserving Parametrization for Spherical Rectangles.
+A Shape-Aware Model for Discrete Texture Synthesis.
+A Topological Approach to Voxelization.
+Temporally Coherent Adaptive Sampling for Imperfect Shadow Maps.
+Line-Sweep Ambient Obscurance.
+Exponential Soft Shadow Mapping.
+Factorized Point Based Global Illumination.
+Sorted Deferred Shading for Production Path Tracing.
+Interactive Lighting Design with Hierarchical Light Representation.
+Optimizing Disparity for Motion in Depth.
+Generating Pointillism Paintings Based on Seurat's Color Composition.
+Color Me Noisy: Example-based Rendering of Hand-colored Animations with Temporal Noise Control.
+Vectorising Bitmaps into Semi-Transparent Gradient Layers.
+AutoStyle: Automatic Style Transfer from Image Collections to Users' Images.
+Bilinear Accelerated Filter Approximation.
+C-LOD: Context-aware Material Level-of-Detail applied to Mobile Graphics.
+Semi-Automated Video Morphing.
+User-Assisted Video Stabilization.
+Interactive Parameter Retrieval for Two-Tone Procedural Textures.
+Layered Reconstruction for Defocus and Motion Blur.
+Error analysis of estimators that use combinations of stochastic sampling strategies for direct illumination.
+Importance Sampling Microfacet-Based BSDFs using the Distribution of Visible Normals.
+Spectral Ray Differentials.
+Hero Wavelength Spectral Sampling.
+A Physically-Based BSDF for Modeling the Appearance of Paper.
+Probabilistic visibility evaluation using geometry proxies.
+Stochastic Soft Shadow Mapping.
+Portal-Masked Environment Map Sampling.
+Extracting Microfacet-based BRDF Parameters from Arbitrary Materials with Power Iterations.
+Physically Meaningful Rendering using Tristimulus Colours.
+Consistent Scene Editing by Progressive Difference Images.
+Unifying Color and Texture Transfer for Predictive Appearance Manipulation.
+Improved Half Vector Space Light Transport.
+Probabilistic Connections for Bidirectional Path Tracing.
+Manifold Next Event Estimation.
+Smooth Loops from Unconstrained Video.
+Radiometric Transfer: Example-based Radiometric Linearization of Photographs.
+Motion Aware Exposure Bracketing for HDR Video.
+Path-space Motion Estimation and Decomposition for Robust Animation Filtering.
+Wavelet Point-Based Global Illumination.
+Modeling Luminance Perception at Absolute Threshold.
+Illumination-driven Mesh Reduction for Accelerating Light Transport Simulations.
+Perceptually Motivated BRDF Comparison using Single Image.
+A phenomenological model for throughfall rendering in real-time.
+Solid Angle Sampling of Disk and Cylinder Lights.
+Improving the Dwivedi Sampling Scheme.
+Line Sampling for Direct Illumination.
+Parallel Multiple-Bounce Irradiance Caching.
+Product Importance Sampling for Light Transport Path Guiding.
+Forward Light Cuts: A Scalable Approach to Real-Time Global Illumination.
+Sparse high-degree polynomials for wide-angle lenses.
+Efficient Ray Tracing Through Aspheric Lenses and Imperfect Bokeh Synthesis.
+Nonlinearly Weighted First-order Regression for Denoising Monte Carlo Renderings.
+Fast Filtering of Reflection Probes.
+Adaptive Image-Space Sampling for Gaze-Contingent Real-time Rendering.
+Minimal Warping: Planning Incremental Novel-view Synthesis.
+Decomposing Single Images for Layered Photo Retouching.
+Real-Time Linear BRDF MIP-Mapping.
+An Appearance Model for Textile Fibers.
+Attribute-preserving gamut mapping of measured BRDFs.
+Stochastic Light Culling for VPLs on GGX Microsurfaces.
+Deep Shading: Convolutional Neural Networks for Screen Space Shading.
+Variance and Convergence Analysis of Monte Carlo Line and Segment Sampling.
+Practical Path Guiding for Efficient Light-Transport Simulation.
+Line Integration for Rendering Heterogeneous Emissive Volumes.
+Bi-Layer textures: a Model for Synthesis and Deformation of Composite Textures.
+Fiber-Level On-the-Fly Procedural Textiles.
+Bayesian Collaborative Denoising for Monte Carlo Rendering.
+Multiple Axis-Aligned Filters for Rendering of Combined Distribution Effects.
+Fast Hardware Construction and Refitting of Quantized Bounding Volume Hierarchies.
+Area-Preserving Parameterizations for Spherical Ellipses.

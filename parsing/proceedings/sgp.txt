@@ -1,0 +1,236 @@
+Hierarchical Convex Approximation of 3D Shapes for Fast Region Selection.
+Discrete Distortion in Triangulated 3-Manifolds.
+Global Intrinsic Symmetries of Shapes.
+A Hierarchical Segmentation of Articulated Bodies.
+A smart stochastic approach for manifolds smoothing.
+Fast Parallel Construction of Smooth Surfaces from Meshes with Tri/Quad/Pent Facets.
+G2 Tensor Product Splines over Extraordinary Vertices.
+Fitting Sharp Features with Loop Subdivision Surfaces.
+Surface sampling and the intrinsic Voronoi diagram.
+Provably Good 2D Shape Reconstruction from Unorganized Cross-Sections.
+Streaming Surface Reconstruction Using Wavelets.
+Global Correspondence Optimization for Non-Rigid Registration of Depth Scans.
+Deformation-Driven Shape Correspondence.
+Dental Inlay and Onlay Construction by Iterative Laplacian Surface Editing.
+Non-Rigid Registration Under Isometric Deformations.
+Automatic Registration for Articulated Shapes.
+Reconstructing Animated Meshes from Time-Varying Point Clouds.
+Motorcycle Graphs: Canonical Quad Mesh Partitioning.
+Spectral Conformal Parameterization.
+A Local/Global Approach to Mesh Parameterization.
+Pointwise radial minimization: Hermite interpolation on arbitrary domains.
+Maximum Entropy Coordinates for Arbitrary Polytopes.
+Polyhedral Finite Elements Using Harmonic Basis Functions.
+Energy-Based Image Deformation.
+Fast, Exact, Linear Booleans.
+Interior Distance Using Barycentric Coordinates.
+Diamond Hierarchies of Arbitrary Dimension.
+Progressive Lossless Mesh Compression Via Incremental Parametric Refinement.
+Random Accessible Hierarchical Mesh Compression for Interactive Visualization.
+Rotating Scans for Systematic Error Removal.
+Reconstruction of Multi-Label Domains from Partial Planar Cross-Sections.
+Smoothing of Partition of Unity Implicit Surfaces for Noise Robust Surface Reconstruction.
+Recovering Structure from r-Sampled Objects.
+Manifold Homotopy via the Flow Complex.
+Isotopic Reconstruction of Surfaces with Boundaries.
+A Concise and Provably Informative Multi-Scale Signature Based on Heat Diffusion.
+Gromov-Hausdorff Stable Signatures for Shapes using Persistence.
+Shape Analysis Using the Auto Diffusion Function.
+Multi-objective shape segmentation and labeling.
+Semi-regular Quadrilateral-only Remeshing from Simplified Base Domains.
+Localized Quadrilateral Coarsening.
+Isotropic Remeshing with Fast and Exact Computation of Restricted Voronoi Diagram.
+Feature preserving Delaunay mesh generation from 3D multi-material images.
+Filtering Relocations on a Delaunay Triangulation.
+Estimating the Laplace-Beltrami Operator by Restricting 3D Functions.
+Stability of Curvature Measures.
+Approximating Gradients for Meshes and Point Clouds via Diffusion Metric.
+Discrete Critical Values: a General Framework for Silhouettes Computation.
+Separatrix Persistence: Extraction of Salient Edges on Surfaces Using Topological Methods.
+Energy-Based Image Deformation.
+Fast, Exact, Linear Booleans.
+Interior Distance Using Barycentric Coordinates.
+Diamond Hierarchies of Arbitrary Dimension.
+Progressive Lossless Mesh Compression Via Incremental Parametric Refinement.
+Random Accessible Hierarchical Mesh Compression for Interactive Visualization.
+Rotating Scans for Systematic Error Removal.
+Reconstruction of Multi-Label Domains from Partial Planar Cross-Sections.
+Smoothing of Partition of Unity Implicit Surfaces for Noise Robust Surface Reconstruction.
+Recovering Structure from r-Sampled Objects.
+Manifold Homotopy via the Flow Complex.
+Isotopic Reconstruction of Surfaces with Boundaries.
+A Concise and Provably Informative Multi-Scale Signature Based on Heat Diffusion.
+Gromov-Hausdorff Stable Signatures for Shapes using Persistence.
+Shape Analysis Using the Auto Diffusion Function.
+Multi-objective shape segmentation and labeling.
+Semi-regular Quadrilateral-only Remeshing from Simplified Base Domains.
+Localized Quadrilateral Coarsening.
+Isotropic Remeshing with Fast and Exact Computation of Restricted Voronoi Diagram.
+Feature preserving Delaunay mesh generation from 3D multi-material images.
+Filtering Relocations on a Delaunay Triangulation.
+Estimating the Laplace-Beltrami Operator by Restricting 3D Functions.
+Stability of Curvature Measures.
+Approximating Gradients for Meshes and Point Clouds via Diffusion Metric.
+Discrete Critical Values: a General Framework for Silhouettes Computation.
+Separatrix Persistence: Extraction of Salient Edges on Surfaces Using Topological Methods.
+Functional webs for freeform architecture.
+Surface Patches from Unorganized Space Curves.
+Rational bi-cubic G2 splines for design with basic shapes.
+CubeCover- Parameterization of 3D Volumes.
+All-Hex Mesh Generation via Volumetric PolyCube Deformation.
+Localized Delaunay Refinement for Volumes.
+A Multiscale Metric for 3D Mesh Visual Quality Assessment.
+Optimising Perceived Distortion in Lossy Encoding of Dynamic Meshes.
+A Hierarchical Grid Based Framework for Fast Collision Detection.
+Coarse-to-Fine Combinatorial Matching for Dense Isometric Shape Correspondence.
+Large-Scale Integer Linear Programming for Orientation Preserving 3D Shape Matching.
+An Optimization Approach to Improving Collections of Shape Maps.
+Deformable 3D Shape Registration Based on Local Similarity Transforms.
+A Condition Number for Non-Rigid Shape Matching.
+On approximation of the Laplace-Beltrami operator and the Willmore energy of surfaces.
+Multiscale Biharmonic Kernels.
+A Complex View of Barycentric Mappings.
+As-Killing-As-Possible Vector Fields for Planar Deformation.
+On the shape of a set of points and lines in the plane.
+VASE: Volume-Aware Surface Evolution for Surface Reconstruction from Incomplete Point Clouds.
+Skeleton computation of orthogonal polyhedra.
+A Multiscale Approach to Optimal Transport.
+An Optimal Transport Approach to Robust Reconstruction and Simplification of 2D Shapes.
+Flexible Developable Surfaces.
+Smooth Shape-Aware Functions with Controlled Extrema.
+Nonrigid Matching of Undersampled Shapes via Medial Diffusion.
+Microtiles: Extracting Building Blocks from Correspondences.
+Finding Surface Correspondences Using Symmetry Axis Curves.
+Soft Maps Between Surfaces.
+New Bounds on the Size of Optimal Meshes.
+From A Medial Surface To A Mesh.
+Modeling Polyhedral Meshes with Affine Maps.
+Shape-Up: Shaping Discrete Geometry with Projections.
+Radial Symmetry Detection and Shape Characterization with the Multiscale Area Projection Transform.
+Computing Extremal Quasiconformal Maps.
+Growing Least Squares for the Analysis of Manifolds in Scale-Space.
+Co-Segmentation of 3D Shapes via Subspace Clustering.
+Dihedral Angle Mesh Error: a fast perception correlated distortion measure for fixed connectivity triangle meshes.
+Stream Surface Parametrization by Flow-Orthogonal Front Lines.
+Mean Curvature Skeletons.
+Can Mean-Curvature Flow be Modified to be Non-singular?
+Time-Discrete Geodesics in the Space of Shells.
+Fast and Robust Normal Estimation for Point Clouds with Sharp Features.
+Parallel Blue-noise Sampling by Constrained Farthest Point Optimization.
+Feature-Preserving Reconstruction of Singular Surfaces.
+Shape Matching via Quotient Spaces.
+PHOG: Photometric and geometric functions for textured shape retrieval.
+Weak Convex Decomposition by Lines-of-sight.
+Semantizing Complex 3D Scenes using Constrained Attribute Grammars.
+Connectivity Editing for Quad-Dominant Meshes.
+Discrete Line Congruences for Shading and Lighting.
+Practical Anisotropic Geodesy.
+An Operator Approach to Tangent Vector Field Processing.
+Approximating Functions on a Mesh with Restricted Voronoï Diagrams.
+Fast and Robust Approximation of Smallest Enclosing Balls in Arbitrary Dimensions.
+Fitting Polynomial Volumes to Surface Meshes with Voronoï Squared Distance Minimization.
+Sparse Iterative Closest Point.
+Locally Injective Mappings.
+Bijective Composite Mean Value Mappings.
+Consistent Volumetric Discretizations Inside Self-Intersecting Surfaces.
+An algorithm for triangulating multiple 3D polygons.
+Animation-Aware Quadrangulation.
+Consistent Shape Maps via Semidefinite Programming.
+Dynamic Maps for Exploring and Browsing Shapes.
+Dirichlet Energy for Analysis and Synthesis of Soft Maps.
+Consolidation of Low-quality Point Clouds from Outdoor Scenes.
+Watertight Scenes from Urban LiDAR and Planar Surfaces.
+Noise-Adaptive Shape Reconstruction from Raw Point Sets.
+Designing N-PolyVector Fields with Complex Polynomials.
+Discrete 2-Tensor Fields on Triangulations.
+Efficient encoding of texture coordinates guided by mesh geometry.
+Compressed Manifold Modes for Mesh Processing.
+Feature-Preserving Surface Completion Using Four Points.
+Piecewise-Planar 3D Reconstruction with Edge and Corner Regularization.
+3D Motion Completion in Crowded Scenes.
+Real-time Bas-Relief Generation from Depth-and-Normal Maps on GPU.
+3D Shape Segmentation and Labeling via Extreme Learning Machine.
+Robust Region Detection via Consensus Segmentation of Deformable Shapes.
+Transductive 3D Shape Segmentation using Sparse Reconstruction.
+Clever Support: Efficient Support Structure Generation for Digital Fabrication.
+Supervised learning of bag-of-features shape descriptors using sparse coding.
+An Efficient Approach to Correspondences between Multiple Non-Rigid Parts.
+Learnt Real-time Meshless Simulation.
+What Makes London Work Like London?
+Blue-Noise Remeshing with Farthest Point Optimization.
+Pattern-Based Quadrangulation for N-Sided Patches.
+Freeform Honeycomb Structures.
+A Variational Taxonomy for Surface Reconstruction from Oriented Points.
+Super 4PCS Fast Global Pointcloud Registration via Smart Indexing.
+Semi-sharp Creases on Subdivision Curves and Surfaces.
+Pseudo-Spline Subdivision Surfaces.
+Functional Fluids on Surfaces.
+Exploring the Geometry of the Space of Shells.
+As-Conformal-As-Possible Surface Registration.
+Remeshing-assisted Optimization for Locally Injective Mappings.
+Cross-Collection Map Inference by Intrinsic Alignment of Shape Spaces.
+Stable Topological Signatures for Points on 3D Shapes.
+Learning class-specific descriptors for deformable shapes using localized spectral convolutional networks.
+Analysis and synthesis of 3D shape families via deep-learned generative models of surfaces.
+Example Based Repetitive Structure Synthesis.
+Reforming Shapes for Material-aware Fabrication.
+Texture Mapping Real-World Objects with Hydrographics.
+Hierarchical Multiview Rigid Registration.
+Sparse Non-rigid Registration of 3D Shapes.
+Robust Articulated-ICP for Real-Time Hand Tracking.
+Tight Relaxation of Quadratic Matching.
+Continuous Matching via Vector Field Flow.
+LeSSS: Learned Shared Semantic Spaces for Relating Multi-Modal Representations of 3D Shapes.
+Fast and Exact (Poisson) Solvers on Symmetric Geometries.
+Quaternion Julia Set Shape Optimization.
+Dynamic SfM: Detecting Scene Changes from Image Pairs.
+An Image Degradation Model for Depth-augmented Image Editing.
+Unconditionally Stable Shock Filters for Image and Geometry Processing.
+Perfect Laplacians for Polygon Meshes.
+Perfect Matching Quad Layouts for Manifold Meshes.
+Can bi-cubic surfaces be class A?
+Homotopic Morphing of Planar Curves.
+A one-dimensional homologically persistent skeleton of an unstructured point cloud in any metric space.
+Scale-Invariant Directional Alignment of Surface Parametrizations.
+Polycube Simplification for Coarse Layouts of Surfaces and Volumes.
+Incorporating Sharp Features in the General Solid Sweep Framework.
+Iterative Closest Conformal Maps between Planar Domains.
+Complex Transfinite Barycentric Mappings with Similarity Kernels.
+Advection-Based Function Matching on Surfaces.
+Near-Isometric Level Set Tracking.
+Mobility Fitting using 4D RANSAC.
+CustomCut: On-demand Extraction of Customized 3D Parts with 2D Sketches.
+Stenciling: Designing Structurally-Sound Surfaces with Decorative Patterns.
+Splines in the Space of Shells.
+Stable Region Correspondences Between Non-Isometric Shapes.
+Non-Rigid Puzzles.
+Interactive Modeling of Mechanical Objects.
+Data-Driven Bending Elasticity Design by Shell Thickness.
+Curve Reconstruction with Many Fewer Samples.
+Crawl through Neighbors: A Simple Curve Reconstruction Algorithm.
+Construction of Topologically Correct and Manifold Isosurfaces.
+Learning 3D Scene Synthesis from Annotated RGB-D Images.
+Identifying Style of 3D Shapes using Deep Metric Learning.
+Symmetry and Orbit Detection via Lie-Algebra Voting.
+Planar Minimization Diagrams via Subdivision with Applications to Anisotropic Voronoi Diagrams.
+Exploration of Empty Space among Spherical Obstacles via Additively Weighted Voronoi Diagram.
+Disk Density Tuning of a Maximal Random Packing.
+Mesh Statistics for Robust Curvature Estimation.
+Deep Learning for Robust Normal Estimation in Unstructured Point Clouds.
+The shape variational autoencoder: A deep generative model of part-segmented 3D objects.
+Modeling and Exploring Co-variations in the Geometry and Configuration of Man-made 3D Shape Families.
+Generalized Matryoshka: Computational Design of Nesting Objects.
+Isometry-Aware Preconditioning for Mesh Parameterization.
+GWCNN: A Metric Alignment Layer for Deep Shape Analysis.
+Ternary Sparse Matrix Representation for Volumetric Mesh Subdivision and Processing on GPUs.
+A Parallel Approach to Compression and Decompression of Triangle Meshes using the GPU.
+Restricting Voronoi diagrams to meshes using corner validation.
+Fast and Memory-Efficient Voronoi Diagram Construction on Triangle Meshes.
+Evaluating Hex-mesh Quality Metrics via Correlation Analysis.
+Spectral Affine-Kernel Embeddings.
+Stochastic Heat Kernel Estimation on Sampled Manifolds.
+A Dirac Operator for Extrinsic Shape Analysis.
+Adjoint Map Representation for Shape Analysis and Matching.
+Deblurring and Denoising of Maps between Shapes.
+Fast Planar Harmonic Deformations with Alternating Tangential Projections.
+A Constrained Resampling Strategy for Mesh Improvement.

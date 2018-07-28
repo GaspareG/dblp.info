@@ -3,7 +3,7 @@
 ## then run this script
 import gzip, json, os
 
-import DBLP2json
+import jsonDBLP
 
 # id, name, affiliation, website
 def force ():
@@ -13,10 +13,10 @@ def force ():
   idx = 0
 
   out = gzip.GzipFile ('data/authors.csv.gz', 'w')
-  for p, paper in enumerate (DBLP2json.papers ()):
+  for p, paper in enumerate (jsonDBLP.papers ()):
     tag, title, authors, year = paper
     tags = tag.split("/")
-    if (tags[0] == 'journals') or (tags[0] == 'conf'):
+    if (tags[0] == 'journals') and (tags[1] in ["tog", "tvcg", "cgf", "cga", "vc", "cad", "cagd"]):
       for auth in authors:
         auths.add(auth)
 
