@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.google.com/schemas/sitemap/0.84">
+  <sitemap>
+    <loc>https://dblp.info/</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/authors</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/author</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/papers</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/paper</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/journals</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/journal</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://dblp.info/coauthorship</loc>
+  </sitemap>
+</sitemapindex>
+
